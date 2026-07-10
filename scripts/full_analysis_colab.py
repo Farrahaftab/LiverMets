@@ -702,3 +702,133 @@ balance_df.to_csv('PSM_Balance_Table.csv', index=False)
 
 print("Section 11 Complete — Saved: PSM_KM_Overall.png, PSM_KM_by_Phenotype.png, "
       "PSM_Overlap_Histogram.png, PSM_Balance_Table.csv")
+
+# ============================================================================
+# @title Section 12 : Model Benchmark — CART vs Full TNM Cox vs Multivariable Cox
+# ============================================================================
+# FIX (two bugs from the original notebook's benchmarking cells):
+#   1. Entry year was computed on cart_df (19,465 rows) then assigned onto
+#      bench_df/surv_df (14,759 rows) via `.values` — a raw positional copy
+#      between differently-sized, differently-ordered frames. Here ENTRY_YEAR
+#      is computed directly on surv_df's own columns, so alignment is
+#      guaranteed by construction instead of by accident.
+#   2. The "Full TNM Cox" model previously re-ran pd.get_dummies on a
+#      non-reset train_df/test_df index and concatenated it against a
+#      reset-index survival-column slice — most rows failed to align and were
+#      silently dropped by dropna(), corrupting ~40% of the training set and
+#      producing an implausible near-random C-index. Here it reuses surv_df's
+#      own T_T0..M_M1 dummy columns (already aligned, built once in
+#      Section 4+5) instead of re-deriving and re-concatenating them.
+print("=" * 70); print("SECTION 12 — MODEL BENCHMARK: CART vs TRADITIONAL COX REGRESSION"); print("=" * 70)
+
+bench_df = surv_df.copy()
+print(f"\nStarting cohort: {len(bench_df):,} patients")
+print(f"Events (deaths): {int(bench_df['EVENT_TRUNC'].sum()):,}")
+
+# --- Approximate registry entry year, computed directly on surv_df ---
+bench_df['LASTNDT_parsed'] = pd.to_datetime(bench_df['LASTNDT_F1'], errors='coerce')
+bench_df['APPROX_ENTRY_YEAR'] = bench_df['LASTNDT_parsed'].dt.year - bench_df['SURVIVAL_YEARS']
+bench_df['APPROX_ENTRY_YEAR'] = pd.to_numeric(bench_df['APPROX_ENTRY_YEAR'], errors='coerce')
+bench_df.loc[(bench_df['APPROX_ENTRY_YEAR'] < 1990) | (bench_df['APPROX_ENTRY_YEAR'] > 2023), 'APPROX_ENTRY_YEAR'] = np.nan
+
+valid_yrs = bench_df['APPROX_ENTRY_YEAR'].dropna()
+temporal_split_available = len(valid_yrs) > 100
+if temporal_split_available:
+    SPLIT_YEAR = int(valid_yrs.median())
+    train_df = bench_df[bench_df['APPROX_ENTRY_YEAR'] <= SPLIT_YEAR].copy()
+    test_df = bench_df[bench_df['APPROX_ENTRY_YEAR'] > SPLIT_YEAR].copy()
+    print(f"\nTemporal split (approx. registry entry year, median={SPLIT_YEAR}):")
+    print(f"  Training (<={SPLIT_YEAR}): {len(train_df):,} patients")
+    print(f"  Validation (>{SPLIT_YEAR}): {len(test_df):,} patients")
+else:
+    print("\nNot enough valid entry-year data for temporal split — Section 12 skipped")
+
+pheno_map = {'Favourable': 0, 'Intermediate': 1, 'Adverse': 2}
+
+if temporal_split_available:
+    # ---- Model 1: CART phenotype score only ----
+    print("\n" + "-" * 70); print("MODEL 1: CART PHENOTYPE SCORE (ordinal 0/1/2)"); print("-" * 70)
+    train_cart = train_df[['PHENOTYPE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
+    train_cart['PHENOTYPE_SCORE'] = train_cart['PHENOTYPE'].map(pheno_map)
+    train_cart = train_cart[['PHENOTYPE_SCORE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+    test_cart = test_df[['PHENOTYPE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
+    test_cart['PHENOTYPE_SCORE'] = test_cart['PHENOTYPE'].map(pheno_map)
+    test_cart = test_cart[['PHENOTYPE_SCORE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+
+    cph_cart = CoxPHFitter()
+    cph_cart.fit(train_cart, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+    ci_cart_tr = concordance_index(train_cart['SURVIVAL_TRUNC'], -cph_cart.predict_partial_hazard(train_cart), train_cart['EVENT_TRUNC'])
+    ci_cart_val = concordance_index(test_cart['SURVIVAL_TRUNC'], -cph_cart.predict_partial_hazard(test_cart), test_cart['EVENT_TRUNC'])
+    print(f"  Training n: {len(train_cart):,} | Validation n: {len(test_cart):,}")
+    print(f"  Training C-index:   {ci_cart_tr:.3f}")
+    print(f"  Validation C-index: {ci_cart_val:.3f}")
+
+    # ---- Model 2: Full TNM Cox (uses surv_df's own aligned dummy columns) ----
+    print("\n" + "-" * 70); print("MODEL 2: FULL TNM COX REGRESSION (All Staging Variables)"); print("-" * 70)
+    train_tnm = train_df[tnm_feat_cols + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+    test_tnm = test_df[tnm_feat_cols + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+
+    cph_tnm = CoxPHFitter(penalizer=0.1)
+    cph_tnm.fit(train_tnm, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+    ci_tnm_tr = concordance_index(train_tnm['SURVIVAL_TRUNC'], -cph_tnm.predict_partial_hazard(train_tnm), train_tnm['EVENT_TRUNC'])
+    ci_tnm_val = concordance_index(test_tnm['SURVIVAL_TRUNC'], -cph_tnm.predict_partial_hazard(test_tnm), test_tnm['EVENT_TRUNC'])
+    print(f"  Training n: {len(train_tnm):,} | Validation n: {len(test_tnm):,}")
+    print(f"  Training C-index:   {ci_tnm_tr:.3f}")
+    print(f"  Validation C-index: {ci_tnm_val:.3f}")
+    print(f"  Features: all binary TNM dummies ({len(tnm_feat_cols)} variables)")
+
+    # ---- Model 3: Multivariable Cox (Phenotype + Age + Metastases + Sex) ----
+    print("\n" + "-" * 70); print("MODEL 3: MULTIVARIABLE COX (Phenotype + Age + Metastases + Sex)"); print("-" * 70)
+    mv_cols = ['PHENOTYPE', 'AGE_AT_REFERRAL', 'NB_METASTASES_NUM', 'GENDER', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']
+
+    def _prep_mv(d):
+        out = d[mv_cols].copy()
+        out['PHENOTYPE_SCORE'] = out['PHENOTYPE'].map(pheno_map)
+        out['AGE_10YR'] = pd.to_numeric(out['AGE_AT_REFERRAL'], errors='coerce') / 10
+        out['NB_METS'] = pd.to_numeric(out['NB_METASTASES_NUM'], errors='coerce')
+        out['MALE'] = (out['GENDER'] == 'Male').astype(int)
+        return out[['PHENOTYPE_SCORE', 'AGE_10YR', 'NB_METS', 'MALE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+
+    train_mv3 = _prep_mv(train_df); test_mv3 = _prep_mv(test_df)
+    cph_mv3 = CoxPHFitter()
+    cph_mv3.fit(train_mv3, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+    ci_mv_tr = concordance_index(train_mv3['SURVIVAL_TRUNC'], -cph_mv3.predict_partial_hazard(train_mv3), train_mv3['EVENT_TRUNC'])
+    ci_mv_val = concordance_index(test_mv3['SURVIVAL_TRUNC'], -cph_mv3.predict_partial_hazard(test_mv3), test_mv3['EVENT_TRUNC'])
+    print(f"  Training n: {len(train_mv3):,} | Validation n: {len(test_mv3):,}")
+    print(f"  Training C-index:   {ci_mv_tr:.3f}")
+    print(f"  Validation C-index: {ci_mv_val:.3f}")
+    print(f"  Features: Phenotype + Age + N Metastases + Sex")
+
+    # ---- Summary table + plot ----
+    print("\n" + "=" * 80); print("BENCHMARK SUMMARY — VALIDATION C-INDEX COMPARISON"); print("=" * 80)
+    results = [("CART Phenotyping (Current Study)", ci_cart_tr, ci_cart_val),
+               ("Full TNM Cox Regression", ci_tnm_tr, ci_tnm_val),
+               ("Multivariable Cox (Phenotype + Clinical)", ci_mv_tr, ci_mv_val)]
+    print(f"\n{'Model':<42} {'Train C':>10} {'Val C':>10}")
+    for name, tr, val in results:
+        print(f"{name:<42} {tr:>10.3f} {val:>10.3f}")
+    print(f"\nDifference (Full TNM - CART):        {ci_tnm_val - ci_cart_val:+.3f}")
+    print(f"Difference (Multivariable - CART):   {ci_mv_val - ci_cart_val:+.3f}")
+
+    fig, ax = plt.subplots(figsize=(11, 7))
+    model_names = ["CART Phenotyping\n(Current Study)", "Full TNM Cox", "Multivariable Cox"]
+    val_scores = [ci_cart_val, ci_tnm_val, ci_mv_val]; train_scores = [ci_cart_tr, ci_tnm_tr, ci_mv_tr]
+    colors = ['#1565C0', '#F57C00', '#6A1B9A']
+    x = np.arange(len(model_names)); width = 0.35
+    bars1 = ax.bar(x - width/2, train_scores, width, label='Training', color=colors, alpha=0.7, edgecolor='black', linewidth=1.5)
+    bars2 = ax.bar(x + width/2, val_scores, width, label='Validation', color=colors, alpha=1.0, edgecolor='black', linewidth=2)
+    ax.axhline(y=0.5, color='red', linestyle='--', alpha=0.4, linewidth=2, label='Random (C=0.5)')
+    ax.set_ylabel('Concordance Index (C-index)', fontsize=12, fontweight='bold')
+    ax.set_title(f'Model Performance Comparison: CART vs Traditional Cox Regression\n'
+                 f'Temporal Validation (Training <={SPLIT_YEAR}, Validation >{SPLIT_YEAR})', fontsize=13, fontweight='bold', pad=20)
+    ax.set_xticks(x); ax.set_xticklabels(model_names, fontsize=11)
+    ax.set_ylim(0.45, 0.75); ax.legend(fontsize=11, loc='lower right', framealpha=0.95)
+    ax.grid(axis='y', alpha=0.3, linestyle=':', linewidth=0.8)
+    for bars in [bars1, bars2]:
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f'{height:.3f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
+    plt.tight_layout(); plt.savefig('Model_Benchmark_Comparison.png', dpi=310, bbox_inches='tight'); plt.show()
+
+    pd.DataFrame(results, columns=['Model', 'Train_Cindex', 'Val_Cindex']).to_csv('Model_Benchmark_Results.csv', index=False)
+    print("Section 12 Complete — Saved: Model_Benchmark_Comparison.png, Model_Benchmark_Results.csv")
