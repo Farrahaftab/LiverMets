@@ -16,8 +16,8 @@ LiverMets_Analysis_Cohort.csv instead of re-deriving these columns itself.
 Usage (Colab):
     uploaded = files.upload()
     df = pd.read_csv(io.BytesIO(uploaded['LiverMets_Final_Dataset.csv']))
-    cohort = build_analysis_cohort(df)
-    cohort.to_csv('LiverMets_Analysis_Cohort.csv', index=False)
+    surv_df, cart_model, tnm_feat_cols, node_df = build_analysis_cohort(df)
+    surv_df.to_csv('LiverMets_Analysis_Cohort.csv', index=False)
 
 Usage (local):
     python build_analysis_cohort.py LiverMets_Final_Dataset.csv LiverMets_Analysis_Cohort.csv
@@ -105,6 +105,8 @@ def build_analysis_cohort(df: pd.DataFrame) -> pd.DataFrame:
         med = kmf.median_survival_time_
         node_results.append({
             'Node': nid,
+            'N': len(nd),
+            'Events': int(nd['EVENT_TRUNC'].sum()),
             'Median_OS': round(float(med), 2) if med and not np.isinf(med) else None,
         })
     node_df = pd.DataFrame(node_results).dropna(subset=['Median_OS'])
@@ -141,13 +143,13 @@ def build_analysis_cohort(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     print(f"\nFinal dataset: {len(cohort):,} patients x {cohort.shape[1]} variables")
-    return cohort
+    return cohort, cart_model, tnm_feat_cols, node_df
 
 
 if __name__ == '__main__':
     in_path = sys.argv[1] if len(sys.argv) > 1 else 'LiverMets_Final_Dataset.csv'
     out_path = sys.argv[2] if len(sys.argv) > 2 else 'LiverMets_Analysis_Cohort.csv'
     raw = pd.read_csv(in_path)
-    result = build_analysis_cohort(raw)
-    result.to_csv(out_path, index=False)
+    cohort, cart_model, tnm_feat_cols, node_df = build_analysis_cohort(raw)
+    cohort.to_csv(out_path, index=False)
     print(f"Saved: {out_path}")
