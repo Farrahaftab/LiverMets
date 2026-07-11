@@ -595,21 +595,24 @@ hr_mv.to_csv('Cox_Multivariable_Results.csv')
 print("Section 9 Complete — Saved: Cox_Multivariable_Forest_Plot.png, Cox_Multivariable_Results.csv")
 
 # ============================================================================
-# @title Section 10 : Treatment KM by Phenotype
+# @title Section 10 : Treatment KM by Phenotype (All 4 groups)
 # ============================================================================
-print("=" * 60); print("SECTION 10 : TREATMENT BY PHENOTYPE"); print("=" * 60)
+print("=" * 60); print("SECTION 10 : TREATMENT BY PHENOTYPE (All Groups)"); print("=" * 60)
 
-tx_rows = []; tx_pvals = {}; tx_lr_rows = []
-tx_surv = surv_df[surv_df['TREATMENT'].isin(['Surgery_Only', 'Surgery+Chemo'])].copy()
+tx_rows = []
+TREATMENTS = [('Surgery_Only', 'Surgery Only', '#1B5E20'),
+              ('Surgery+Chemo', 'Surgery+Chemo', '#43A047'),
+              ('Chemo_Only', 'Chemo Only', '#F57C00'),
+              ('No_Treatment', 'No Treatment', '#D32F2F')]
+
 fig, axes = plt.subplots(1, 3, figsize=(21, 7), sharey=True)
-fig.suptitle('KM OS by Treatment — Stratified by CART Phenotype (Unadjusted)', fontsize=13, fontweight='bold', y=1.02)
+fig.suptitle('KM OS by All Treatment Groups — Stratified by CART Phenotype (Unadjusted)', fontsize=13, fontweight='bold', y=1.02)
 
 for ax, pheno in zip(axes, PHENOTYPES):
-    pdata = tx_surv[tx_surv['PHENOTYPE'] == pheno]
-    so_d = pdata[pdata['TREATMENT'] == 'Surgery_Only']; sc_d = pdata[pdata['TREATMENT'] == 'Surgery+Chemo']
-    for treat, label, col in [('Surgery_Only', 'Surgery Only', '#1B5E20'), ('Surgery+Chemo', 'Surgery+Chemo', '#43A047')]:
+    pdata = surv_df[surv_df['PHENOTYPE'] == pheno]
+    for treat, label, col in TREATMENTS:
         tdata = pdata[pdata['TREATMENT'] == treat]
-        if len(tdata) < 20: continue
+        if len(tdata) < 15: continue
         kmf = KaplanMeierFitter()
         kmf.fit(tdata['SURVIVAL_TRUNC'].astype(float), tdata['EVENT_TRUNC'].astype(int), label=f"{label} (n={len(tdata):,})")
         kmf.plot_survival_function(ax=ax, color=col, linewidth=2.5, ci_show=True, ci_alpha=0.15)
@@ -617,35 +620,72 @@ for ax, pheno in zip(axes, PHENOTYPES):
         tx_rows.append({'Phenotype': pheno, 'Treatment': label, 'N': len(tdata),
                          'Events': int(tdata['EVENT_TRUNC'].sum()),
                          'Median_OS': round(float(med), 2) if med and not np.isinf(med) else None})
-    if len(so_d) >= 20 and len(sc_d) >= 20:
-        lr_tx = logrank_test(so_d['SURVIVAL_TRUNC'].astype(float), sc_d['SURVIVAL_TRUNC'].astype(float),
-                              so_d['EVENT_TRUNC'].astype(int), sc_d['EVENT_TRUNC'].astype(int))
-        tx_pvals[pheno] = lr_tx.p_value
-        ps_tx = '< 0.001' if lr_tx.p_value < 0.001 else f'= {lr_tx.p_value:.4f}'
-        tx_lr_rows.append({'Phenotype': pheno, 'Chi2': round(lr_tx.test_statistic, 2), 'p_value': round(lr_tx.p_value, 4)})
-    else:
-        ps_tx = 'N/A'
-    ax.set_title(f'{pheno}\n(SO vs SC χ²(1)={lr_tx.test_statistic:.2f}, p {ps_tx})', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
+    ax.set_title(f'{pheno}', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
     ax.set_xlabel('Time (Years)', fontsize=12); ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05)
     ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.35); ax.legend(loc='upper right', frameon=True, fontsize=10)
     ax.grid(axis='y', alpha=0.3)
 axes[0].set_ylabel('Overall Survival Probability', fontsize=12)
-plt.tight_layout(); plt.savefig('KM_Treatment_by_Phenotype.png', dpi=310, bbox_inches='tight'); plt.show()
+plt.tight_layout(); plt.savefig('KM_Treatment_by_Phenotype_All.png', dpi=310, bbox_inches='tight'); plt.show()
 
-print("\n— Treatment Comparison (Unadjusted) —")
-print(f"{'Phenotype':<14} {'Treatment':<22} {'N':>6} {'Median OS':>12}")
+print("\n— Treatment Comparison by Phenotype (All 4 Groups) —")
+print(f"{'Phenotype':<14} {'Treatment':<22} {'N':>6} {'Events':>7} {'Median OS':>12}")
 for row in tx_rows:
     med_str = f"{row['Median_OS']:.2f} yrs" if row['Median_OS'] else "NR"
-    print(f"{row['Phenotype']:<14} {row['Treatment']:<22} {row['N']:>6,} {med_str:>12}")
-print("\n— SO vs SC Log-Rank Tests —")
-for pheno, p in tx_pvals.items():
-    ps = '< 0.001' if p < 0.001 else f'= {p:.4f}'
-    sig = ' significant' if p < 0.05 else ' (not significant)'
-    chi2 = next((row['Chi2'] for row in tx_lr_rows if row['Phenotype'] == pheno), None)
-    print(f"  {pheno}: χ²(1) = {chi2}, p {ps}{sig}")
-pd.DataFrame(tx_rows).to_csv('Treatment_by_Phenotype_Unadjusted.csv', index=False)
-pd.DataFrame(tx_lr_rows).to_csv('Treatment_Logrank_Tests.csv', index=False)
-print("Section 10 Complete — Saved: KM_Treatment_by_Phenotype.png, Treatment_Logrank_Tests.csv")
+    print(f"{row['Phenotype']:<14} {row['Treatment']:<22} {row['N']:>6,} {row['Events']:>7,} {med_str:>12}")
+pd.DataFrame(tx_rows).to_csv('Treatment_by_Phenotype_All_Groups.csv', index=False)
+print("Section 10 Complete — Saved: KM_Treatment_by_Phenotype_All.png, Treatment_by_Phenotype_All_Groups.csv")
+
+# ============================================================================
+# @title Section 10b : Overall Treatment Comparison (All 4 groups, all phenotypes)
+# ============================================================================
+print("\n" + "=" * 70); print("SECTION 10b : OVERALL TREATMENT COMPARISON (All Groups)"); print("=" * 70)
+
+tx_all_rows = []
+fig, ax = plt.subplots(figsize=(14, 8))
+
+for treat, label, col in TREATMENTS:
+    tdata = surv_df[surv_df['TREATMENT'] == treat]
+    if len(tdata) < 20: continue
+    T = tdata['SURVIVAL_TRUNC'].astype(float).values; E = tdata['EVENT_TRUNC'].astype(int).values
+    kmf = KaplanMeierFitter()
+    kmf.fit(T, E, label=f"{label} (n={len(tdata):,})")
+    kmf.plot_survival_function(ax=ax, color=col, linewidth=2.5, ci_show=True, ci_alpha=0.15)
+    med = kmf.median_survival_time_
+    tx_all_rows.append({'Treatment': label, 'N': len(tdata), 'Events': int(E.sum()),
+                        'Median_OS': round(float(med), 2) if med and not np.isinf(med) else None})
+
+ax.set_xlabel('Time (Years)', fontsize=13); ax.set_ylabel('Overall Survival Probability', fontsize=13)
+ax.set_title(f'Kaplan-Meier: All Treatment Groups (Unadjusted)', fontsize=12, fontweight='bold', pad=12)
+ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05); ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.4)
+ax.legend(loc='upper right', frameon=True, fontsize=12); ax.grid(axis='y', alpha=0.3)
+plt.tight_layout(); plt.savefig('KM_Treatment_Overall_All.png', dpi=310, bbox_inches='tight'); plt.show()
+
+print("\n— Summary: All Treatment Groups —")
+print(f"{'Treatment':<22} {'N':>7} {'Events':>7} {'Median OS':>12}")
+for row in tx_all_rows:
+    med_str = f"{row['Median_OS']:.2f} yrs" if row['Median_OS'] else "NR"
+    print(f"{row['Treatment']:<22} {row['N']:>7,} {row['Events']:>7,} {med_str:>12}")
+pd.DataFrame(tx_all_rows).to_csv('Treatment_Overall_All_Groups.csv', index=False)
+
+# Pairwise comparisons for all 4 groups
+print("\n— Pairwise Log-Rank Tests (All 4 Groups) —")
+tx_pairs = [('Surgery_Only', 'Surgery+Chemo'), ('Surgery_Only', 'Chemo_Only'),
+            ('Surgery_Only', 'No_Treatment'), ('Surgery+Chemo', 'Chemo_Only'),
+            ('Surgery+Chemo', 'No_Treatment'), ('Chemo_Only', 'No_Treatment')]
+pairwise_rows = []
+for treat_a, treat_b in tx_pairs:
+    da = surv_df[surv_df['TREATMENT'] == treat_a]; db = surv_df[surv_df['TREATMENT'] == treat_b]
+    if len(da) < 10 or len(db) < 10: continue
+    lr_pair = logrank_test(da['SURVIVAL_TRUNC'].astype(float), db['SURVIVAL_TRUNC'].astype(float),
+                           da['EVENT_TRUNC'].astype(int), db['EVENT_TRUNC'].astype(int))
+    ps_pair = '< 0.001' if lr_pair.p_value < 0.001 else f'= {lr_pair.p_value:.4f}'
+    label_a = next((l for t, l, _ in TREATMENTS if t == treat_a), treat_a)
+    label_b = next((l for t, l, _ in TREATMENTS if t == treat_b), treat_b)
+    print(f"  {label_a} vs {label_b}: χ²(1) = {lr_pair.test_statistic:.2f}, p {ps_pair}")
+    pairwise_rows.append({'Comparison': f'{label_a} vs {label_b}', 'Chi2': round(lr_pair.test_statistic, 2),
+                          'p_value': round(lr_pair.p_value, 4)})
+pd.DataFrame(pairwise_rows).to_csv('Treatment_Pairwise_Logrank.csv', index=False)
+print("Section 10b Complete — Saved: KM_Treatment_Overall_All.png, Treatment_Overall_All_Groups.csv, Treatment_Pairwise_Logrank.csv")
 
 # ============================================================================
 # @title Section 11 : Propensity Score Matching (with integrated diagnostics)
