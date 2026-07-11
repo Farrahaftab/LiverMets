@@ -396,6 +396,17 @@ rfs_df = rfs_df[rfs_df['RFS_TRUNC'] > 0].copy()
 rfs_df['RFS_EVENT_TRUNC'] = rfs_df['RFS_EVENT_TRUNC'].astype(int)
 print(f"\nRFS cohort: {len(rfs_df):,} | Events: {int(rfs_df['RFS_EVENT_TRUNC'].sum()):,}")
 
+# --- VERIFICATION: Ensure RFS_EVENT differs from OS EVENT ---
+print("\n— RFS Event Validation —")
+os_events_rfs_subset = rfs_df['EVENT_TRUNC'].astype(int)
+rfs_events = rfs_df['RFS_EVENT_TRUNC'].astype(int)
+agreement = (os_events_rfs_subset == rfs_events).sum()
+print(f"Agreement between OS and RFS event definitions: {agreement:,} / {len(rfs_df):,} ({agreement/len(rfs_df)*100:.1f}%)")
+if agreement == len(rfs_df):
+    print("WARNING: OS and RFS events are identical — check RFS_EVENT derivation")
+else:
+    print(f"✓ Events differ in {len(rfs_df) - agreement:,} cases — proceeding")
+
 fig, ax = plt.subplots(figsize=(13, 8))
 rfs_summary = {}
 for pheno in PHENOTYPES:
@@ -434,9 +445,20 @@ plt.tight_layout(rect=[0, 0.18, 1, 1])
 plt.savefig('KM_RFS_by_Phenotype.png', dpi=310, bbox_inches='tight'); plt.show()
 
 print("\n— RFS Summary —")
-for pheno, res in rfs_summary.items():
-    med_str = f"{res['median']:.2f} yrs" if res['median'] else "NR"
-    print(f"  {pheno:<14}: n={res['n']:,} Median RFS={med_str} Events={res['events']:,}")
+print(f"{'Phenotype':<14} {'N':>7} {'RFS Events':>11} {'Median RFS':>12}")
+for pheno in PHENOTYPES:
+    pdata = rfs_df[rfs_df['PHENOTYPE'] == pheno]
+    if pheno in rfs_summary:
+        med_str = f"{rfs_summary[pheno]['median']:.2f} yrs" if rfs_summary[pheno]['median'] else "NR"
+        print(f"{pheno:<14} {rfs_summary[pheno]['n']:>7,} {rfs_summary[pheno]['events']:>11,} {med_str:>12}")
+
+# Debug: compare to OS
+print("\n— OS vs RFS Event Count (Sanity Check) —")
+os_events = int(surv_df['EVENT_TRUNC'].sum())
+rfs_events = int(rfs_df['RFS_EVENT_TRUNC'].sum())
+print(f"Overall OS events: {os_events:,}")
+print(f"Overall RFS events: {rfs_events:,}")
+print(f"Difference: {rfs_events - os_events:,} (RFS should be higher or equal, never lower)")
 print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_rfs:.2f}, p {p_rfs_str}")
 
 print("\n— Pairwise Log-Rank (RFS) —")
