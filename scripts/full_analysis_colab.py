@@ -490,6 +490,20 @@ rfs_events = int(rfs_df['RFS_EVENT_TRUNC'].sum())
 print(f"Overall OS events: {os_events:,}")
 print(f"Overall RFS events: {rfs_events:,}")
 print(f"Difference: {rfs_events - os_events:,} (RFS should be higher or equal, never lower)")
+
+# Phenotype-specific event breakdown
+print("\n— Phenotype-Specific Event Counts —")
+print(f"{'Phenotype':<14} {'OS Events':>12} {'RFS Events':>12} {'Difference':>12}")
+print("-" * 52)
+for pheno in PHENOTYPES:
+    pdata_all = surv_df[surv_df['PHENOTYPE'] == pheno]
+    pdata_rfs = rfs_df[rfs_df['PHENOTYPE'] == pheno]
+    os_e = int(pdata_all['EVENT_TRUNC'].sum())
+    rfs_e = int(pdata_rfs['RFS_EVENT_TRUNC'].sum())
+    diff = rfs_e - os_e
+    print(f"{pheno:<14} {os_e:>12,} {rfs_e:>12,} {diff:>12,}")
+print("-" * 52)
+print(f"{'Total':<14} {os_events:>12,} {rfs_events:>12,} {rfs_events - os_events:>12,}")
 print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_rfs:.2f}, p {p_rfs_str}")
 
 print("\n— Pairwise Log-Rank (RFS) —")
