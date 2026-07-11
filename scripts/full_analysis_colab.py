@@ -443,28 +443,55 @@ print("=" * 70)
 
 # --- DEFINITIVE DIAGNOSTICS ---
 print("\n" + "=" * 70)
-print("DIAGNOSTIC: Object identity and variable equivalence")
+print("DEFINITIVE DIAGNOSTIC: Fresh inline computation (12 decimal places)")
 print("=" * 70)
-print(f"Python object identity (must be different):")
-print(f"  id(os_test_on_rfs):        {id(os_test_on_rfs)}")
-print(f"  id(rfs_test_independent):  {id(rfs_test_independent)}")
-print(f"  Same object? {id(os_test_on_rfs) == id(rfs_test_independent)} (should be False)")
 
-print(f"\nEvent variable equivalence:")
-os_evt = rfs_df['EVENT_TRUNC'].astype(int).values
-rfs_evt = rfs_df['RFS_EVENT_TRUNC'].astype(int).values
-print(f"  np.array_equal(EVENT_TRUNC, RFS_EVENT_TRUNC): {np.array_equal(os_evt, rfs_evt)}")
-print(f"  (should be False; {(os_evt != rfs_evt).sum():,} differences found)")
-print(f"  Unique values in EVENT_TRUNC: {np.unique(os_evt)}")
-print(f"  Unique values in RFS_EVENT_TRUNC: {np.unique(rfs_evt)}")
+# Create fresh arrays with explicit copies
+os_time_fresh = rfs_df["SURVIVAL_TRUNC"].to_numpy(copy=True)
+os_event_fresh = rfs_df["EVENT_TRUNC"].astype(int).to_numpy(copy=True)
+rfs_time_fresh = rfs_df["RFS_TRUNC"].to_numpy(copy=True)
+rfs_event_fresh = rfs_df["RFS_EVENT_TRUNC"].astype(int).to_numpy(copy=True)
+groups_fresh = rfs_df["PHENOTYPE"].astype(str).to_numpy(copy=True)
 
-print(f"\nTime variable equivalence:")
-os_time = rfs_df['SURVIVAL_TRUNC'].astype(float).values
-rfs_time = rfs_df['RFS_TRUNC'].astype(float).values
-print(f"  np.array_equal(SURVIVAL_TRUNC, RFS_TRUNC): {np.array_equal(os_time, rfs_time)}")
-print(f"  (expected True, since both use SURVIVAL_YEARS.clip(upper=15))")
-print(f"  Unique values in SURVIVAL_TRUNC: {len(np.unique(os_time))} distinct")
-print(f"  Unique values in RFS_TRUNC: {len(np.unique(rfs_time))} distinct")
+# Verify inputs before computing
+print("Input verification:")
+print(f"  OS input events: {int(os_event_fresh.sum())}")
+print(f"  RFS input events: {int(rfs_event_fresh.sum())}")
+print(f"  Event-array differences: {int(np.sum(os_event_fresh != rfs_event_fresh))}")
+print(f"  Groups (phenotypes): {np.unique(groups_fresh)}")
+print(f"  Cohort size: {len(os_time_fresh)}")
+
+# Fresh OS test
+os_check = multivariate_logrank_test(
+    event_durations=os_time_fresh,
+    groups=groups_fresh,
+    event_observed=os_event_fresh
+)
+
+# Fresh RFS test
+rfs_check = multivariate_logrank_test(
+    event_durations=rfs_time_fresh,
+    groups=groups_fresh,
+    event_observed=rfs_event_fresh
+)
+
+# High-precision output
+os_chi2_precise = float(os_check.test_statistic)
+rfs_chi2_precise = float(rfs_check.test_statistic)
+diff_precise = rfs_chi2_precise - os_chi2_precise
+
+print(f"\nLog-rank statistics (12 decimal places):")
+print(f"  OS χ²:  {os_chi2_precise:.12f}")
+print(f"  RFS χ²: {rfs_chi2_precise:.12f}")
+print(f"  Difference (RFS - OS): {diff_precise:+.12f}")
+
+if abs(diff_precise) < 1e-10:
+    print("\n⚠ CRITICAL: χ² values are identical to machine precision (within 1e-10)")
+    print("  This is mathematically extraordinary given 2,943 additional events.")
+elif abs(diff_precise) < 0.01:
+    print(f"\n⚠ χ² values differ by only {diff_precise:.6f} (rounding artifact or real difference?)")
+else:
+    print(f"\n✓ χ² values differ by {diff_precise:.6f} — RFS statistic is legitimate")
 
 print("=" * 70)
 
