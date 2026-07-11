@@ -346,8 +346,8 @@ fig.text(0.5, 0.03, f'Time (years): {" | ".join([f"{t:5}" for t in times])}',
 plt.tight_layout(rect=[0, 0.18, 1, 1])
 plt.savefig('KM_OS_by_Phenotype.png', dpi=310, bbox_inches='tight'); plt.show()
 
-print("\n— OS Summary with Confidence Intervals —")
-print(f"{'Phenotype':<14} {'N':>7} {'Events':>7} {'Median OS':>15} {'95% CI (years)':>20}")
+print("\n— OS Summary by Phenotype —")
+print(f"{'Phenotype':<14} {'N':>7} {'Events':>7} {'Median OS':>12}")
 os_ci_rows = []
 for pheno in PHENOTYPES:
     pdata = surv_df[surv_df['PHENOTYPE'] == pheno]
@@ -356,17 +356,9 @@ for pheno in PHENOTYPES:
     kmf = KaplanMeierFitter()
     kmf.fit(T, E)
     med = kmf.median_survival_time_
-    ci_lower = kmf.confidence_interval_survival_function_.iloc[:, 0]
-    ci_upper = kmf.confidence_interval_survival_function_.iloc[:, 1]
-    try:
-        med_ci_lower = kmf.median_survival_time_; med_ci_upper = kmf.median_survival_time_
-        med_str = f"{med:.2f}" if med and not np.isinf(med) else "NR"
-        ci_str = "NR"
-    except:
-        med_str = f"{med:.2f}" if med and not np.isinf(med) else "NR"
-        ci_str = "NR"
+    med_str = f"{med:.2f} yrs" if med and not np.isinf(med) else "NR"
     n_events = int(E.sum())
-    print(f"{pheno:<14} {len(pdata):>7,} {n_events:>7,} {med_str:>15} {ci_str:>20}")
+    print(f"{pheno:<14} {len(pdata):>7,} {n_events:>7,} {med_str:>12}")
     os_ci_rows.append({'Phenotype': pheno, 'N': len(pdata), 'Events': n_events,
                        'Median_OS': round(med, 2) if med and not np.isinf(med) else None})
 print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_all:.2f}, p {p_str}")
@@ -447,6 +439,33 @@ print(f"  χ²({len(PHENOTYPES)-1}) = {os_chi2_on_rfs:.2f}, p = {os_p_on_rfs:.4f
 print(f"RFS (using RFS_EVENT_TRUNC on {len(rfs_df):,} patients):")
 print(f"  χ²({len(PHENOTYPES)-1}) = {chi2_rfs:.2f}, p = {p_rfs:.4f}")
 print(f"Difference (RFS - OS χ²): {chi2_rfs - os_chi2_on_rfs:+.2f}")
+print("=" * 70)
+
+# --- DEFINITIVE DIAGNOSTICS ---
+print("\n" + "=" * 70)
+print("DIAGNOSTIC: Object identity and variable equivalence")
+print("=" * 70)
+print(f"Python object identity (must be different):")
+print(f"  id(os_test_on_rfs):        {id(os_test_on_rfs)}")
+print(f"  id(rfs_test_independent):  {id(rfs_test_independent)}")
+print(f"  Same object? {id(os_test_on_rfs) == id(rfs_test_independent)} (should be False)")
+
+print(f"\nEvent variable equivalence:")
+os_evt = rfs_df['EVENT_TRUNC'].astype(int).values
+rfs_evt = rfs_df['RFS_EVENT_TRUNC'].astype(int).values
+print(f"  np.array_equal(EVENT_TRUNC, RFS_EVENT_TRUNC): {np.array_equal(os_evt, rfs_evt)}")
+print(f"  (should be False; {(os_evt != rfs_evt).sum():,} differences found)")
+print(f"  Unique values in EVENT_TRUNC: {np.unique(os_evt)}")
+print(f"  Unique values in RFS_EVENT_TRUNC: {np.unique(rfs_evt)}")
+
+print(f"\nTime variable equivalence:")
+os_time = rfs_df['SURVIVAL_TRUNC'].astype(float).values
+rfs_time = rfs_df['RFS_TRUNC'].astype(float).values
+print(f"  np.array_equal(SURVIVAL_TRUNC, RFS_TRUNC): {np.array_equal(os_time, rfs_time)}")
+print(f"  (expected True, since both use SURVIVAL_YEARS.clip(upper=15))")
+print(f"  Unique values in SURVIVAL_TRUNC: {len(np.unique(os_time))} distinct")
+print(f"  Unique values in RFS_TRUNC: {len(np.unique(rfs_time))} distinct")
+
 print("=" * 70)
 
 # Cross-tabulation of event definitions
