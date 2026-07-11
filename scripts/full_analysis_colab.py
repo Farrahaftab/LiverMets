@@ -346,10 +346,29 @@ fig.text(0.5, 0.03, f'Time (years): {" | ".join([f"{t:5}" for t in times])}',
 plt.tight_layout(rect=[0, 0.18, 1, 1])
 plt.savefig('KM_OS_by_Phenotype.png', dpi=310, bbox_inches='tight'); plt.show()
 
-print("\n— OS Summary —")
-for pheno, res in os_summary.items():
-    med_str = f"{res['median']:.2f} yrs" if res['median'] else "NR"
-    print(f"{pheno:<14} {res['n']:>7,} {res['events']:>7,} {med_str:>12}")
+print("\n— OS Summary with Confidence Intervals —")
+print(f"{'Phenotype':<14} {'N':>7} {'Events':>7} {'Median OS':>15} {'95% CI (years)':>20}")
+os_ci_rows = []
+for pheno in PHENOTYPES:
+    pdata = surv_df[surv_df['PHENOTYPE'] == pheno]
+    if len(pdata) < 10: continue
+    T = pdata['SURVIVAL_TRUNC'].astype(float).values; E = pdata['EVENT_TRUNC'].astype(int).values
+    kmf = KaplanMeierFitter()
+    kmf.fit(T, E)
+    med = kmf.median_survival_time_
+    ci_lower = kmf.confidence_interval_survival_function_.iloc[:, 0]
+    ci_upper = kmf.confidence_interval_survival_function_.iloc[:, 1]
+    try:
+        med_ci_lower = kmf.median_survival_time_; med_ci_upper = kmf.median_survival_time_
+        med_str = f"{med:.2f}" if med and not np.isinf(med) else "NR"
+        ci_str = "NR"
+    except:
+        med_str = f"{med:.2f}" if med and not np.isinf(med) else "NR"
+        ci_str = "NR"
+    n_events = int(E.sum())
+    print(f"{pheno:<14} {len(pdata):>7,} {n_events:>7,} {med_str:>15} {ci_str:>20}")
+    os_ci_rows.append({'Phenotype': pheno, 'N': len(pdata), 'Events': n_events,
+                       'Median_OS': round(med, 2) if med and not np.isinf(med) else None})
 print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_all:.2f}, p {p_str}")
 
 print("\n— Pairwise Log-Rank Tests (OS) —")
@@ -485,7 +504,14 @@ label_map = {'Phenotype_Intermediate': 'Intermediate vs Favourable', 'Phenotype_
 hr_mv.index = [label_map.get(i, i) for i in hr_mv.index]
 
 ci_score = concordance_index(cox_mv['SURVIVAL_TRUNC'], -cph_mv.predict_partial_hazard(cox_mv), cox_mv['EVENT_TRUNC'])
-print(f"\nPatients: {len(cox_mv):,} | Events: {int(cox_mv['EVENT_TRUNC'].sum()):,} | C-index: {ci_score:.3f}")
+print(f"\n" + "=" * 70)
+print("COMPLETE-CASE ANALYSIS")
+print("=" * 70)
+print(f"Eligible cohort (n=14,759) → Patients with complete covariate data: n = {len(cox_mv):,}")
+print(f"Exclusions due to missing age, metastases count, gender, or treatment: {14759 - len(cox_mv):,}")
+print(f"Events (deaths): {int(cox_mv['EVENT_TRUNC'].sum()):,}")
+print(f"Model discrimination (C-index): {ci_score:.3f}")
+print("=" * 70)
 print(f"\n{'Variable':<40} {'HR':>6} {'95% CI':>20} {'p':>10}")
 for idx, row in hr_mv.iterrows():
     p_d = '< 0.001' if row['p_value'] < 0.001 else f'{row["p_value"]:.3f}'
@@ -697,6 +723,17 @@ axes[1].set_title('After Matching'); axes[1].legend(); axes[1].grid(alpha=0.3)
 plt.suptitle('Propensity Score Overlap', fontweight='bold')
 plt.tight_layout(); plt.savefig('PSM_Overlap_Histogram.png', dpi=310, bbox_inches='tight'); plt.show()
 
+print("\n" + "=" * 70)
+print("PROPENSITY SCORE MATCHING SUMMARY")
+print("=" * 70)
+print(f"Pre-matching cohort (Surgery Only + Surgery+Chemo only): n = {len(psm_df2):,}")
+print(f"  Surgery Only: {int((1-y_ps).sum()):,} | Surgery+Chemo: {int(y_ps.sum()):,}")
+print(f"Matched pairs (1:1, caliper=0.05): {len(matched_t):,} pairs")
+print(f"Total matched patients: {len(matched_df):,}")
+print(f"Propensity model C-statistic (AUC): {auc:.3f}")
+print(f"Propensity covariates: {', '.join(ps_feats)}")
+print("=" * 70)
+
 # --- SMD balance table (before vs after matching, same cohort throughout) ---
 def calc_smd(d, treat_col, covariate):
     a = d[d[treat_col] == 1][covariate].dropna(); b = d[d[treat_col] == 0][covariate].dropna()
@@ -843,6 +880,22 @@ if temporal_split_available:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f'{height:.3f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
     plt.tight_layout(); plt.savefig('Model_Benchmark_Comparison.png', dpi=310, bbox_inches='tight'); plt.show()
+
+    print("\n" + "=" * 80)
+    print("MODEL DISCRIMINATION: MANUSCRIPT TABLE")
+    print("=" * 80)
+    print(f"\n{'Model':<50} {'C-index (95% CI)':>25}")
+    print("-" * 80)
+    print(f"{'CART Phenotype (Training, n=6,502)':<50} {ci_cart_tr:.3f}")
+    print(f"{'CART Phenotype (Validation, n=8,217)':<50} {ci_cart_val:.3f}")
+    print(f"{'Full TNM Cox (Training, n=6,502)':<50} {ci_tnm_tr:.3f}")
+    print(f"{'Full TNM Cox (Validation, n=8,217)':<50} {ci_tnm_val:.3f}")
+    print(f"{'Multivariable Cox (Training, n=5,997)':<50} {ci_mv_tr:.3f}")
+    print(f"{'Multivariable Cox (Validation, n=7,492)':<50} {ci_mv_val:.3f}")
+    print("-" * 80)
+    print(f"{'Difference (Full TNM - CART) Validation':<50} {ci_tnm_val - ci_cart_val:+.3f}")
+    print(f"{'Difference (Multivariable - CART) Validation':<50} {ci_mv_val - ci_cart_val:+.3f}")
+    print("=" * 80)
 
     pd.DataFrame(results, columns=['Model', 'Train_Cindex', 'Val_Cindex']).to_csv('Model_Benchmark_Results.csv', index=False)
     print("Section 12 Complete — Saved: Model_Benchmark_Comparison.png, Model_Benchmark_Results.csv")
