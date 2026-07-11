@@ -330,10 +330,11 @@ for pheno in PHENOTYPES:
 
 lr_all = multivariate_logrank_test(surv_df['SURVIVAL_TRUNC'].astype(float),
                                     surv_df['PHENOTYPE'], event_col=surv_df['EVENT_TRUNC'].astype(int))
-p_all = lr_all.p_value; p_str = '< 0.001' if p_all < 0.001 else f'= {p_all:.4f}'
+p_all = lr_all.p_value; chi2_all = lr_all.test_statistic
+p_str = '< 0.001' if p_all < 0.001 else f'= {p_all:.4f}'
 
 ax.set_xlabel('Time (Years)', fontsize=13); ax.set_ylabel('Overall Survival Probability', fontsize=13)
-ax.set_title(f'Kaplan-Meier Overall Survival by CART Phenotype\nLog-rank p {p_str} | {MAX_FOLLOW_UP}-year follow-up',
+ax.set_title(f'Kaplan-Meier Overall Survival by CART Phenotype\nLog-rank χ²({len(PHENOTYPES)-1})={chi2_all:.2f}, p {p_str} | {MAX_FOLLOW_UP}-year follow-up',
              fontsize=12, fontweight='bold', pad=12)
 ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05)
 ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.4); ax.legend(loc='upper right', frameon=True, fontsize=11)
@@ -349,17 +350,20 @@ print("\n— OS Summary —")
 for pheno, res in os_summary.items():
     med_str = f"{res['median']:.2f} yrs" if res['median'] else "NR"
     print(f"{pheno:<14} {res['n']:>7,} {res['events']:>7,} {med_str:>12}")
-print(f"\nOverall log-rank p {p_str}")
+print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_all:.2f}, p {p_str}")
 
-print("\n— Pairwise Log-Rank Tests —")
+print("\n— Pairwise Log-Rank Tests (OS) —")
 pairs = [('Favourable', 'Intermediate'), ('Favourable', 'Adverse'), ('Intermediate', 'Adverse')]
+lr_rows = []
 for a, b in pairs:
     da = surv_df[surv_df['PHENOTYPE'] == a]; db = surv_df[surv_df['PHENOTYPE'] == b]
     lr = logrank_test(da['SURVIVAL_TRUNC'].astype(float), db['SURVIVAL_TRUNC'].astype(float),
                        da['EVENT_TRUNC'].astype(int), db['EVENT_TRUNC'].astype(int))
     ps = '< 0.001' if lr.p_value < 0.001 else f'= {lr.p_value:.4f}'
-    print(f"  {a} vs {b}: p {ps}")
-print("Section 6 Complete — Saved: KM_OS_by_Phenotype.png")
+    print(f"  {a} vs {b}: χ²(1) = {lr.test_statistic:.2f}, p {ps}")
+    lr_rows.append({'Comparison': f'{a} vs {b}', 'Chi2': round(lr.test_statistic, 2), 'p_value': round(lr.p_value, 4)})
+pd.DataFrame(lr_rows).to_csv('OS_Logrank_Tests.csv', index=False)
+print("Section 6 Complete — Saved: KM_OS_by_Phenotype.png, OS_Logrank_Tests.csv")
 
 # ============================================================================
 # @title Section 7 : Recurrence-Free Survival — KM by Phenotype
@@ -394,10 +398,11 @@ for pheno in PHENOTYPES:
 
 lr_rfs = multivariate_logrank_test(rfs_df['RFS_TRUNC'].astype(float), rfs_df['PHENOTYPE'],
                                     event_col=rfs_df['RFS_EVENT_TRUNC'].astype(int))
-p_rfs = lr_rfs.p_value; p_rfs_str = '< 0.001' if p_rfs < 0.001 else f'= {p_rfs:.4f}'
+p_rfs = lr_rfs.p_value; chi2_rfs = lr_rfs.test_statistic
+p_rfs_str = '< 0.001' if p_rfs < 0.001 else f'= {p_rfs:.4f}'
 
 ax.set_xlabel('Time (Years)', fontsize=13); ax.set_ylabel('RFS Probability', fontsize=13)
-ax.set_title(f'Kaplan-Meier Recurrence-Free Survival by CART Phenotype\nLog-rank p {p_rfs_str}',
+ax.set_title(f'Kaplan-Meier Recurrence-Free Survival by CART Phenotype\nLog-rank χ²({len(PHENOTYPES)-1})={chi2_rfs:.2f}, p {p_rfs_str}',
              fontsize=12, fontweight='bold', pad=12)
 ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05)
 ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.4); ax.legend(loc='upper right', frameon=True, fontsize=11)
@@ -413,16 +418,19 @@ print("\n— RFS Summary —")
 for pheno, res in rfs_summary.items():
     med_str = f"{res['median']:.2f} yrs" if res['median'] else "NR"
     print(f"  {pheno:<14}: n={res['n']:,} Median RFS={med_str} Events={res['events']:,}")
-print(f"\nOverall log-rank p {p_rfs_str}")
+print(f"\nOverall log-rank: χ²({len(PHENOTYPES)-1}) = {chi2_rfs:.2f}, p {p_rfs_str}")
 
 print("\n— Pairwise Log-Rank (RFS) —")
+rfs_lr_rows = []
 for a, b in pairs:
     da = rfs_df[rfs_df['PHENOTYPE'] == a]; db = rfs_df[rfs_df['PHENOTYPE'] == b]
     lr = logrank_test(da['RFS_TRUNC'].astype(float), db['RFS_TRUNC'].astype(float),
                        da['RFS_EVENT_TRUNC'].astype(int), db['RFS_EVENT_TRUNC'].astype(int))
     ps = '< 0.001' if lr.p_value < 0.001 else f'= {lr.p_value:.4f}'
-    print(f"  {a} vs {b}: p {ps}")
-print("Section 7 Complete — Saved: KM_RFS_by_Phenotype.png")
+    print(f"  {a} vs {b}: χ²(1) = {lr.test_statistic:.2f}, p {ps}")
+    rfs_lr_rows.append({'Comparison': f'{a} vs {b}', 'Chi2': round(lr.test_statistic, 2), 'p_value': round(lr.p_value, 4)})
+pd.DataFrame(rfs_lr_rows).to_csv('RFS_Logrank_Tests.csv', index=False)
+print("Section 7 Complete — Saved: KM_RFS_by_Phenotype.png, RFS_Logrank_Tests.csv")
 
 # ============================================================================
 # @title Section 8 : Simple Cox Regression (Unadjusted)
@@ -512,7 +520,7 @@ print("Section 9 Complete — Saved: Cox_Multivariable_Forest_Plot.png, Cox_Mult
 # ============================================================================
 print("=" * 60); print("SECTION 10 : TREATMENT BY PHENOTYPE"); print("=" * 60)
 
-tx_rows = []; tx_pvals = {}
+tx_rows = []; tx_pvals = {}; tx_lr_rows = []
 tx_surv = surv_df[surv_df['TREATMENT'].isin(['Surgery_Only', 'Surgery+Chemo'])].copy()
 fig, axes = plt.subplots(1, 3, figsize=(21, 7), sharey=True)
 fig.suptitle('KM OS by Treatment — Stratified by CART Phenotype (Unadjusted)', fontsize=13, fontweight='bold', y=1.02)
@@ -535,9 +543,10 @@ for ax, pheno in zip(axes, PHENOTYPES):
                               so_d['EVENT_TRUNC'].astype(int), sc_d['EVENT_TRUNC'].astype(int))
         tx_pvals[pheno] = lr_tx.p_value
         ps_tx = '< 0.001' if lr_tx.p_value < 0.001 else f'= {lr_tx.p_value:.4f}'
+        tx_lr_rows.append({'Phenotype': pheno, 'Chi2': round(lr_tx.test_statistic, 2), 'p_value': round(lr_tx.p_value, 4)})
     else:
         ps_tx = 'N/A'
-    ax.set_title(f'{pheno}\n(SO vs SC p {ps_tx})', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
+    ax.set_title(f'{pheno}\n(SO vs SC χ²(1)={lr_tx.test_statistic:.2f}, p {ps_tx})', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
     ax.set_xlabel('Time (Years)', fontsize=12); ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05)
     ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.35); ax.legend(loc='upper right', frameon=True, fontsize=10)
     ax.grid(axis='y', alpha=0.3)
@@ -549,13 +558,15 @@ print(f"{'Phenotype':<14} {'Treatment':<22} {'N':>6} {'Median OS':>12}")
 for row in tx_rows:
     med_str = f"{row['Median_OS']:.2f} yrs" if row['Median_OS'] else "NR"
     print(f"{row['Phenotype']:<14} {row['Treatment']:<22} {row['N']:>6,} {med_str:>12}")
-print("\n— SO vs SC p-values —")
+print("\n— SO vs SC Log-Rank Tests —")
 for pheno, p in tx_pvals.items():
     ps = '< 0.001' if p < 0.001 else f'= {p:.4f}'
     sig = ' significant' if p < 0.05 else ' (not significant)'
-    print(f"  {pheno}: p {ps}{sig}")
+    chi2 = next((row['Chi2'] for row in tx_lr_rows if row['Phenotype'] == pheno), None)
+    print(f"  {pheno}: χ²(1) = {chi2}, p {ps}{sig}")
 pd.DataFrame(tx_rows).to_csv('Treatment_by_Phenotype_Unadjusted.csv', index=False)
-print("Section 10 Complete — Saved: KM_Treatment_by_Phenotype.png")
+pd.DataFrame(tx_lr_rows).to_csv('Treatment_Logrank_Tests.csv', index=False)
+print("Section 10 Complete — Saved: KM_Treatment_by_Phenotype.png, Treatment_Logrank_Tests.csv")
 
 # ============================================================================
 # @title Section 11 : Propensity Score Matching (with integrated diagnostics)
@@ -610,9 +621,10 @@ for tv, label, col in [(0, 'Surgery Only', '#1B5E20'), (1, 'Surgery+Chemo', '#43
 so_m = matched_df[matched_df['TREATED'] == 0]; sc_m = matched_df[matched_df['TREATED'] == 1]
 lr_psm = logrank_test(so_m['SURVIVAL_TRUNC'].astype(float), sc_m['SURVIVAL_TRUNC'].astype(float),
                        so_m['EVENT_TRUNC'].astype(int), sc_m['EVENT_TRUNC'].astype(int))
-p_psm = lr_psm.p_value; ps_psm = '< 0.001' if p_psm < 0.001 else f'= {p_psm:.4f}'
+p_psm = lr_psm.p_value; chi2_psm = lr_psm.test_statistic
+ps_psm = '< 0.001' if p_psm < 0.001 else f'= {p_psm:.4f}'
 ax.set_xlabel('Time (Years)', fontsize=13); ax.set_ylabel('Overall Survival Probability', fontsize=13)
-ax.set_title(f'PSM: Surgery Only vs Surgery+Chemo\n{len(matched_t):,} matched pairs | Log-rank p {ps_psm}', fontsize=12, fontweight='bold', pad=12)
+ax.set_title(f'PSM: Surgery Only vs Surgery+Chemo\n{len(matched_t):,} matched pairs | Log-rank χ²(1)={chi2_psm:.2f}, p {ps_psm}', fontsize=12, fontweight='bold', pad=12)
 ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05); ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.4)
 ax.legend(loc='upper right', frameon=True, fontsize=12); ax.grid(axis='y', alpha=0.3)
 plt.tight_layout(); plt.savefig('PSM_KM_Overall.png', dpi=310, bbox_inches='tight'); plt.show()
@@ -620,7 +632,7 @@ plt.tight_layout(); plt.savefig('PSM_KM_Overall.png', dpi=310, bbox_inches='tigh
 print("\n— PSM Results Summary —")
 so_str = f"{psm_results.get('Surgery Only', {}).get('median', 'NR')}"
 sc_str = f"{psm_results.get('Surgery+Chemo', {}).get('median', 'NR')}"
-print(f"{'Overall':<20} {so_str:>10} {sc_str:>10} {ps_psm:>12}")
+print(f"Overall PSM: χ²(1) = {chi2_psm:.2f}, p {ps_psm}")
 
 psm_pheno_rows = []
 fig, axes = plt.subplots(1, 3, figsize=(21, 7), sharey=True)
@@ -631,7 +643,7 @@ for ax, pheno in zip(axes, PHENOTYPES):
         ax.text(0.5, 0.5, f'Insufficient matched data\nn={len(pdata)}', ha='center', va='center', transform=ax.transAxes)
         ax.set_title(f'{pheno}', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
         continue
-    ph_so = pdata[pdata['TREATED'] == 0]; ph_sc = pdata[pdata['TREATED'] == 1]; ph_meds = {}
+    ph_so = pdata[pdata['TREATED'] == 0]; ph_sc = pdata[pdata['TREATED'] == 1]; ph_meds = {}; chi2_ph = None
     for tv, label, col in [(0, 'Surgery Only', '#1B5E20'), (1, 'Surgery+Chemo', '#43A047')]:
         tdata = pdata[pdata['TREATED'] == tv]
         if len(tdata) < 10: continue
@@ -643,13 +655,15 @@ for ax, pheno in zip(axes, PHENOTYPES):
     if len(ph_so) >= 10 and len(ph_sc) >= 10:
         lr_ph = logrank_test(ph_so['SURVIVAL_TRUNC'].astype(float), ph_sc['SURVIVAL_TRUNC'].astype(float),
                               ph_so['EVENT_TRUNC'].astype(int), ph_sc['EVENT_TRUNC'].astype(int))
-        p_ph = lr_ph.p_value; ps_ph = '< 0.001' if p_ph < 0.001 else f'= {p_ph:.4f}'
+        p_ph = lr_ph.p_value; chi2_ph = lr_ph.test_statistic
+        ps_ph = '< 0.001' if p_ph < 0.001 else f'= {p_ph:.4f}'
     else:
-        p_ph = 1.0; ps_ph = 'N/A'
+        p_ph = 1.0; ps_ph = 'N/A'; chi2_ph = None
     psm_pheno_rows.append({'Phenotype': pheno, 'SO_median': ph_meds.get('Surgery Only'),
-                            'SC_median': ph_meds.get('Surgery+Chemo'), 'p_value': round(p_ph, 4),
-                            'n_SO': len(ph_so), 'n_SC': len(ph_sc)})
-    ax.set_title(f'{pheno}\n(SO vs SC p {ps_ph})', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
+                            'SC_median': ph_meds.get('Surgery+Chemo'), 'Chi2': round(chi2_ph, 2) if chi2_ph else None,
+                            'p_value': round(p_ph, 4), 'n_SO': len(ph_so), 'n_SC': len(ph_sc)})
+    chi2_str = f'χ²(1)={chi2_ph:.2f}' if chi2_ph else 'N/A'
+    ax.set_title(f'{pheno}\n(SO vs SC {chi2_str}, p {ps_ph})', fontsize=12, fontweight='bold', color=PHENOTYPE_COLORS[pheno])
     ax.set_xlabel('Time (Years)', fontsize=12); ax.set_xlim(0, MAX_FOLLOW_UP); ax.set_ylim(0, 1.05)
     ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.35); ax.legend(loc='upper right', frameon=True, fontsize=10)
     ax.grid(axis='y', alpha=0.3)
