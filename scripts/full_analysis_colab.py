@@ -426,9 +426,40 @@ for pheno in PHENOTYPES:
     counts = [(pdata['RFS_TRUNC'] >= t).sum() for t in times]
     at_risk_text += f"{pheno:14} " + " | ".join([f"{n:5,}" for n in counts]) + "\n"
 
-lr_rfs = multivariate_logrank_test(rfs_df['RFS_TRUNC'].astype(float), rfs_df['PHENOTYPE'],
-                                    event_col=rfs_df['RFS_EVENT_TRUNC'].astype(int))
-p_rfs = lr_rfs.p_value; chi2_rfs = lr_rfs.test_statistic
+# --- INDEPENDENT CALCULATION: Separate OS and RFS log-rank tests ---
+# Compute OS test on RFS cohort for direct comparison
+os_test_on_rfs = multivariate_logrank_test(rfs_df['SURVIVAL_TRUNC'].astype(float), rfs_df['PHENOTYPE'],
+                                           event_col=rfs_df['EVENT_TRUNC'].astype(int))
+os_chi2_on_rfs = os_test_on_rfs.test_statistic
+os_p_on_rfs = os_test_on_rfs.p_value
+
+# Compute RFS test independently
+rfs_test_independent = multivariate_logrank_test(rfs_df['RFS_TRUNC'].astype(float), rfs_df['PHENOTYPE'],
+                                                  event_col=rfs_df['RFS_EVENT_TRUNC'].astype(int))
+chi2_rfs = rfs_test_independent.test_statistic
+p_rfs = rfs_test_independent.p_value
+
+print("\n" + "=" * 70)
+print("LOG-RANK TEST COMPARISON (computed separately on RFS cohort)")
+print("=" * 70)
+print(f"OS (using EVENT_TRUNC on {len(rfs_df):,} patients):")
+print(f"  χ²({len(PHENOTYPES)-1}) = {os_chi2_on_rfs:.2f}, p = {os_p_on_rfs:.4f}")
+print(f"RFS (using RFS_EVENT_TRUNC on {len(rfs_df):,} patients):")
+print(f"  χ²({len(PHENOTYPES)-1}) = {chi2_rfs:.2f}, p = {p_rfs:.4f}")
+print(f"Difference (RFS - OS χ²): {chi2_rfs - os_chi2_on_rfs:+.2f}")
+print("=" * 70)
+
+# Cross-tabulation of event definitions
+print("\n— Event Definition Cross-Tabulation —")
+crosstab = pd.crosstab(
+    rfs_df["EVENT_TRUNC"].astype(int),
+    rfs_df["RFS_EVENT_TRUNC"].astype(int),
+    rownames=["OS event"],
+    colnames=["RFS event"],
+    margins=True
+)
+print(crosstab)
+
 p_rfs_str = '< 0.001' if p_rfs < 0.001 else f'= {p_rfs:.4f}'
 
 ax.set_xlabel('Time (Years)', fontsize=13); ax.set_ylabel('RFS Probability', fontsize=13)
