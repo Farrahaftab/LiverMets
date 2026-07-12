@@ -29,8 +29,6 @@ import seaborn as sns
 from sklearn.tree import DecisionTreeClassifier, plot_tree, export_text
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import IterativeImputer
 from lifelines import KaplanMeierFitter, CoxPHFitter
 from lifelines.statistics import logrank_test, multivariate_logrank_test
 from lifelines.utils import concordance_index
