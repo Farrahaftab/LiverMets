@@ -1062,76 +1062,90 @@ print("\n" + "=" * 80)
 print("SECTION 13 — SENSITIVITY ANALYSIS: MISSING DATA ROBUSTNESS CHECK")
 print("=" * 80)
 
-# Simple sensitivity: fit Cox model on subset with no missing metastases
+# Simple sensitivity: compare Cox models across three missing-data strategies
 print("\nTesting robustness of results across different missing-data handling strategies...\n")
 
 # Strategy 1: Complete-case (already done in Section 8 as hr_s)
 print("STRATEGY 1: Complete-case analysis (reference, n=" + str(len(cox_s_df)) + " from Section 8)")
 
-# Strategy 2: Exclude only metastases missing (keep all with age/pheno/treatment)
-cox_s_no_mets_miss = surv_df[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat',
-                               'NB_METASTASES_NUM', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
-cox_s_no_mets_miss = cox_s_no_mets_miss.dropna(subset=['PHENOTYPE', 'Tx_SurgChemo', 'SURVIVAL_TRUNC', 'EVENT_TRUNC'])
-cox_s_no_mets_miss['NB_METASTASES_NUM'] = pd.to_numeric(cox_s_no_mets_miss['NB_METASTASES_NUM'], errors='coerce')
-cox_s_no_mets_miss = cox_s_no_mets_miss.dropna()
-print(f"STRATEGY 2: Explicit numeric conversion + dropna (n={len(cox_s_no_mets_miss)})")
-
-# Strategy 3: Impute missing mets to median
-cox_s_mets_median = surv_df[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat',
-                              'NB_METASTASES_NUM', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
-cox_s_mets_median['NB_METASTASES_NUM'] = pd.to_numeric(cox_s_mets_median['NB_METASTASES_NUM'], errors='coerce')
-median_mets = cox_s_mets_median['NB_METASTASES_NUM'].median()
-cox_s_mets_median['NB_METASTASES_NUM'].fillna(median_mets, inplace=True)
-cox_s_mets_median = cox_s_mets_median.dropna(subset=['PHENOTYPE', 'Tx_SurgChemo', 'SURVIVAL_TRUNC', 'EVENT_TRUNC'])
-print(f"STRATEGY 3: Metastases imputed to median ({median_mets:.0f}) (n={len(cox_s_mets_median)})")
-
+# Prepare dummy-encoded versions for Strategies 2 and 3
 idx_labels = ['Intermediate vs Favourable', 'Adverse vs Favourable',
               'Surgery+Chemo vs Surgery Only', 'Chemo Only vs Surgery Only', 'No Treatment vs Surgery Only']
+
+# Strategy 2: Explicit numeric conversion + dropna (no mets imputation)
+temp2 = surv_df[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
+temp2 = temp2.dropna(subset=['PHENOTYPE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC'])
+# Create dummy PHENOTYPE (Intermediate and Adverse, with Favourable as reference)
+temp2['Phenotype_Intermediate'] = (temp2['PHENOTYPE'] == 'Intermediate').astype(int)
+temp2['Phenotype_Adverse'] = (temp2['PHENOTYPE'] == 'Adverse').astype(int)
+cox_s_no_mets_miss = temp2[['Phenotype_Intermediate', 'Phenotype_Adverse', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+print(f"STRATEGY 2: Explicit dropna (no mets imputation) (n={len(cox_s_no_mets_miss)})")
+
+# Strategy 3: Impute missing mets to median, keep all else
+temp3 = surv_df[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'NB_METASTASES_NUM', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
+temp3['NB_METASTASES_NUM'] = pd.to_numeric(temp3['NB_METASTASES_NUM'], errors='coerce')
+median_mets = temp3['NB_METASTASES_NUM'].median()
+temp3['NB_METASTASES_NUM'].fillna(median_mets, inplace=True)
+temp3 = temp3.dropna(subset=['PHENOTYPE', 'SURVIVAL_TRUNC', 'EVENT_TRUNC'])
+# Create dummy PHENOTYPE
+temp3['Phenotype_Intermediate'] = (temp3['PHENOTYPE'] == 'Intermediate').astype(int)
+temp3['Phenotype_Adverse'] = (temp3['PHENOTYPE'] == 'Adverse').astype(int)
+cox_s_mets_median = temp3[['Phenotype_Intermediate', 'Phenotype_Adverse', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
+print(f"STRATEGY 3: Metastases imputed to median ({median_mets:.0f}) (n={len(cox_s_mets_median)})")
 
 print("\n" + "=" * 80)
 print("HAZARD RATIO SENSITIVITY COMPARISON")
 print("=" * 80)
-print(f"{'Variable':<40} {'Complete-Case':>18} {'Explicit Numeric':>18} {'Mets Imputed':>18}")
+print(f"{'Variable':<40} {'Complete-Case':>18} {'No Mets Impute':>18} {'Mets Imputed':>18}")
 print(f"{'':40} {'HR (95% CI)':>18} {'HR (95% CI)':>18} {'HR (95% CI)':>18}")
 print("-" * 110)
 
 # Fit models for strategies 2 and 3
 cph2 = CoxPHFitter()
-cph2.fit(cox_s_no_mets_miss[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-         duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+cph2.fit(cox_s_no_mets_miss, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 hr2 = cph2.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%']].copy()
 hr2.columns = ['HR', 'CI_lower', 'CI_upper']
 
 cph3 = CoxPHFitter()
-cph3.fit(cox_s_mets_median[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-         duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+cph3.fit(cox_s_mets_median, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 hr3 = cph3.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%']].copy()
 hr3.columns = ['HR', 'CI_lower', 'CI_upper']
 
-# Print comparison
-for label in idx_labels:
-    if label not in hr_s.index:
+# Print comparison (map index names for hr2/hr3 to match hr_s)
+index_map = {
+    'Phenotype_Intermediate': 'Intermediate vs Favourable',
+    'Phenotype_Adverse': 'Adverse vs Favourable',
+    'Tx_SurgChemo': 'Surgery+Chemo vs Surgery Only',
+    'Tx_ChemoOnly': 'Chemo Only vs Surgery Only',
+    'Tx_NoTreat': 'No Treatment vs Surgery Only'
+}
+
+results_list = []
+for hr2_idx, label in index_map.items():
+    if label not in hr_s.index or hr2_idx not in hr2.index or hr2_idx not in hr3.index:
         continue
     cc = f"{hr_s.loc[label, 'HR']:.3f} ({hr_s.loc[label, 'CI_lower']:.2f}-{hr_s.loc[label, 'CI_upper']:.2f})"
-    s2 = f"{hr2.loc[label, 'HR']:.3f} ({hr2.loc[label, 'CI_lower']:.2f}-{hr2.loc[label, 'CI_upper']:.2f})" if label in hr2.index else "N/A"
-    s3 = f"{hr3.loc[label, 'HR']:.3f} ({hr3.loc[label, 'CI_lower']:.2f}-{hr3.loc[label, 'CI_upper']:.2f})" if label in hr3.index else "N/A"
+    s2 = f"{hr2.loc[hr2_idx, 'HR']:.3f} ({hr2.loc[hr2_idx, 'CI_lower']:.2f}-{hr2.loc[hr2_idx, 'CI_upper']:.2f})"
+    s3 = f"{hr3.loc[hr2_idx, 'HR']:.3f} ({hr3.loc[hr2_idx, 'CI_lower']:.2f}-{hr3.loc[hr2_idx, 'CI_upper']:.2f})"
     print(f"{label:<40} {cc:>18} {s2:>18} {s3:>18}")
+
+    results_list.append({
+        'Variable': label,
+        'Complete_Case_HR': hr_s.loc[label, 'HR'],
+        'CC_CI_Lower': hr_s.loc[label, 'CI_lower'],
+        'CC_CI_Upper': hr_s.loc[label, 'CI_upper'],
+        'NoMetsImpute_HR': hr2.loc[hr2_idx, 'HR'],
+        'NoMetsImpute_CI_Lower': hr2.loc[hr2_idx, 'CI_lower'],
+        'NoMetsImpute_CI_Upper': hr2.loc[hr2_idx, 'CI_upper'],
+        'MetsImputed_HR': hr3.loc[hr2_idx, 'HR'],
+        'MetsImputed_CI_Lower': hr3.loc[hr2_idx, 'CI_lower'],
+        'MetsImputed_CI_Upper': hr3.loc[hr2_idx, 'CI_upper']
+    })
 
 print("=" * 110)
 
 # Export sensitivity results
-sensitivity_results = pd.DataFrame({
-    'Variable': idx_labels,
-    'Complete_Case_HR': [hr_s.loc[l, 'HR'] if l in hr_s.index else np.nan for l in idx_labels],
-    'CC_CI_Lower': [hr_s.loc[l, 'CI_lower'] if l in hr_s.index else np.nan for l in idx_labels],
-    'CC_CI_Upper': [hr_s.loc[l, 'CI_upper'] if l in hr_s.index else np.nan for l in idx_labels],
-    'ExplicitNumeric_HR': [hr2.loc[l, 'HR'] if l in hr2.index else np.nan for l in idx_labels],
-    'ExplicitNumeric_CI_Lower': [hr2.loc[l, 'CI_lower'] if l in hr2.index else np.nan for l in idx_labels],
-    'ExplicitNumeric_CI_Upper': [hr2.loc[l, 'CI_upper'] if l in hr2.index else np.nan for l in idx_labels],
-    'MetsImputed_HR': [hr3.loc[l, 'HR'] if l in hr3.index else np.nan for l in idx_labels],
-    'MetsImputed_CI_Lower': [hr3.loc[l, 'CI_lower'] if l in hr3.index else np.nan for l in idx_labels],
-    'MetsImputed_CI_Upper': [hr3.loc[l, 'CI_upper'] if l in hr3.index else np.nan for l in idx_labels]
-})
+sensitivity_results = pd.DataFrame(results_list)
 
 sensitivity_results.to_csv('Sensitivity_Analysis_Results.csv', index=False)
 print("\n✓ Sensitivity analysis complete. Results saved to Sensitivity_Analysis_Results.csv")
