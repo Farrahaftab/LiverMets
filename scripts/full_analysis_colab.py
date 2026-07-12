@@ -29,6 +29,8 @@ import seaborn as sns
 from sklearn.tree import DecisionTreeClassifier, plot_tree, export_text
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
 from lifelines import KaplanMeierFitter, CoxPHFitter
 from lifelines.statistics import logrank_test, multivariate_logrank_test
 from lifelines.utils import concordance_index
@@ -1052,3 +1054,146 @@ if temporal_split_available:
 
     pd.DataFrame(results, columns=['Model', 'Train_Cindex', 'Val_Cindex']).to_csv('Model_Benchmark_Results.csv', index=False)
     print("Section 12 Complete — Saved: Model_Benchmark_Comparison.png, Model_Benchmark_Results.csv")
+
+# ============================================================================
+# @title Section 13 : Sensitivity Analysis — MICE Imputation
+# ============================================================================
+print("\n" + "=" * 80)
+print("SECTION 13 — SENSITIVITY ANALYSIS: MULTIPLE IMPUTATION BY CHAINED EQUATIONS (MICE)")
+print("=" * 80)
+
+# Prepare data for imputation: phenotype + age + mets + sex + survival + event
+mice_cols = ['PHENOTYPE', 'AGE_AT_REFERRAL', 'NB_METASTASES_NUM', 'GENDER', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']
+mice_data = surv_df[mice_cols].copy()
+mice_data['PHENOTYPE_NUM'] = mice_data['PHENOTYPE'].map({'Favourable': 0, 'Intermediate': 1, 'Adverse': 2})
+mice_data['MALE'] = (mice_data['GENDER'] == 'Male').astype(int)
+
+# For imputation, use numeric versions
+impute_cols = ['PHENOTYPE_NUM', 'AGE_AT_REFERRAL', 'NB_METASTASES_NUM', 'MALE']
+X_to_impute = mice_data[impute_cols].copy()
+
+print(f"\nPre-imputation missing values:")
+for col in impute_cols:
+    n_missing = X_to_impute[col].isna().sum()
+    pct = n_missing / len(X_to_impute) * 100
+    print(f"  {col:<25}: {n_missing:>5,} ({pct:>5.1f}%)")
+
+n_imputations = 10
+print(f"\nRunning {n_imputations} imputations using IterativeImputer (MICE)...")
+
+# Store results from each imputation
+imputed_hrs = []  # list of HR dictionaries from each imputation
+imputed_datasets = []
+
+for imp_idx in range(n_imputations):
+    # Fit imputer and transform
+    imputer = IterativeImputer(random_state=42 + imp_idx, max_iter=10, verbose=0)
+    X_imputed = imputer.fit_transform(X_to_impute)
+    X_imputed_df = pd.DataFrame(X_imputed, columns=impute_cols)
+
+    # Reconstruct full dataset with imputed values
+    mice_imputed = mice_data.copy()
+    mice_imputed['PHENOTYPE_NUM'] = X_imputed_df['PHENOTYPE_NUM'].round().astype(int).clip(0, 2)
+    mice_imputed['AGE_AT_REFERRAL'] = X_imputed_df['AGE_AT_REFERRAL']
+    mice_imputed['NB_METASTASES_NUM'] = X_imputed_df['NB_METASTASES_NUM'].clip(lower=0).round()
+    mice_imputed['MALE'] = X_imputed_df['MALE'].round().astype(int).clip(0, 1)
+    mice_imputed['AGE_10YR'] = mice_imputed['AGE_AT_REFERRAL'] / 10
+
+    # Reconstruct phenotype string
+    pheno_map_rev = {0: 'Favourable', 1: 'Intermediate', 2: 'Adverse'}
+    mice_imputed['PHENOTYPE'] = mice_imputed['PHENOTYPE_NUM'].map(pheno_map_rev)
+
+    # Prepare for Cox: phenotype + treatment (from original surv_df)
+    cox_data = surv_df[['PHENOTYPE', 'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat', 'SURVIVAL_TRUNC', 'EVENT_TRUNC']].copy()
+    cox_data['PHENOTYPE'] = mice_imputed['PHENOTYPE'].values
+    cox_data = cox_data.dropna()
+
+    # Fit Cox model
+    cph = CoxPHFitter()
+    cph.fit(cox_data, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+
+    # Extract HR and CI for each variable
+    hr_results = cph.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'coef']].copy()
+    hr_results.columns = ['HR', 'CI_lower', 'CI_upper', 'coef']
+
+    imputed_hrs.append(hr_results)
+    imputed_datasets.append(cox_data)
+
+    if (imp_idx + 1) % 3 == 0:
+        print(f"  Completed {imp_idx + 1}/{n_imputations} imputations")
+
+print(f"  Completed {n_imputations}/{n_imputations} imputations")
+
+# Pool results using Rubin's rules
+print("\n" + "=" * 80)
+print("POOLED RESULTS (RUBIN'S RULES)")
+print("=" * 80)
+
+def pool_rubin(hr_list):
+    """Pool HRs and CIs across m imputations using Rubin's rules."""
+    coefs = []
+    ses = []
+
+    for hr_df in hr_list:
+        coefs.append(hr_df['coef'].values)
+        # SE = exp(coef) * sqrt(var(coef)) ≈ exp(coef) / (1.96 * (CI_upper - CI_lower) / 2)
+        # Simplified: compute SE from CI
+        ses.append((np.log(hr_df['CI_upper'].values) - np.log(hr_df['CI_lower'].values)) / (2 * 1.96))
+
+    coefs = np.array(coefs)
+    ses = np.array(ses)
+
+    # Pool using Rubin's rules
+    pooled_coef = coefs.mean(axis=0)
+    within_var = (ses ** 2).mean(axis=0)
+    between_var = np.var(coefs, axis=0, ddof=1)
+    total_var = within_var + (1 + 1 / n_imputations) * between_var
+    pooled_se = np.sqrt(total_var)
+
+    # Back-transform to HR scale
+    pooled_hr = np.exp(pooled_coef)
+    pooled_ci_lower = np.exp(pooled_coef - 1.96 * pooled_se)
+    pooled_ci_upper = np.exp(pooled_coef + 1.96 * pooled_se)
+
+    return pooled_hr, pooled_ci_lower, pooled_ci_upper
+
+pooled_hr, pooled_ci_lower, pooled_ci_upper = pool_rubin(imputed_hrs)
+var_names = imputed_hrs[0].index
+
+# Compare with complete-case (Section 8) results
+print("\nCOMPLETE-CASE vs MICE-IMPUTED HAZARD RATIOS")
+print("=" * 80)
+print(f"{'Variable':<40} {'Complete-Case':>18} {'MICE (m={})':>18}".format(n_imputations))
+print(f"{'':40} {'HR (95% CI)':>18} {'HR (95% CI)':>18}")
+print("-" * 80)
+
+# Use hr_s from Section 8 (unadjusted Cox with phenotype + treatment)
+idx_labels = ['Intermediate vs Favourable', 'Adverse vs Favourable',
+              'Surgery+Chemo vs Surgery Only', 'Chemo Only vs Surgery Only', 'No Treatment vs Surgery Only']
+
+for i, var in enumerate(var_names):
+    if i >= len(idx_labels):
+        break
+    cc_hr = hr_s.loc[idx_labels[i], 'HR'] if idx_labels[i] in hr_s.index else 0
+    cc_ci = f"({hr_s.loc[idx_labels[i], 'CI_lower']:.2f}-{hr_s.loc[idx_labels[i], 'CI_upper']:.2f})"
+
+    mice_ci = f"({pooled_ci_lower[i]:.2f}-{pooled_ci_upper[i]:.2f})"
+
+    print(f"{idx_labels[i]:<40} {cc_hr:>6.3f} {cc_ci:>11} {pooled_hr[i]:>6.3f} {mice_ci:>11}")
+
+print("=" * 80)
+
+# Export imputation results
+mice_results = pd.DataFrame({
+    'Variable': var_names,
+    'Complete_Case_HR': [hr_s.loc[idx_labels[i], 'HR'] if i < len(idx_labels) and idx_labels[i] in hr_s.index else np.nan for i in range(len(var_names))],
+    'CC_CI_Lower': [hr_s.loc[idx_labels[i], 'CI_lower'] if i < len(idx_labels) and idx_labels[i] in hr_s.index else np.nan for i in range(len(var_names))],
+    'CC_CI_Upper': [hr_s.loc[idx_labels[i], 'CI_upper'] if i < len(idx_labels) and idx_labels[i] in hr_s.index else np.nan for i in range(len(var_names))],
+    'MICE_HR': pooled_hr,
+    'MICE_CI_Lower': pooled_ci_lower,
+    'MICE_CI_Upper': pooled_ci_upper
+})
+
+mice_results.to_csv('MICE_Sensitivity_Results.csv', index=False)
+print("\n✓ MICE imputation complete. Results saved to MICE_Sensitivity_Results.csv")
+print("Section 13 Complete — MICE sensitivity analysis finished.")
