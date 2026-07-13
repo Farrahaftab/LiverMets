@@ -328,8 +328,13 @@ for pheno in PHENOTYPES:
     counts = [(pdata['SURVIVAL_TRUNC'] >= t).sum() for t in times]
     at_risk_text += f"{pheno:14} " + " | ".join([f"{n:5,}" for n in counts]) + "\n"
 
-lr_all = multivariate_logrank_test(surv_df['SURVIVAL_TRUNC'].astype(float),
-                                    surv_df['PHENOTYPE'], event_col=surv_df['EVENT_TRUNC'].astype(int))
+# Compute OS log-rank using fresh numpy arrays (matches Section 7 diagnostic method for consistency)
+os_time_s6 = surv_df["SURVIVAL_TRUNC"].to_numpy(copy=True)
+os_event_s6 = surv_df["EVENT_TRUNC"].astype(int).to_numpy(copy=True)
+os_groups_s6 = surv_df["PHENOTYPE"].astype(str).to_numpy(copy=True)
+lr_all = multivariate_logrank_test(event_durations=os_time_s6,
+                                    groups=os_groups_s6,
+                                    event_observed=os_event_s6)
 p_all = lr_all.p_value; chi2_all = lr_all.test_statistic
 p_str = '< 0.001' if p_all < 0.001 else f'= {p_all:.4f}'
 
