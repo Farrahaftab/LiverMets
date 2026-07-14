@@ -31,7 +31,6 @@ import numpy as np
 import pandas as pd
 from lifelines import KaplanMeierFitter
 from lifelines.statistics import multivariate_logrank_test
-import argparse
 from pathlib import Path
 
 
@@ -523,43 +522,5 @@ def main(generate_strobe=True, generate_discrimination=False, generate_km=False)
 
 
 if __name__ == '__main__':
-    import sys
-
-    try:
-        parser = argparse.ArgumentParser(
-            description='Generate LiverMets publication outputs (STROBE diagram, temporal validation figures)',
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            epilog="""
-Examples:
-  python generate_publication_outputs.py --all
-  python generate_publication_outputs.py --strobe
-  python generate_publication_outputs.py --temporal-km
-  python generate_publication_outputs.py --temporal-discrimination
-            """)
-
-        parser.add_argument('--all', action='store_true',
-                           help='Generate all outputs (STROBE + KM curves + discrimination chart)')
-        parser.add_argument('--strobe', action='store_true',
-                           help='Generate STROBE flow diagram only')
-        parser.add_argument('--temporal-km', action='store_true',
-                           help='Generate temporal validation KM curves only (requires train_df, test_df)')
-        parser.add_argument('--temporal-discrimination', action='store_true',
-                           help='Generate model discrimination bar chart only')
-
-        # Use parse_known_args() to ignore Jupyter/Colab kernel arguments
-        args, unknown = parser.parse_known_args()
-
-        # If no arguments, default to STROBE (only one that doesn't need external data)
-        if not any([args.all, args.strobe, args.temporal_km, args.temporal_discrimination]):
-            args.strobe = True
-
-        main(
-            generate_strobe=args.strobe or args.all,
-            generate_discrimination=args.temporal_discrimination or args.all,
-            generate_km=args.temporal_km or args.all
-        )
-
-    except SystemExit:
-        # Catch SystemExit from argparse in Jupyter environments
-        print("Running in Jupyter environment - generating STROBE diagram and discrimination chart...")
-        main(generate_strobe=True, generate_discrimination=True, generate_km=False)
+    # Colab-friendly: no argparse, just run defaults
+    main(generate_strobe=True, generate_discrimination=True, generate_km=False)
