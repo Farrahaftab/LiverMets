@@ -490,49 +490,28 @@ def plot_temporal_model_discrimination():
 # MAIN ENTRY POINT
 # ══════════════════════════════════════════════════════════════════════════════
 
-def main():
+def main(generate_strobe=True, generate_discrimination=False, generate_km=False):
     """
-    Command-line interface for generating publication outputs.
+    Generate publication outputs.
+
+    Parameters:
+    - generate_strobe: Generate STROBE flow diagram (default True)
+    - generate_discrimination: Generate model discrimination chart
+    - generate_km: Generate temporal KM curves (requires external data)
     """
-    parser = argparse.ArgumentParser(
-        description='Generate LiverMets publication outputs (STROBE diagram, temporal validation figures)',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python generate_publication_outputs.py --all
-  python generate_publication_outputs.py --strobe
-  python generate_publication_outputs.py --temporal-km
-  python generate_publication_outputs.py --temporal-discrimination
-        """)
-
-    parser.add_argument('--all', action='store_true',
-                       help='Generate all outputs (STROBE + KM curves + discrimination chart)')
-    parser.add_argument('--strobe', action='store_true',
-                       help='Generate STROBE flow diagram only')
-    parser.add_argument('--temporal-km', action='store_true',
-                       help='Generate temporal validation KM curves only (requires train_df, test_df)')
-    parser.add_argument('--temporal-discrimination', action='store_true',
-                       help='Generate model discrimination bar chart only')
-
-    args = parser.parse_args()
-
-    # If no arguments, default to STROBE (only one that doesn't need external data)
-    if not any([args.all, args.strobe, args.temporal_km, args.temporal_discrimination]):
-        args.strobe = True
-
     print("\n" + "="*80)
     print("LIVERMETS PUBLICATION OUTPUTS GENERATOR")
     print("="*80 + "\n")
 
-    if args.strobe or args.all:
+    if generate_strobe:
         print("Generating STROBE flow diagram...")
         generate_strobe_diagram()
 
-    if args.temporal_discrimination or args.all:
+    if generate_discrimination:
         print("\nGenerating temporal model discrimination chart...")
         plot_temporal_model_discrimination()
 
-    if args.temporal_km or args.all:
+    if generate_km:
         print("\nTemporal KM validation requires external data (train_df, test_df).")
         print("Import this function and call directly:")
         print("  from generate_publication_outputs import plot_temporal_km_validation")
@@ -544,4 +523,45 @@ Examples:
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+
+    # Check if running in Jupyter/Colab (has jupyter kernel arguments)
+    is_jupyter = any('jupyter' in arg or 'kernel' in arg or arg.startswith('-f') for arg in sys.argv)
+
+    if is_jupyter:
+        # In Jupyter: just generate STROBE by default (doesn't need external data)
+        print("Running in Jupyter environment - generating STROBE diagram...")
+        main(generate_strobe=True, generate_discrimination=True, generate_km=False)
+    else:
+        # Command-line mode with argparse
+        parser = argparse.ArgumentParser(
+            description='Generate LiverMets publication outputs (STROBE diagram, temporal validation figures)',
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            epilog="""
+Examples:
+  python generate_publication_outputs.py --all
+  python generate_publication_outputs.py --strobe
+  python generate_publication_outputs.py --temporal-km
+  python generate_publication_outputs.py --temporal-discrimination
+            """)
+
+        parser.add_argument('--all', action='store_true',
+                           help='Generate all outputs (STROBE + KM curves + discrimination chart)')
+        parser.add_argument('--strobe', action='store_true',
+                           help='Generate STROBE flow diagram only')
+        parser.add_argument('--temporal-km', action='store_true',
+                           help='Generate temporal validation KM curves only (requires train_df, test_df)')
+        parser.add_argument('--temporal-discrimination', action='store_true',
+                           help='Generate model discrimination bar chart only')
+
+        args = parser.parse_args()
+
+        # If no arguments, default to STROBE (only one that doesn't need external data)
+        if not any([args.all, args.strobe, args.temporal_km, args.temporal_discrimination]):
+            args.strobe = True
+
+        main(
+            generate_strobe=args.strobe or args.all,
+            generate_discrimination=args.temporal_discrimination or args.all,
+            generate_km=args.temporal_km or args.all
+        )
