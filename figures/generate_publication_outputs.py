@@ -525,15 +525,7 @@ def main(generate_strobe=True, generate_discrimination=False, generate_km=False)
 if __name__ == '__main__':
     import sys
 
-    # Check if running in Jupyter/Colab (has jupyter kernel arguments)
-    is_jupyter = any('jupyter' in arg or 'kernel' in arg or arg.startswith('-f') for arg in sys.argv)
-
-    if is_jupyter:
-        # In Jupyter: just generate STROBE by default (doesn't need external data)
-        print("Running in Jupyter environment - generating STROBE diagram...")
-        main(generate_strobe=True, generate_discrimination=True, generate_km=False)
-    else:
-        # Command-line mode with argparse
+    try:
         parser = argparse.ArgumentParser(
             description='Generate LiverMets publication outputs (STROBE diagram, temporal validation figures)',
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -554,7 +546,8 @@ Examples:
         parser.add_argument('--temporal-discrimination', action='store_true',
                            help='Generate model discrimination bar chart only')
 
-        args = parser.parse_args()
+        # Use parse_known_args() to ignore Jupyter/Colab kernel arguments
+        args, unknown = parser.parse_known_args()
 
         # If no arguments, default to STROBE (only one that doesn't need external data)
         if not any([args.all, args.strobe, args.temporal_km, args.temporal_discrimination]):
@@ -565,3 +558,8 @@ Examples:
             generate_discrimination=args.temporal_discrimination or args.all,
             generate_km=args.temporal_km or args.all
         )
+
+    except SystemExit:
+        # Catch SystemExit from argparse in Jupyter environments
+        print("Running in Jupyter environment - generating STROBE diagram and discrimination chart...")
+        main(generate_strobe=True, generate_discrimination=True, generate_km=False)
