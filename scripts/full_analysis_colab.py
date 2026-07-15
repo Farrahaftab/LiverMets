@@ -640,9 +640,9 @@ cox_feats_mv = [f for f in all_feats if f in mv_df.columns]
 cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'MALE', 'TREATMENT']].dropna(subset=cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC'])
 cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
-# Step 1: Fit main Cox model with penalization to handle collinearity
+# Step 1: Fit multivariable Cox model
 # Phenotype + treatment covariates, adjusted for age and metastases
-cph_mv = CoxPHFitter(penalizer=0.1)
+cph_mv = CoxPHFitter()
 cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
            duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
@@ -704,7 +704,7 @@ for i, (idx, row) in enumerate(hr_mv.iterrows()):
 ax.axvline(x=1.0, color='black', linestyle='--', linewidth=1.5, alpha=0.7)
 ax.set_yticks(y_pos); ax.set_yticklabels(hr_mv.index, fontsize=11)
 ax.set_xlabel('Hazard Ratio (HR) — 95% CI', fontsize=12)
-ax.set_title(f'Multivariable Cox — Forest Plot (penalized)\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
+ax.set_title(f'Multivariable Stratified Cox — Forest Plot\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
              fontsize=12, fontweight='bold', pad=15)
 ax.set_xlim(0.3, hr_mv['CI_upper'].max() + 2.5); ax.grid(axis='x', alpha=0.3)
 plt.tight_layout(); plt.savefig('Cox_Multivariable_Forest_Plot.png', dpi=310, bbox_inches='tight'); plt.show()
