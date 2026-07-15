@@ -654,7 +654,9 @@ print("=" * 70)
 ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
                                             time_transform='rank')
 print(ph_test_results)
-non_ph_vars = ph_test_results[ph_test_results['p'] < 0.05].index.tolist()
+# Extract summary dataframe from StatisticalResult object
+ph_summary = ph_test_results.summary
+non_ph_vars = ph_summary[ph_summary['p'] < 0.05].index.unique().tolist()
 print(f"\nVariables violating PH assumption (p<0.05): {non_ph_vars if non_ph_vars else 'None'}")
 if non_ph_vars:
     print("Note: These variables would be candidates for stratification in future refinements.")
