@@ -651,7 +651,7 @@ from lifelines.statistics import proportional_hazard_test
 print("\n" + "=" * 70)
 print("PROPORTIONAL HAZARDS ASSUMPTION TEST (Schoenfeld Residuals)")
 print("=" * 70)
-ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'TREATMENT']],
+ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
                                             time_transform='rank')
 print(ph_test_results)
 # Extract summary dataframe from StatisticalResult object
