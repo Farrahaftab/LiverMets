@@ -642,7 +642,8 @@ cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
 # Step 1: Fit multivariable Cox model
 # Phenotype + treatment covariates, adjusted for age and metastases
-cph_mv = CoxPHFitter()
+# Use minimal penalization (0.001) to handle collinearity without shrinking coefficients
+cph_mv = CoxPHFitter(penalizer=0.001)
 cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
            duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
