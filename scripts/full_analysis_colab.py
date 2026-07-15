@@ -272,7 +272,7 @@ _assign_xy(0, 0)
 
 fig, ax = plt.subplots(figsize=(26, 12))
 
-def _draw(node_id):
+def _draw(node_id, is_root=False):
     x, y = positions[node_id]
     left, right = tree.children_left[node_id], tree.children_right[node_id]
     if left != -1:
@@ -290,14 +290,27 @@ def _draw(node_id):
         ax.text((x + xr) / 2 + 0.2, (y + yr) / 2, 'Yes', fontsize=9, fontweight='bold',
                 bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='gray'), zorder=2)
 
-        _draw(left)
-        _draw(right)
+        _draw(left, is_root=False)
+        _draw(right, is_root=False)
 
         # Split node label (clinician-friendly)
         feat = tnm_feat_cols[tree.feature[node_id]]
         clinical_label = feature_to_clinical.get(feat, feat)
-        ax.text(x, y, f"{clinical_label}?", ha='center', va='center', fontsize=10, fontweight='bold',
-                bbox=dict(boxstyle='round,pad=0.4', facecolor='#E8E8E8', edgecolor='#333333', linewidth=1.5), zorder=3)
+
+        # Root node gets bolder emphasis
+        if is_root:
+            fontsize = 11.5
+            edge_width = 2.5
+            facecolor = '#D0D0D0'
+            edge_color = '#000000'
+        else:
+            fontsize = 11
+            edge_width = 1.5
+            facecolor = '#E8E8E8'
+            edge_color = '#333333'
+
+        ax.text(x, y, f"{clinical_label}?", ha='center', va='center', fontsize=fontsize, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.4', facecolor=facecolor, edgecolor=edge_color, linewidth=edge_width), zorder=3)
     else:
         # Terminal node (phenotype-colored)
         n = int(tree.n_node_samples[node_id])
@@ -305,12 +318,12 @@ def _draw(node_id):
         med = node_median.get(node_id)
         color = PHENOTYPE_COLORS[pheno]
 
-        # Better formatted terminal node label
+        # Better formatted terminal node label with larger font (10-15% increase)
         label = f"{pheno}\n\nn = {n:,}\n\nMedian OS = {med:.2f} years" if med is not None else f"{pheno}\n\nn = {n:,}"
-        ax.text(x, y, label, ha='center', va='center', fontsize=9.5, color='white', fontweight='bold',
+        ax.text(x, y, label, ha='center', va='center', fontsize=10.8, color='white', fontweight='bold',
                 bbox=dict(boxstyle='round,pad=0.5', facecolor=color, edgecolor='black', linewidth=2, alpha=0.95), zorder=3)
 
-_draw(0)
+_draw(0, is_root=True)
 ax.axis('off')
 
 # Title and caption with explanation
@@ -319,7 +332,7 @@ ax.text(0.5, 1.02, title_text, ha='center', va='bottom', fontsize=14, fontweight
 
 # Legend
 handles = [mpatches.Patch(color=PHENOTYPE_COLORS[p], label=p) for p in PHENOTYPES]
-ax.legend(handles=handles, loc='upper right', fontsize=11, framealpha=0.98, title='Phenotypes', title_fontsize=11)
+ax.legend(handles=handles, loc='upper right', fontsize=11, framealpha=0.98, title='Derived Phenotype', title_fontsize=11)
 
 # Footnote explaining phenotype assignment
 footnote = ('Phenotype labels assigned post hoc based on Kaplan–Meier median overall survival:\n'
