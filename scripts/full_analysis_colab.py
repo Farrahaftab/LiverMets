@@ -240,10 +240,18 @@ plt.title('CART Decision Tree: TNM-Based Phenotyping of Colorectal Liver Metasta
 plt.tight_layout(); plt.savefig('CART_Tree_sklearn.png', dpi=310, bbox_inches='tight', facecolor='white'); plt.show()
 print("Saved: CART_Tree_sklearn.png")
 
-# --- Option 2: custom tree, colored by derived phenotype — built programmatically ---
+# --- Option 2: custom tree, colored by derived phenotype — clinician-friendly version ---
 tree = cart_model.tree_
 node_median = dict(zip(node_df['Node'], node_df['Median_OS']))
 node_pheno = dict(zip(node_df['Node'], node_df['Phenotype']))
+
+# Map TNM features to clinician-friendly names
+feature_to_clinical = {
+    'T_T0': 'T stage = T0', 'T_T1': 'T stage = T1', 'T_T2': 'T stage = T2',
+    'T_T3': 'T stage = T3', 'T_T4': 'T stage = T4',
+    'N_N0': 'N stage = N0', 'N_N1': 'N stage = N1', 'N_N2': 'N stage = N2',
+    'M_M0': 'M stage = M0', 'M_M1': 'M stage = M1'
+}
 
 positions = {}
 _leaf_x = [0]
@@ -262,38 +270,66 @@ def _assign_xy(node_id, depth):
 
 _assign_xy(0, 0)
 
-fig, ax = plt.subplots(figsize=(24, 10))
+fig, ax = plt.subplots(figsize=(26, 12))
 
 def _draw(node_id):
     x, y = positions[node_id]
     left, right = tree.children_left[node_id], tree.children_right[node_id]
     if left != -1:
-        for child in (left, right):
-            xc, yc = positions[child]
-            ax.plot([x, xc], [y - 0.08, yc + 0.08], color='#999999', lw=1.5, zorder=1)
-            _draw(child)
+        # Internal node (split)
+        xl, yl = positions[left]
+        xr, yr = positions[right]
+
+        # Draw branches with labels
+        ax.plot([x, xl], [y - 0.08, yl + 0.08], color='#555555', lw=2.0, zorder=1)
+        ax.plot([x, xr], [y - 0.08, yr + 0.08], color='#555555', lw=2.0, zorder=1)
+
+        # Add "Yes" and "No" labels to branches
+        ax.text((x + xl) / 2 - 0.2, (y + yl) / 2, 'No', fontsize=9, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='gray'), zorder=2)
+        ax.text((x + xr) / 2 + 0.2, (y + yr) / 2, 'Yes', fontsize=9, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='gray'), zorder=2)
+
+        _draw(left)
+        _draw(right)
+
+        # Split node label (clinician-friendly)
         feat = tnm_feat_cols[tree.feature[node_id]]
-        ax.text(x, y, f"{feat}?", ha='center', va='center', fontsize=8.5, fontweight='bold',
-                bbox=dict(boxstyle='round,pad=0.35', facecolor='#EEEEEE', edgecolor='#555555'), zorder=3)
+        clinical_label = feature_to_clinical.get(feat, feat)
+        ax.text(x, y, f"{clinical_label}?", ha='center', va='center', fontsize=10, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.4', facecolor='#E8E8E8', edgecolor='#333333', linewidth=1.5), zorder=3)
     else:
+        # Terminal node (phenotype-colored)
         n = int(tree.n_node_samples[node_id])
         pheno = node_pheno.get(node_id, 'Adverse')
         med = node_median.get(node_id)
         color = PHENOTYPE_COLORS[pheno]
-        os_str = f"{med:.2f}y" if med is not None else "NR"
-        label = f"{pheno}\nn={n:,}\nMedian OS={os_str}"
-        ax.text(x, y, label, ha='center', va='center', fontsize=8, color='white', fontweight='bold',
-                bbox=dict(boxstyle='round,pad=0.45', facecolor=color, edgecolor='black', alpha=0.92), zorder=3)
+
+        # Better formatted terminal node label
+        label = f"{pheno}\n\nn = {n:,}\n\nMedian OS = {med:.2f} years" if med is not None else f"{pheno}\n\nn = {n:,}"
+        ax.text(x, y, label, ha='center', va='center', fontsize=9.5, color='white', fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.5', facecolor=color, edgecolor='black', linewidth=2, alpha=0.95), zorder=3)
 
 _draw(0)
 ax.axis('off')
-ax.set_title(f'CART Decision Tree — Colored by Derived Phenotype\n'
-             f'n = {len(surv_df):,} | Tree Depth = {cart_model.get_depth()} | Terminal Nodes = {cart_model.get_n_leaves()}',
-             fontsize=14, fontweight='bold', pad=20)
+
+# Title and caption with explanation
+title_text = f'CART Decision Tree: TNM-Based Prognostic Phenotyping\nn = {len(surv_df):,} patients | Tree Depth = {cart_model.get_depth()} | Terminal Nodes = {cart_model.get_n_leaves()}'
+ax.text(0.5, 1.02, title_text, ha='center', va='bottom', fontsize=14, fontweight='bold', transform=ax.transAxes)
+
+# Legend
 handles = [mpatches.Patch(color=PHENOTYPE_COLORS[p], label=p) for p in PHENOTYPES]
-ax.legend(handles=handles, loc='upper right', fontsize=11, framealpha=0.95)
-plt.tight_layout(); plt.savefig('CART_Tree_Phenotype_Custom.png', dpi=310, bbox_inches='tight', facecolor='white'); plt.show()
-print("Saved: CART_Tree_Phenotype_Custom.png")
+ax.legend(handles=handles, loc='upper right', fontsize=11, framealpha=0.98, title='Phenotypes', title_fontsize=11)
+
+# Footnote explaining phenotype assignment
+footnote = ('Phenotype labels assigned post hoc based on Kaplan–Meier median overall survival:\n'
+            'Favourable ≥6.0 years | Intermediate 5.0–5.9 years | Adverse <5.0 years')
+fig.text(0.5, -0.02, footnote, ha='center', fontsize=9, style='italic', color='#333333', wrap=True)
+
+plt.tight_layout(rect=[0, 0.04, 1, 0.97])
+plt.savefig('CART_Tree_Phenotype_Custom.png', dpi=310, bbox_inches='tight', facecolor='white')
+plt.show()
+print("Saved: CART_Tree_Phenotype_Custom.png — Clinician-friendly version with branch labels and improved formatting")
 
 # --- Option 3: text export (for Methods section) ---
 tree_rules = export_text(cart_model, feature_names=tnm_feat_cols)
