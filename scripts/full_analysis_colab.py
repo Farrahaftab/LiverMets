@@ -643,7 +643,7 @@ cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 # Stratified by TREATMENT (removed from covariates due to PH violations)
 # Adjusted for Phenotype, Age, Sex, and Metastases
 cph_mv = CoxPHFitter()
-cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'TREATMENT']],
            duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC', strata=['TREATMENT'])
 
 # Step 2: Schoenfeld residual testing for proportional hazards assumption
@@ -651,7 +651,7 @@ from lifelines.statistics import proportional_hazard_test
 print("\n" + "=" * 70)
 print("PROPORTIONAL HAZARDS ASSUMPTION TEST (Schoenfeld Residuals)")
 print("=" * 70)
-ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'TREATMENT']],
                                             time_transform='rank')
 print(ph_test_results)
 # Extract summary dataframe from StatisticalResult object
