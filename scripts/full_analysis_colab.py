@@ -625,7 +625,7 @@ for idx, row in hr_s.iterrows():
 print("Section 8 Complete")
 
 # ============================================================================
-# @title Section 9 : Multivariable Cox + Schoenfeld Test + Stratified Model
+# @title Section 9 : Multivariable Cox
 # ============================================================================
 print("=" * 60); print("SECTION 9 — MULTIVARIABLE COX"); print("=" * 60)
 
@@ -640,36 +640,13 @@ cox_feats_mv = [f for f in all_feats if f in mv_df.columns]
 cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
 cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
-# Step 1: Fit multivariable Cox model (unstratified)
-# Phenotype + Treatment + Age + Sex + Metastases
-cph_mv = CoxPHFitter()
-cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-           duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
-
-# Step 2: Schoenfeld residual testing for proportional hazards assumption
-from lifelines.statistics import proportional_hazard_test
-print("\n" + "=" * 70)
-print("PROPORTIONAL HAZARDS ASSUMPTION TEST (Schoenfeld Residuals)")
-print("=" * 70)
-ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-                                            time_transform='rank')
-print(ph_test_results)
-# Extract summary dataframe from StatisticalResult object
-ph_summary = ph_test_results.summary
-non_ph_vars = ph_summary[ph_summary['p'] < 0.05].index.unique().tolist()
-print(f"\nVariables violating PH assumption (p<0.05): {non_ph_vars if non_ph_vars else 'None'}")
-if non_ph_vars:
-    print("Note: These variables would be candidates for stratification in future refinements.")
-
-# Step 3: Map variable names to interpretable labels
+cph_mv = CoxPHFitter(); cph_mv.fit(cox_mv, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
+hr_mv.columns = ['HR', 'CI_lower', 'CI_upper', 'p_value']; hr_mv = hr_mv.round(3)
 label_map = {'Phenotype_Intermediate': 'Intermediate vs Favourable', 'Phenotype_Adverse': 'Adverse vs Favourable',
              'Tx_SurgChemo': 'Surgery+Chemo vs Surgery Only', 'Tx_ChemoOnly': 'Chemo Only vs Surgery Only',
              'Tx_NoTreat': 'No Treatment vs Surgery Only', 'AGE_10YR': 'Age (per 10 years)',
              'MALE': 'Male vs Female', 'NB_METS_CLEAN': 'N Metastases (per additional)'}
-
-hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
-hr_mv.columns = ['HR', 'CI_lower', 'CI_upper', 'p_value']; hr_mv = hr_mv.round(3)
-# Apply labels only to variables that are in the results
 hr_mv.index = [label_map.get(i, i) for i in hr_mv.index]
 
 ci_score = concordance_index(cox_mv['SURVIVAL_TRUNC'], -cph_mv.predict_partial_hazard(cox_mv), cox_mv['EVENT_TRUNC'])
@@ -679,7 +656,7 @@ print("=" * 70)
 print(f"Eligible cohort (n=14,759) → Patients with complete covariate data: n = {len(cox_mv):,}")
 print(f"Exclusions due to missing age, metastases count, gender, or treatment: {14759 - len(cox_mv):,}")
 print(f"Events (deaths): {int(cox_mv['EVENT_TRUNC'].sum()):,}")
-print(f"Model discrimination (Harrell's C-index): {ci_score:.3f}")
+print(f"Model discrimination (C-index): {ci_score:.3f}")
 print("=" * 70)
 print(f"\n{'Variable':<40} {'HR':>6} {'95% CI':>20} {'p':>10}")
 for idx, row in hr_mv.iterrows():
@@ -704,12 +681,11 @@ for i, (idx, row) in enumerate(hr_mv.iterrows()):
 ax.axvline(x=1.0, color='black', linestyle='--', linewidth=1.5, alpha=0.7)
 ax.set_yticks(y_pos); ax.set_yticklabels(hr_mv.index, fontsize=11)
 ax.set_xlabel('Hazard Ratio (HR) — 95% CI', fontsize=12)
-ax.set_title(f'Multivariable Cox — Forest Plot (Unstratified)\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
-             fontsize=12, fontweight='bold', pad=15)
+ax.set_title(f'Multivariable Cox — Forest Plot\nC-index={ci_score:.3f} | n={len(cox_mv):,}', fontsize=12, fontweight='bold', pad=15)
 ax.set_xlim(0.3, hr_mv['CI_upper'].max() + 2.5); ax.grid(axis='x', alpha=0.3)
 plt.tight_layout(); plt.savefig('Cox_Multivariable_Forest_Plot.png', dpi=310, bbox_inches='tight'); plt.show()
 hr_mv.to_csv('Cox_Multivariable_Results.csv')
-print("\nSection 9 Complete — Saved: Cox_Multivariable_Forest_Plot.png, Cox_Multivariable_Results.csv")
+print("Section 9 Complete — Saved: Cox_Multivariable_Forest_Plot.png, Cox_Multivariable_Results.csv")
 
 # ============================================================================
 # @title Section 10 : Treatment KM by Phenotype (All 4 groups)
