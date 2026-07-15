@@ -634,17 +634,17 @@ mv_df['Phenotype_Intermediate'] = (mv_df['PHENOTYPE'] == 'Intermediate').astype(
 mv_df['Phenotype_Adverse'] = (mv_df['PHENOTYPE'] == 'Adverse').astype(int)
 
 all_feats = ['Phenotype_Intermediate', 'Phenotype_Adverse',
+             'Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat',
              'AGE_10YR', 'MALE', 'NB_METS_CLEAN']
 cox_feats_mv = [f for f in all_feats if f in mv_df.columns]
-cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'TREATMENT']].dropna(subset=cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC'])
+cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
 cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
-# Step 1: Fit stratified Cox model
-# Stratified by TREATMENT (removed from covariates due to PH violations)
-# Adjusted for Phenotype, Age, Sex, and Metastases
+# Step 1: Fit multivariable Cox model (unstratified)
+# Phenotype + Treatment + Age + Sex + Metastases
 cph_mv = CoxPHFitter()
-cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'TREATMENT']],
-           duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC', strata=['TREATMENT'])
+cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+           duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
 # Step 2: Schoenfeld residual testing for proportional hazards assumption
 from lifelines.statistics import proportional_hazard_test
@@ -704,7 +704,7 @@ for i, (idx, row) in enumerate(hr_mv.iterrows()):
 ax.axvline(x=1.0, color='black', linestyle='--', linewidth=1.5, alpha=0.7)
 ax.set_yticks(y_pos); ax.set_yticklabels(hr_mv.index, fontsize=11)
 ax.set_xlabel('Hazard Ratio (HR) — 95% CI', fontsize=12)
-ax.set_title(f'Multivariable Stratified Cox — Forest Plot (stratified by TREATMENT)\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
+ax.set_title(f'Multivariable Cox — Forest Plot (Unstratified)\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
              fontsize=12, fontweight='bold', pad=15)
 ax.set_xlim(0.3, hr_mv['CI_upper'].max() + 2.5); ax.grid(axis='x', alpha=0.3)
 plt.tight_layout(); plt.savefig('Cox_Multivariable_Forest_Plot.png', dpi=310, bbox_inches='tight'); plt.show()
