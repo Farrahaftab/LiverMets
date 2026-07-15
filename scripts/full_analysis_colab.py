@@ -1047,25 +1047,59 @@ if temporal_split_available:
     print(f"\nDifference (Full TNM - CART):        {ci_tnm_val - ci_cart_val:+.3f}")
     print(f"Difference (Multivariable - CART):   {ci_mv_val - ci_cart_val:+.3f}")
 
-    fig, ax = plt.subplots(figsize=(11, 7))
+    fig, ax = plt.subplots(figsize=(12, 8))
     model_names = ["CART Phenotyping\n(Current Study)", "Full TNM Cox", "Multivariable Cox"]
-    val_scores = [ci_cart_val, ci_tnm_val, ci_mv_val]; train_scores = [ci_cart_tr, ci_tnm_tr, ci_mv_tr]
+    model_names_short = ["CART", "Full TNM Cox", "Multivariable Cox"]
+    val_scores = [ci_cart_val, ci_tnm_val, ci_mv_val]
+    train_scores = [ci_cart_tr, ci_tnm_tr, ci_mv_tr]
     colors = ['#1565C0', '#F57C00', '#6A1B9A']
+
+    # Calculate deltas for temporal improvement
+    deltas = [ci_cart_val - ci_cart_tr, ci_tnm_val - ci_tnm_tr, ci_mv_val - ci_mv_tr]
+
     x = np.arange(len(model_names)); width = 0.35
-    bars1 = ax.bar(x - width/2, train_scores, width, label='Training', color=colors, alpha=0.7, edgecolor='black', linewidth=1.5)
-    bars2 = ax.bar(x + width/2, val_scores, width, label='Validation', color=colors, alpha=1.0, edgecolor='black', linewidth=2)
+    bars1 = ax.bar(x - width/2, train_scores, width, label=f'Training (≤{SPLIT_YEAR})',
+                   color=colors, alpha=0.7, edgecolor='black', linewidth=1.5)
+    bars2 = ax.bar(x + width/2, val_scores, width, label=f'Validation (>{SPLIT_YEAR})',
+                   color=colors, alpha=1.0, edgecolor='black', linewidth=2)
+
     ax.axhline(y=0.5, color='red', linestyle='--', alpha=0.4, linewidth=2, label='Random (C=0.5)')
+
     ax.set_ylabel('Concordance Index (C-index)', fontsize=12, fontweight='bold')
-    ax.set_title(f'Model Performance Comparison: CART vs Traditional Cox Regression\n'
-                 f'Temporal Validation (Training <={SPLIT_YEAR}, Validation >{SPLIT_YEAR})', fontsize=13, fontweight='bold', pad=20)
-    ax.set_xticks(x); ax.set_xticklabels(model_names, fontsize=11)
-    ax.set_ylim(0.45, 0.75); ax.legend(fontsize=11, loc='lower right', framealpha=0.95)
+    ax.set_title('Temporal validation of prognostic model discrimination', fontsize=14, fontweight='bold', pad=20)
+    ax.set_xticks(x)
+    ax.set_xticklabels(model_names, fontsize=11, fontweight='bold')
+    ax.set_ylim(0.45, 0.75)
+    ax.legend(fontsize=11, loc='lower right', framealpha=0.95)
     ax.grid(axis='y', alpha=0.3, linestyle=':', linewidth=0.8)
+
+    # Add C-index values on bars
     for bars in [bars1, bars2]:
-        for bar in bars:
+        for i, bar in enumerate(bars):
             height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f'{height:.3f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
-    plt.tight_layout(); plt.savefig('Model_Benchmark_Comparison.png', dpi=310, bbox_inches='tight'); plt.show()
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.008, f'{height:.3f}',
+                   ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    # Add temporal improvement (delta) above each model pair
+    for i, (train_val, val_val, delta) in enumerate(zip(train_scores, val_scores, deltas)):
+        # Position text above the validation bar
+        y_pos = max(val_val, train_val) + 0.045
+
+        # Format: "CART / 0.554 → 0.566 / (+0.012)"
+        improvement_text = f'{model_names_short[i]}\n{train_val:.3f} → {val_val:.3f}\n({delta:+.3f})'
+
+        ax.text(i, y_pos, improvement_text, ha='center', va='bottom', fontsize=9.5, fontweight='bold',
+               bbox=dict(boxstyle='round,pad=0.4', facecolor='white', edgecolor='gray', alpha=0.9))
+
+    # Add sample sizes below x-axis
+    sample_text = f'Training (≤{SPLIT_YEAR}): n = 6,502\nValidation (>{SPLIT_YEAR}): n = 8,217'
+    ax.text(0.98, 0.02, sample_text, transform=ax.transAxes, ha='right', va='bottom',
+           fontsize=9, style='italic', color='#555555',
+           bbox=dict(boxstyle='round,pad=0.5', facecolor='#F5F5F5', alpha=0.8))
+
+    plt.tight_layout()
+    plt.savefig('Model_Benchmark_Comparison.png', dpi=310, bbox_inches='tight', facecolor='white')
+    plt.show()
 
     print("\n" + "=" * 80)
     print("MODEL DISCRIMINATION: MANUSCRIPT TABLE")
