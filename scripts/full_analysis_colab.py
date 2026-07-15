@@ -1047,15 +1047,11 @@ if temporal_split_available:
     print(f"\nDifference (Full TNM - CART):        {ci_tnm_val - ci_cart_val:+.3f}")
     print(f"Difference (Multivariable - CART):   {ci_mv_val - ci_cart_val:+.3f}")
 
-    fig, ax = plt.subplots(figsize=(12, 8))
-    model_names = ["CART Phenotyping\n(Current Study)", "Full TNM Cox", "Multivariable Cox"]
-    model_names_short = ["CART", "Full TNM Cox", "Multivariable Cox"]
+    fig, ax = plt.subplots(figsize=(12, 7.5))
+    model_names = ["TNM-Based CART\nPhenotyping", "Full TNM Cox", "Multivariable Cox"]
     val_scores = [ci_cart_val, ci_tnm_val, ci_mv_val]
     train_scores = [ci_cart_tr, ci_tnm_tr, ci_mv_tr]
     colors = ['#1565C0', '#F57C00', '#6A1B9A']
-
-    # Calculate deltas for temporal improvement
-    deltas = [ci_cart_val - ci_cart_tr, ci_tnm_val - ci_tnm_tr, ci_mv_val - ci_mv_tr]
 
     x = np.arange(len(model_names)); width = 0.35
     bars1 = ax.bar(x - width/2, train_scores, width, label=f'Training (≤{SPLIT_YEAR})',
@@ -1079,17 +1075,6 @@ if temporal_split_available:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + 0.008, f'{height:.3f}',
                    ha='center', va='bottom', fontsize=10, fontweight='bold')
-
-    # Add temporal improvement (delta) above each model pair
-    for i, (train_val, val_val, delta) in enumerate(zip(train_scores, val_scores, deltas)):
-        # Position text above the validation bar
-        y_pos = max(val_val, train_val) + 0.045
-
-        # Format: "CART / 0.554 → 0.566 / (+0.012)"
-        improvement_text = f'{model_names_short[i]}\n{train_val:.3f} → {val_val:.3f}\n({delta:+.3f})'
-
-        ax.text(i, y_pos, improvement_text, ha='center', va='bottom', fontsize=9.5, fontweight='bold',
-               bbox=dict(boxstyle='round,pad=0.4', facecolor='white', edgecolor='gray', alpha=0.9))
 
     # Add sample sizes below x-axis
     sample_text = f'Training (≤{SPLIT_YEAR}): n = 6,502\nValidation (>{SPLIT_YEAR}): n = 8,217'
