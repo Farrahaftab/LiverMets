@@ -640,62 +640,30 @@ cox_feats_mv = [f for f in all_feats if f in mv_df.columns]
 cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC', 'MALE', 'TREATMENT']].dropna(subset=cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC'])
 cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
-# Step 1: Fit unstratified model to test proportional hazards assumption
-cph_unstr = CoxPHFitter()
-cph_unstr.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-              duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+# Step 1: Fit main Cox model with penalization to handle collinearity
+# Phenotype + treatment covariates, adjusted for age and metastases
+cph_mv = CoxPHFitter(penalizer=0.1)
+cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+           duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
 # Step 2: Schoenfeld residual testing for proportional hazards assumption
 from lifelines.statistics import proportional_hazard_test
 print("\n" + "=" * 70)
 print("PROPORTIONAL HAZARDS ASSUMPTION TEST (Schoenfeld Residuals)")
 print("=" * 70)
-ph_test_results = proportional_hazard_test(cph_unstr, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
                                             time_transform='rank')
 print(ph_test_results)
 non_ph_vars = ph_test_results[ph_test_results['p'] < 0.05].index.tolist()
 print(f"\nVariables violating PH assumption (p<0.05): {non_ph_vars if non_ph_vars else 'None'}")
+if non_ph_vars:
+    print("Note: These variables would be candidates for stratification in future refinements.")
 
 # Step 3: Map variable names to interpretable labels
 label_map = {'Phenotype_Intermediate': 'Intermediate vs Favourable', 'Phenotype_Adverse': 'Adverse vs Favourable',
              'Tx_SurgChemo': 'Surgery+Chemo vs Surgery Only', 'Tx_ChemoOnly': 'Chemo Only vs Surgery Only',
              'Tx_NoTreat': 'No Treatment vs Surgery Only', 'AGE_10YR': 'Age (per 10 years)',
              'MALE': 'Male vs Female', 'NB_METS_CLEAN': 'N Metastases (per additional)'}
-
-# Step 4: Build stratification list and remove collinear covariates
-strata_list = []
-cox_feats_stratified = cox_feats_mv.copy()
-
-# Stratify by MALE (cannot be both covariate and strata)
-if 'MALE' in cox_feats_stratified:
-    cox_mv['MALE_strata'] = cox_mv['MALE'].astype(int)
-    cox_feats_stratified.remove('MALE')
-    strata_list.append('MALE_strata')
-    print("  - MALE removed from covariates (used as stratification)")
-
-# Stratify by TREATMENT (cannot include treatment dummies as covariates when stratifying)
-tx_dummy_vars = ['Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat']
-if any(tx_var in cox_feats_stratified for tx_var in tx_dummy_vars):
-    cox_mv['Tx_strata'] = cox_mv['TREATMENT']
-    for tx_var in tx_dummy_vars:
-        if tx_var in cox_feats_stratified:
-            cox_feats_stratified.remove(tx_var)
-    strata_list.append('Tx_strata')
-    print("  - Treatment dummies (Tx_SurgChemo, Tx_ChemoOnly, Tx_NoTreat) removed from covariates (stratified by TREATMENT)")
-
-# Step 5: Fit stratified Cox model
-print("\n" + "=" * 70)
-print("STRATIFIED MULTIVARIABLE COX MODEL")
-print("=" * 70)
-print(f"Stratification variables: {strata_list}")
-print(f"Covariates (after removing stratified variables): {cox_feats_stratified}")
-cph_mv = CoxPHFitter()
-if strata_list:
-    cph_mv.fit(cox_mv[cox_feats_stratified + strata_list + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-               duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC', strata=strata_list)
-else:
-    cph_mv.fit(cox_mv[cox_feats_stratified + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
-               duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
 hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
 hr_mv.columns = ['HR', 'CI_lower', 'CI_upper', 'p_value']; hr_mv = hr_mv.round(3)
@@ -734,8 +702,7 @@ for i, (idx, row) in enumerate(hr_mv.iterrows()):
 ax.axvline(x=1.0, color='black', linestyle='--', linewidth=1.5, alpha=0.7)
 ax.set_yticks(y_pos); ax.set_yticklabels(hr_mv.index, fontsize=11)
 ax.set_xlabel('Hazard Ratio (HR) — 95% CI', fontsize=12)
-strata_label = f" (stratified by {', '.join(strata_list)})" if strata_list else ""
-ax.set_title(f'Multivariable Stratified Cox — Forest Plot{strata_label}\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
+ax.set_title(f'Multivariable Cox — Forest Plot (penalized)\nHarrell\'s C-index={ci_score:.3f} | n={len(cox_mv):,}',
              fontsize=12, fontweight='bold', pad=15)
 ax.set_xlim(0.3, hr_mv['CI_upper'].max() + 2.5); ax.grid(axis='x', alpha=0.3)
 plt.tight_layout(); plt.savefig('Cox_Multivariable_Forest_Plot.png', dpi=310, bbox_inches='tight'); plt.show()
