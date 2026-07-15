@@ -662,30 +662,44 @@ label_map = {'Phenotype_Intermediate': 'Intermediate vs Favourable', 'Phenotype_
              'Tx_NoTreat': 'No Treatment vs Surgery Only', 'AGE_10YR': 'Age (per 10 years)',
              'MALE': 'Male vs Female', 'NB_METS_CLEAN': 'N Metastases (per additional)'}
 
-# Step 4: Build stratification list from non-PH variables + MALE + TREATMENT (per methods)
+# Step 4: Build stratification list and remove collinear covariates
 strata_list = []
-if 'MALE' in non_ph_vars or True:  # Include MALE per manuscript methods
+cox_feats_stratified = cox_feats_mv.copy()
+
+# Stratify by MALE (cannot be both covariate and strata)
+if 'MALE' in cox_feats_stratified:
     cox_mv['MALE_strata'] = cox_mv['MALE'].astype(int)
+    cox_feats_stratified.remove('MALE')
     strata_list.append('MALE_strata')
-if any(tx_var in non_ph_vars for tx_var in ['Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat']) or True:  # Include treatment per methods
+    print("  - MALE removed from covariates (used as stratification)")
+
+# Stratify by TREATMENT (cannot include treatment dummies as covariates when stratifying)
+tx_dummy_vars = ['Tx_SurgChemo', 'Tx_ChemoOnly', 'Tx_NoTreat']
+if any(tx_var in cox_feats_stratified for tx_var in tx_dummy_vars):
     cox_mv['Tx_strata'] = cox_mv['TREATMENT']
+    for tx_var in tx_dummy_vars:
+        if tx_var in cox_feats_stratified:
+            cox_feats_stratified.remove(tx_var)
     strata_list.append('Tx_strata')
+    print("  - Treatment dummies (Tx_SurgChemo, Tx_ChemoOnly, Tx_NoTreat) removed from covariates (stratified by TREATMENT)")
 
 # Step 5: Fit stratified Cox model
 print("\n" + "=" * 70)
 print("STRATIFIED MULTIVARIABLE COX MODEL")
 print("=" * 70)
 print(f"Stratification variables: {strata_list}")
+print(f"Covariates (after removing stratified variables): {cox_feats_stratified}")
 cph_mv = CoxPHFitter()
 if strata_list:
-    cph_mv.fit(cox_mv[cox_feats_mv + strata_list + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+    cph_mv.fit(cox_mv[cox_feats_stratified + strata_list + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
                duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC', strata=strata_list)
 else:
-    cph_mv.fit(cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+    cph_mv.fit(cox_mv[cox_feats_stratified + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
                duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
 
 hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
 hr_mv.columns = ['HR', 'CI_lower', 'CI_upper', 'p_value']; hr_mv = hr_mv.round(3)
+# Apply labels only to variables that are in the results
 hr_mv.index = [label_map.get(i, i) for i in hr_mv.index]
 
 ci_score = concordance_index(cox_mv['SURVIVAL_TRUNC'], -cph_mv.predict_partial_hazard(cox_mv), cox_mv['EVENT_TRUNC'])
