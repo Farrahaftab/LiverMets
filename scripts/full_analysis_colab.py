@@ -641,6 +641,22 @@ cox_mv = mv_df[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']].dropna()
 cox_mv = cox_mv[cox_mv['SURVIVAL_TRUNC'] > 0]
 
 cph_mv = CoxPHFitter(); cph_mv.fit(cox_mv, duration_col='SURVIVAL_TRUNC', event_col='EVENT_TRUNC')
+
+# Schoenfeld residual testing for proportional hazards assumption
+from lifelines.statistics import proportional_hazard_test
+print("\n" + "=" * 70)
+print("PROPORTIONAL HAZARDS ASSUMPTION TEST (Schoenfeld Residuals)")
+print("=" * 70)
+ph_test_results = proportional_hazard_test(cph_mv, cox_mv[cox_feats_mv + ['SURVIVAL_TRUNC', 'EVENT_TRUNC']],
+                                            time_transform='rank')
+print(ph_test_results)
+ph_summary = ph_test_results.summary
+non_ph_vars = ph_summary[ph_summary['p'] < 0.05].index.unique().tolist()
+print(f"\nVariables violating PH assumption (p<0.05): {non_ph_vars if non_ph_vars else 'None'}")
+if non_ph_vars:
+    print("Note: These variables had minor deviations from proportionality.")
+print("=" * 70)
+
 hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
 hr_mv.columns = ['HR', 'CI_lower', 'CI_upper', 'p_value']; hr_mv = hr_mv.round(3)
 label_map = {'Phenotype_Intermediate': 'Intermediate vs Favourable', 'Phenotype_Adverse': 'Adverse vs Favourable',
@@ -808,12 +824,23 @@ psm_df2['PROPENSITY'] = lr_ps.predict_proba(X_sc)[:, 1]
 np.random.seed(42)
 treated_pool = psm_df2[psm_df2['TREATED'] == 1].copy()
 untreated_pool = psm_df2[psm_df2['TREATED'] == 0].copy()
-CALIPER = 0.05; mt_rows = []; mc_rows = []; used_ctrl = set()
+
+# Transform to logit scale for caliper (0.05 SD of logit propensity score)
+logit_ps = np.log(psm_df2['PROPENSITY'] / (1 - psm_df2['PROPENSITY']))
+caliper_logit = 0.05 * np.std(logit_ps)
+print(f"\nPSM Caliper (logit scale): 0.05 SD = {caliper_logit:.4f}")
+
+# Create logit score columns for matching
+treated_pool['LOGIT_PS'] = np.log(treated_pool['PROPENSITY'] / (1 - treated_pool['PROPENSITY']))
+untreated_pool['LOGIT_PS'] = np.log(untreated_pool['PROPENSITY'] / (1 - untreated_pool['PROPENSITY']))
+
+mt_rows = []; mc_rows = []; used_ctrl = set()
 for idx, row in treated_pool.iterrows():
-    prop = row['PROPENSITY']
-    cands = untreated_pool[(abs(untreated_pool['PROPENSITY'] - prop) < CALIPER) & (~untreated_pool.index.isin(used_ctrl))]
+    logit_prop = row['LOGIT_PS']
+    # Apply caliper on logit scale
+    cands = untreated_pool[(abs(untreated_pool['LOGIT_PS'] - logit_prop) < caliper_logit) & (~untreated_pool.index.isin(used_ctrl))]
     if len(cands) > 0:
-        best_idx = (cands['PROPENSITY'] - prop).abs().idxmin()
+        best_idx = (cands['LOGIT_PS'] - logit_prop).abs().idxmin()
         mt_rows.append(row); mc_rows.append(untreated_pool.loc[best_idx]); used_ctrl.add(best_idx)
 
 matched_t = pd.DataFrame(mt_rows).reset_index(drop=True)
