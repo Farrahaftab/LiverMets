@@ -445,8 +445,9 @@ print(f"  ✓ M-Stage: SMD = {m_smd:.3f}, {m_smd_m1:.3f}")
 
 # Number of liver metastases (categorical)
 if mets_col:
-    mets_incl = included[mets_col].dropna()
-    mets_excl = excluded[mets_col].dropna()
+    # Convert to numeric (handle any text values)
+    mets_incl = pd.to_numeric(included[mets_col], errors='coerce').dropna()
+    mets_excl = pd.to_numeric(excluded[mets_col], errors='coerce').dropna()
 
     # Create categories: 1, 2-3, >=4
     for cat_name, cat_filter in [('1 metastasis', lambda x: x == 1),
