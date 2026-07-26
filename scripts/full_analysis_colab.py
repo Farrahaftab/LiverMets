@@ -654,7 +654,7 @@ ph_summary = ph_test_results.summary
 non_ph_vars = ph_summary[ph_summary['p'] < 0.05].index.unique().tolist()
 print(f"\nVariables violating PH assumption (p<0.05): {non_ph_vars if non_ph_vars else 'None'}")
 if non_ph_vars:
-    print("Note: These variables had minor deviations from proportionality.")
+    print("Note: These variables showed evidence of non-proportional hazards.")
 print("=" * 70)
 
 hr_mv = cph_mv.summary[['exp(coef)', 'exp(coef) lower 95%', 'exp(coef) upper 95%', 'p']].copy()
@@ -825,22 +825,17 @@ np.random.seed(42)
 treated_pool = psm_df2[psm_df2['TREATED'] == 1].copy()
 untreated_pool = psm_df2[psm_df2['TREATED'] == 0].copy()
 
-# Transform to logit scale for caliper (0.05 SD of logit propensity score)
-logit_ps = np.log(psm_df2['PROPENSITY'] / (1 - psm_df2['PROPENSITY']))
-caliper_logit = 0.05 * np.std(logit_ps)
-print(f"\nPSM Caliper (logit scale): 0.05 SD = {caliper_logit:.4f}")
-
-# Create logit score columns for matching
-treated_pool['LOGIT_PS'] = np.log(treated_pool['PROPENSITY'] / (1 - treated_pool['PROPENSITY']))
-untreated_pool['LOGIT_PS'] = np.log(untreated_pool['PROPENSITY'] / (1 - untreated_pool['PROPENSITY']))
+# Fixed caliper of 0.05 on the propensity-score scale
+caliper = 0.05
+print(f"\nPSM Caliper (propensity-score scale): {caliper:.4f}")
 
 mt_rows = []; mc_rows = []; used_ctrl = set()
 for idx, row in treated_pool.iterrows():
-    logit_prop = row['LOGIT_PS']
-    # Apply caliper on logit scale
-    cands = untreated_pool[(abs(untreated_pool['LOGIT_PS'] - logit_prop) < caliper_logit) & (~untreated_pool.index.isin(used_ctrl))]
+    prop = row['PROPENSITY']
+    # Apply caliper on raw propensity scale
+    cands = untreated_pool[(abs(untreated_pool['PROPENSITY'] - prop) < caliper) & (~untreated_pool.index.isin(used_ctrl))]
     if len(cands) > 0:
-        best_idx = (cands['LOGIT_PS'] - logit_prop).abs().idxmin()
+        best_idx = (cands['PROPENSITY'] - prop).abs().idxmin()
         mt_rows.append(row); mc_rows.append(untreated_pool.loc[best_idx]); used_ctrl.add(best_idx)
 
 matched_t = pd.DataFrame(mt_rows).reset_index(drop=True)
