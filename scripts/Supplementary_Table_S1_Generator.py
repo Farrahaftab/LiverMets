@@ -305,10 +305,10 @@ print(f"  ✓ Age: SMD = {age_smd:.3f}")
 if gender_col == 'GENDER':
     # Assume values are 'M'/'F' or 'Male'/'Female'
     male_incl = included[gender_col].dropna()
-    male_incl = (male_incl.str.upper() == 'M').sum() / len(male_incl)
+    male_incl = (male_incl.str.upper() == 'MALE').sum() / len(male_incl)
 
     male_excl = excluded[gender_col].dropna()
-    male_excl = (male_excl.str.upper() == 'M').sum() / len(male_excl)
+    male_excl = (male_excl.str.upper() == 'MALE').sum() / len(male_excl)
 else:  # MALE column (1=Male, 0=Female)
     male_incl = included[gender_col].dropna().mean()
     male_excl = excluded[gender_col].dropna().mean()
