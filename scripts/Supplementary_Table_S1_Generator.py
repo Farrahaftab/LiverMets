@@ -360,14 +360,14 @@ if treatment_col in included.columns:
 # --- TUMOUR CHARACTERISTICS ---
 
 # T-Stage grouping
-t_early = (included['T_STAGE'].isin(['T0', 'T1', 'T2'])).sum()
+t_early = (included['T_STAGE'].isin(['T1', 'T2'])).sum()
 t_early_pct = 100 * t_early / len(included)
-t_early_excl = (excluded['T_STAGE'].isin(['T0', 'T1', 'T2'])).sum()
+t_early_excl = (excluded['T_STAGE'].isin(['T1', 'T2'])).sum()
 t_early_excl_pct = 100 * t_early_excl / len(excluded)
 t_smd = calculate_smd_binary(t_early / len(included), t_early_excl / len(excluded))
 
 results.append({
-    'Characteristic': 'T-Stage: T0–T2',
+    'Characteristic': 'T-Stage: T1–T2',
     'Included': f"{t_early:,} ({t_early_pct:.1f}%)",
     'Excluded': f"{t_early_excl:,} ({t_early_excl_pct:.1f}%)",
     'SMD': t_smd
