@@ -3,8 +3,11 @@ Supplementary Table S1 — ASO Submission Ready
 Compares baseline characteristics: included (n=14,759) vs excluded (n=14,806)
 
 Includes ONLY variables not used for eligibility:
-  ✓ Age, Sex, Treatment, Metastases count, Follow-up, Mortality
+  ✓ Age, Sex, Treatment, Metastases count (NB_METS_GROUP, all 14,759 patients), Follow-up, Mortality
   ✗ Excludes TNM (inherently part of inclusion criteria)
+
+Metastases count categories: 0–1, 2, 3, 4–5, 6–10, >10, Not determined (ND, n=878)
+All 14,759 included patients have NB_METS_GROUP value (no missing data).
 """
 
 import warnings
@@ -72,18 +75,12 @@ for code, label in [('Surgery_Only', 'Surgery alone'), ('Surgery+Chemo', 'Surger
 print(f"✓ Treatment: Done")
 
 # Number of liver metastases (NOT used for eligibility)
-m1 = pd.to_numeric(included['NB_METASTASES_NUM'], errors='coerce').dropna()
-m2 = pd.to_numeric(excluded['NB_METASTASES_NUM'], errors='coerce').dropna()
-
-for num, label in [(1, '1'), ((2, 3), '2–3'), ((4, 100), '≥4')]:
-    if isinstance(num, tuple):
-        n1 = ((m1 >= num[0]) & (m1 <= num[1])).sum()
-        n2 = ((m2 >= num[0]) & (m2 <= num[1])).sum()
-    else:
-        n1 = (m1 == num).sum()
-        n2 = (m2 == num).sum()
-    p1 = n1 / len(m1) if len(m1) > 0 else 0
-    p2 = n2 / len(m2) if len(m2) > 0 else 0
+# Use NB_METS_GROUP (includes all 14,759 patients; accounts for 878 ND)
+for category, label in [('0-1', '0–1'), ('2', '2'), ('3', '3'), ('4-5', '4–5'), ('6-10', '6–10'), ('>10', '>10'), ('ND', 'Not determined')]:
+    n1 = (included['NB_METS_GROUP'] == category).sum()
+    n2 = (excluded['NB_METS_GROUP'] == category).sum()
+    p1 = n1 / len(included)
+    p2 = n2 / len(excluded)
     results.append({'Characteristic': f"Number of liver metastases: {label}", 'Included': f"{n1:,} ({100*p1:.1f}%)", 'Excluded': f"{n2:,} ({100*p2:.1f}%)", 'SMD': smd_binary(p1, p2)})
 print(f"✓ Metastases count: Done")
 
