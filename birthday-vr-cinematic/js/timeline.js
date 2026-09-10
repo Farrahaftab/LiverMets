@@ -15,17 +15,28 @@ class Timeline {
     }
 
     setupTimeline() {
-        Logger.log('Setting up timeline...');
+        Logger.log('Setting up timeline with 29 events...');
+
+        if (!this.experience) {
+            Logger.error('Timeline created without experience context');
+            return;
+        }
 
         // SCENE 1: THE DARKNESS (0-10s)
         this.addEvent(0, 'scene1Start', () => {
             Logger.log('=== SCENE 1: THE DARKNESS (0s) ===');
-            this.experience.environment.switchToDarkEnvironment();
-            this.experience.audioManager.playSound('darkAmbience', {
-                loop: true,
-                volume: 0.3,
-                fadeInDuration: 1
-            });
+
+            if (this.experience.environment && this.experience.environment.switchToDarkEnvironment) {
+                this.experience.environment.switchToDarkEnvironment();
+            }
+
+            if (this.experience.audioManager && this.experience.audioManager.playSound) {
+                this.experience.audioManager.playSound('darkAmbience', {
+                    loop: true,
+                    volume: 0.3,
+                    fadeInDuration: 1
+                });
+            }
         });
 
         this.addEvent(0.5, 'girlSitDown', () => {
@@ -266,6 +277,18 @@ class Timeline {
         });
 
         Logger.log('✓ Timeline setup complete');
+    }
+
+    safeCallManager(managerName, methodName, ...args) {
+        try {
+            const manager = this.experience[managerName];
+            if (manager && manager[methodName] && typeof manager[methodName] === 'function') {
+                return manager[methodName](...args);
+            }
+        } catch (error) {
+            Logger.warn(`${managerName}.${methodName} failed: ${error.message}`);
+        }
+        return null;
     }
 
     addEvent(time, id, callback) {

@@ -20,10 +20,16 @@ class Experience {
 
         this.debugInfo = null;
 
+        this.isInitialized = false;
+        this.isInitializing = false;
+
         this.init();
     }
 
     async init() {
+        if (this.isInitializing || this.isInitialized) return;
+        this.isInitializing = true;
+
         try {
             Logger.log('Initializing Experience...');
 
@@ -45,9 +51,13 @@ class Experience {
             this.checkWebXRSupport();
             Logger.log('Experience initialized successfully ✓');
 
+            this.isInitialized = true;
+            this.isInitializing = false;
+
             this.animate();
         } catch (error) {
             Logger.error('INITIALIZATION FAILED: ' + error.message);
+            this.isInitializing = false;
             showErrorMessage('Initialization failed: ' + error.message);
         }
     }
@@ -119,11 +129,13 @@ class Experience {
             this.particleSystem = new ParticleSystem(this.scene, this.camera, 5000);
             Logger.log('✓ Particle system ready');
 
-            Logger.log('Setting up timeline...');
+            Logger.log('Creating Timeline class instance...');
             this.timeline = new Timeline(this);
-            Logger.log('✓ Timeline configured');
+            Logger.log('✓ Timeline class instantiated');
+            Logger.log(`Timeline has ${this.timeline.events.length} events configured`);
         } catch (error) {
             Logger.error('setupManagers error: ' + error.message);
+            Logger.error('Stack: ' + error.stack);
             throw error;
         }
     }
@@ -368,9 +380,21 @@ class Experience {
     }
 
     startExperience() {
+        if (this.isInitializing) {
+            Logger.warn('Still initializing... please wait');
+            showErrorMessage('Experience still loading... Please wait a moment and try again.');
+            return;
+        }
+
+        if (!this.isInitialized) {
+            Logger.error('Experience not initialized');
+            showErrorMessage('Experience failed to initialize. Check console for details.');
+            return;
+        }
+
         if (!this.timeline) {
-            Logger.error('Timeline not initialized');
-            showErrorMessage('Timeline failed to initialize');
+            Logger.error('Timeline not available');
+            showErrorMessage('Timeline component missing. Refresh the page and try again.');
             return;
         }
 
@@ -387,6 +411,7 @@ class Experience {
 
             document.getElementById('startScreen').classList.add('hidden');
             this.timeline.play();
+            Logger.log('Experience timeline started ✓');
         } catch (error) {
             Logger.error('Error starting experience: ' + error.message);
             showErrorMessage('Failed to start experience: ' + error.message);
