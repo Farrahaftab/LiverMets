@@ -33,7 +33,7 @@ class Experience {
             await this.setupManagers();
             Logger.log('✓ Managers setup complete');
 
-            this.setupAudio();
+            await this.setupAudio();
             Logger.log('✓ Audio setup complete');
 
             this.setupVR();
@@ -368,6 +368,11 @@ class Experience {
     }
 
     startExperience() {
+        if (!this.timeline) {
+            Logger.error('Timeline not initialized');
+            showErrorMessage('Timeline failed to initialize');
+            return;
+        }
         Logger.log('Starting experience...');
         document.getElementById('startScreen').classList.add('hidden');
         this.timeline.play();

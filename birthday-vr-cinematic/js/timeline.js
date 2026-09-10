@@ -6,7 +6,12 @@ class Timeline {
         this.duration = 75;
         this.events = [];
         this.completedEvents = new Set();
-        this.setupTimeline();
+        try {
+            this.setupTimeline();
+        } catch (error) {
+            Logger.error('Timeline setup error: ' + error.message);
+            throw error;
+        }
     }
 
     setupTimeline() {
