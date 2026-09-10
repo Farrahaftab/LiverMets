@@ -5,22 +5,42 @@ class AudioManager {
         this.isInitialized = false;
         this.audioContext = null;
         this.masterGain = null;
+        this.silentBuffer = null;
     }
 
     async init() {
         if (this.isInitialized) return;
 
-        const audioContext = this.listener.context;
-        this.audioContext = audioContext;
-        this.masterGain = this.listener.context.createGain();
-        this.masterGain.connect(this.listener.context.destination);
-        this.masterGain.gain.value = 0.7;
+        try {
+            const audioContext = this.listener.context;
+            this.audioContext = audioContext;
 
-        this.isInitialized = true;
+            this.masterGain = this.listener.context.createGain();
+            this.masterGain.connect(this.listener.context.destination);
+            this.masterGain.gain.value = 0.7;
+
+            this.createSilentBuffer();
+            this.isInitialized = true;
+        } catch (error) {
+            Logger.warn('Audio initialization failed: ' + error.message);
+            this.isInitialized = true;
+        }
+    }
+
+    createSilentBuffer() {
+        if (!this.audioContext) return;
+
+        const bufferSize = this.audioContext.sampleRate;
+        this.silentBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+        const data = this.silentBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = 0;
+        }
     }
 
     async loadAudio(name, filePath) {
         try {
+            Logger.log(`Loading audio: ${name}`);
             const audio = new THREE.Audio(this.listener);
             const audioLoader = new THREE.AudioLoader();
 
@@ -28,41 +48,53 @@ class AudioManager {
             audio.setBuffer(buffer);
 
             this.tracks[name] = audio;
+            Logger.log(`✓ Audio loaded: ${name}`);
             return audio;
         } catch (error) {
-            console.warn(`Could not load audio ${filePath}. Using fallback.`, error);
-            return this.createFallbackAudio(name);
+            Logger.warn(`Optional audio missing: ${name}`);
+            return this.createSilentAudio(name);
         }
     }
 
-    createFallbackAudio(name) {
-        const audio = new THREE.Audio(this.listener);
-        const bufferSize = 2 * this.audioContext.sampleRate;
-        const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    createSilentAudio(name) {
+        try {
+            const audio = new THREE.Audio(this.listener);
 
-        if (name.includes('ambience') || name.includes('footstep')) {
-            const data = noiseBuffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 0.1 - 0.05;
+            if (this.silentBuffer) {
+                audio.setBuffer(this.silentBuffer);
             }
-        } else if (name.includes('piano') || name.includes('music')) {
-            const data = noiseBuffer.getChannelData(0);
-            const freq = 440;
-            const sampleRate = this.audioContext.sampleRate;
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = 0.1 * Math.sin(2 * Math.PI * freq * i / sampleRate);
-            }
+
+            this.tracks[name] = audio;
+            return audio;
+        } catch (error) {
+            Logger.warn(`Could not create audio object for ${name}`);
+            return this.createDummyAudio(name);
         }
+    }
 
-        audio.setBuffer(noiseBuffer);
-        this.tracks[name] = audio;
-        return audio;
+    createDummyAudio(name) {
+        const dummy = {
+            isPlaying: false,
+            setBuffer: () => {},
+            setLoop: () => {},
+            setVolume: () => {},
+            getVolume: () => 0,
+            play: () => {},
+            stop: () => {},
+            pause: () => {},
+            position: { copy: () => {}, x: 0, y: 0, z: 0 }
+        };
+        this.tracks[name] = dummy;
+        return dummy;
     }
 
     playSound(name, options = {}) {
-        if (!this.tracks[name]) return null;
-
         const audio = this.tracks[name];
+        if (!audio) {
+            this.createDummyAudio(name);
+            return this.tracks[name];
+        }
+
         const {
             loop = false,
             volume = 1,
@@ -70,95 +102,132 @@ class AudioManager {
             fadeInDuration = 0
         } = options;
 
-        audio.setLoop(loop);
-        audio.setVolume(0);
+        try {
+            if (audio.setLoop) audio.setLoop(loop);
+            if (audio.setVolume) audio.setVolume(0);
 
-        if (position) {
-            audio.position.copy(position);
-        }
+            if (position && audio.position && audio.position.copy) {
+                audio.position.copy(position);
+            }
 
-        if (fadeInDuration > 0) {
-            this.fadeIn(audio, volume, fadeInDuration);
-        } else {
-            audio.setVolume(volume);
-        }
+            if (fadeInDuration > 0) {
+                this.fadeIn(audio, volume, fadeInDuration);
+            } else {
+                if (audio.setVolume) audio.setVolume(volume);
+            }
 
-        if (!audio.isPlaying) {
-            audio.play();
+            if (audio.play && !audio.isPlaying) {
+                audio.play();
+            }
+        } catch (error) {
+            Logger.warn(`Could not play sound ${name}: ${error.message}`);
         }
 
         return audio;
     }
 
     stopSound(name, fadeDuration = 0) {
-        if (!this.tracks[name]) return;
-
         const audio = this.tracks[name];
+        if (!audio) return;
 
-        if (fadeDuration > 0) {
-            this.fadeOut(audio, fadeDuration);
-        } else {
-            audio.stop();
+        try {
+            if (fadeDuration > 0) {
+                this.fadeOut(audio, fadeDuration);
+            } else {
+                if (audio.stop) audio.stop();
+            }
+        } catch (error) {
+            Logger.warn(`Could not stop sound ${name}`);
         }
     }
 
     fadeIn(audio, targetVolume, duration) {
-        const startTime = performance.now();
-        const startVolume = audio.getVolume();
+        if (!audio || !audio.setVolume) return;
 
-        const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / (duration * 1000), 1);
-            audio.setVolume(startVolume + (targetVolume - startVolume) * progress);
+        try {
+            const startTime = performance.now();
+            const startVolume = audio.getVolume ? audio.getVolume() : 0;
 
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / (duration * 1000), 1);
+                const newVolume = startVolume + (targetVolume - startVolume) * progress;
 
-        requestAnimationFrame(animate);
+                if (audio.setVolume) {
+                    audio.setVolume(newVolume);
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            requestAnimationFrame(animate);
+        } catch (error) {
+            Logger.warn(`Fade in failed: ${error.message}`);
+        }
     }
 
     fadeOut(audio, duration) {
-        const startTime = performance.now();
-        const startVolume = audio.getVolume();
+        if (!audio || !audio.setVolume) return;
 
-        const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / (duration * 1000), 1);
-            audio.setVolume(startVolume * (1 - progress));
+        try {
+            const startTime = performance.now();
+            const startVolume = audio.getVolume ? audio.getVolume() : 1;
 
-            if (progress >= 1) {
-                audio.stop();
-            } else {
-                requestAnimationFrame(animate);
-            }
-        };
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / (duration * 1000), 1);
+                const newVolume = startVolume * (1 - progress);
 
-        requestAnimationFrame(animate);
+                if (audio.setVolume) {
+                    audio.setVolume(newVolume);
+                }
+
+                if (progress >= 1) {
+                    if (audio.stop) audio.stop();
+                } else {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            requestAnimationFrame(animate);
+        } catch (error) {
+            Logger.warn(`Fade out failed: ${error.message}`);
+        }
     }
 
     setVolume(name, volume) {
-        if (this.tracks[name]) {
-            this.tracks[name].setVolume(volume);
+        const audio = this.tracks[name];
+        if (audio && audio.setVolume) {
+            try {
+                audio.setVolume(volume);
+            } catch (error) {
+                Logger.warn(`Could not set volume for ${name}`);
+            }
         }
     }
 
     getVolume(name) {
-        if (this.tracks[name]) {
-            return this.tracks[name].getVolume();
+        const audio = this.tracks[name];
+        if (audio && audio.getVolume) {
+            try {
+                return audio.getVolume();
+            } catch (error) {
+                return 0;
+            }
         }
         return 0;
     }
 
-    update() {
-        // Audio listener should be updated with camera position in main loop
-    }
-
     dispose() {
         Object.values(this.tracks).forEach(audio => {
-            if (audio.isPlaying) {
-                audio.stop();
+            try {
+                if (audio && audio.isPlaying && audio.stop) {
+                    audio.stop();
+                }
+            } catch (error) {
+                Logger.warn('Error disposing audio');
             }
         });
     }

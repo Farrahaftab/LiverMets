@@ -373,9 +373,24 @@ class Experience {
             showErrorMessage('Timeline failed to initialize');
             return;
         }
-        Logger.log('Starting experience...');
-        document.getElementById('startScreen').classList.add('hidden');
-        this.timeline.play();
+
+        try {
+            Logger.log('Starting experience...');
+
+            if (this.audioManager && this.audioManager.audioContext) {
+                if (this.audioManager.audioContext.state === 'suspended') {
+                    this.audioManager.audioContext.resume().catch(() => {
+                        Logger.warn('Audio context resume failed');
+                    });
+                }
+            }
+
+            document.getElementById('startScreen').classList.add('hidden');
+            this.timeline.play();
+        } catch (error) {
+            Logger.error('Error starting experience: ' + error.message);
+            showErrorMessage('Failed to start experience: ' + error.message);
+        }
     }
 
     async enterVR() {

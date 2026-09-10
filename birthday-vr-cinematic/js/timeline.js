@@ -269,10 +269,18 @@ class Timeline {
     }
 
     addEvent(time, id, callback) {
+        const safeCallback = () => {
+            try {
+                callback();
+            } catch (error) {
+                Logger.warn(`Event "${id}" failed: ${error.message}`);
+            }
+        };
+
         this.events.push({
             time: time,
             id: id,
-            callback: callback,
+            callback: safeCallback,
             triggered: false
         });
 
