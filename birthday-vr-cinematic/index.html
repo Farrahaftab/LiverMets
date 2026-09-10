@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>A Gift for Someone Special</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="startScreen" class="start-screen">
+        <div class="start-container">
+            <h1>For Someone Very Special</h1>
+            <p class="subtitle">A little journey I made for you.</p>
+            <div class="button-group">
+                <button id="startButton" class="btn btn-primary">START EXPERIENCE</button>
+                <button id="vrButton" class="btn btn-secondary" style="display:none;">ENTER VR</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="experienceCanvas"></canvas>
+
+    <!-- Config MUST load first (contains Logger and EXPERIENCE) -->
+    <script src="js/config.js"></script>
+
+    <!-- Three.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GLTFLoader for loading character models -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/GLTFLoader.min.js"></script>
+
+    <!-- System classes -->
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/environment.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/experience.js"></script>
+
+    <!-- Initialization -->
+    <script src="js/main.js"></script>
+</body>
+</html>
