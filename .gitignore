@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 notebooks/run1.log
+notebooks/executed_run*.ipynb
+notebooks/run*.log
