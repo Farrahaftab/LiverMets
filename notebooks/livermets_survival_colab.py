@@ -666,7 +666,11 @@ def cox_table(df, t, e, covars, label, penalizer=0.0):
     s['c_index_apparent'] = round(cph.concordance_index_, 3)
     return cph, s.reset_index().rename(columns={'covariate': 'term'})
 
-TREAT_COVARS = ['PH_INT', 'PH_ADV', 'TX_SURGCHEMO', 'TX_CHEMOONLY', 'TX_NOTREAT', 'AGE_10', 'MALE', 'METS']
+# With Favourable empty, PH_INT + PH_ADV = 1 for everyone and the Cox model is singular.
+# In that case only the Adverse indicator is used (reference: Intermediate).
+FAV_PRESENT = bool((ana_os.PHENOTYPE == 'Favourable').any())
+PH_COVARS = ['PH_INT', 'PH_ADV'] if FAV_PRESENT else ['PH_ADV']
+TREAT_COVARS = PH_COVARS + ['TX_SURGCHEMO', 'TX_CHEMOONLY', 'TX_NOTREAT', 'AGE_10', 'MALE', 'METS']
 cph_treat, cox_treat_tab = cox_table(ana_os.assign(METS=ana_os.METS), 'OS_YEARS', 'OS_EVENT', TREAT_COVARS,
                                      'Multivariable OS: phenotype + treatment (complete cases)')
 display(cox_treat_tab.round(4))
