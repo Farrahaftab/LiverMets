@@ -714,6 +714,8 @@ def rmst(times, events, tau=RMST_TAU, weights=None):
 rmst_rows = []
 for g in PHENO_ORDER:
     sub = ana_os[ana_os.PHENOTYPE == g]
+    if len(sub) == 0:
+        continue  # empty phenotype under the pre-specified thresholds (see report)
     rmst_rows.append({'comparison': 'phenotype', 'group': g, 'n': len(sub),
                       'RMST_5y_years': round(rmst(sub.OS_YEARS, sub.OS_EVENT), 3)})
 for g in ['Surgery+Chemo', 'Surgery_Only', 'Chemo_Only', 'No_Treatment']:
