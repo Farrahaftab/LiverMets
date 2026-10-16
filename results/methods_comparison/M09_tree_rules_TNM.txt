@@ -1,0 +1,19 @@
+N_GRP_N2 <= 0.50
+|   N_GRP_N0 <= 0.50
+|   |   T_GRP_T4 <= 0.50
+|   |   |   leaf 3
+|   |   T_GRP_T4 >  0.50
+|   |   |   leaf 4
+|   N_GRP_N0 >  0.50
+|   |   T_GRP_T4 <= 0.50
+|   |   |   leaf 6
+|   |   T_GRP_T4 >  0.50
+|   |   |   leaf 7
+N_GRP_N2 >  0.50
+|   T_GRP_T3 <= 0.50
+|   |   leaf 9
+|   T_GRP_T3 >  0.50
+|   |   M_GRP_M1 <= 0.50
+|   |   |   leaf 11
+|   |   M_GRP_M1 >  0.50
+|   |   |   leaf 12

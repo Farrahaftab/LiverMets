@@ -1,0 +1,22 @@
+N_GRP_N2 <= 0.50
+|   CEA_LOG <= 2.14
+|   |   CEA_LOG <= 1.32
+|   |   |   leaf 3
+|   |   CEA_LOG >  1.32
+|   |   |   leaf 4
+|   CEA_LOG >  2.14
+|   |   METS <= 1.50
+|   |   |   leaf 6
+|   |   METS >  1.50
+|   |   |   leaf 7
+N_GRP_N2 >  0.50
+|   CEA_LOG <= 1.78
+|   |   CEA_LOG <= 1.33
+|   |   |   leaf 10
+|   |   CEA_LOG >  1.33
+|   |   |   leaf 11
+|   CEA_LOG >  1.78
+|   |   AGE <= 69.47
+|   |   |   leaf 13
+|   |   AGE >  69.47
+|   |   |   leaf 14

@@ -1,0 +1,5 @@
+classification,cut_q33,cut_q67,train_logrank_p,valid_logrank_p,valid_C_group,valid_pairwise_bonferroni_p
+TNM tree RMST tertiles,3.493,3.727,1.1101522659635295e-32,4.446741144880607e-19,0.5619,"{'Favourable vs Intermediate': np.float64(0.006545), 'Intermediate vs Adverse': np.float64(0.062042), 'Favourable vs Adverse': np.float64(0.0)}"
+Expanded tree RMST tertiles,3.538,3.84,3.9000052337512244e-58,2.7249241244813745e-33,0.5916,"{'Favourable vs Intermediate': np.float64(0.0), 'Intermediate vs Adverse': np.float64(0.000377), 'Favourable vs Adverse': np.float64(0.0)}"
+Expanded tree (not-recorded categories) RMST tertiles,3.538,3.84,3.9000052337512244e-58,2.7249241244813745e-33,0.5916,
+Expanded tree without CEA: RMST tertiles,3.685,3.726,5.758749300559183e-47,2.232311492268368e-19,0.5589,

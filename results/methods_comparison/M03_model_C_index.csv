@@ -1,0 +1,6 @@
+model,train_C,valid_C,train_leaves,min_leaf_n_train
+TNM-only survival tree,0.5679,0.5806,7.0,343.0
+Expanded survival tree,0.5867,0.6103,8.0,213.0
+"Cox (expanded features, benchmark)",0.6123,0.6488,,
+"Expanded survival tree, explicit not-recorded categories",0.5867,0.6103,,
+Expanded survival tree without CEA (candidate primary),0.5786,0.5815,,

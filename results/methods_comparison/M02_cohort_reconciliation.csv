@@ -1,0 +1,7 @@
+stage,n
+All patients (both parts),29565
+TNM complete,19465
+TNM complete + liver metastasis diagnosis date,13588
+TNM complete + valid OS (current primary cohort),13285
+TNM complete + referral date + valid OS (alternative origin),15512
+"Published survival-eligible cohort (earlier analysis, not reproducible here)",14759

@@ -1,0 +1,7 @@
+classification,period,group,n,share_pct,deaths,median_OS,S5
+Expanded tree (not-recorded categories) RMST tertiles,training,Favourable,2931,44.0,1354,5.7,0.554
+Expanded tree (not-recorded categories) RMST tertiles,training,Intermediate,2359,35.4,1327,4.04,0.41
+Expanded tree (not-recorded categories) RMST tertiles,training,Adverse,1368,20.5,873,3.24,0.305
+Expanded tree (not-recorded categories) RMST tertiles,validation,Favourable,3002,45.3,477,7.42,0.589
+Expanded tree (not-recorded categories) RMST tertiles,validation,Intermediate,2276,34.3,513,4.2,0.433
+Expanded tree (not-recorded categories) RMST tertiles,validation,Adverse,1349,20.4,377,3.43,0.36

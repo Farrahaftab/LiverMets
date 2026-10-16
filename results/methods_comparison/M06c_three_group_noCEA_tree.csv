@@ -1,0 +1,7 @@
+classification,period,group,n,share_pct,deaths,median_OS,S5
+Expanded tree without CEA: RMST tertiles,training,Favourable,4094,61.5,1990,5.31,0.521
+Expanded tree without CEA: RMST tertiles,training,Intermediate,516,7.8,273,4.24,0.422
+Expanded tree without CEA: RMST tertiles,training,Adverse,2048,30.8,1291,3.41,0.325
+Expanded tree without CEA: RMST tertiles,validation,Favourable,3995,60.3,689,6.11,0.55
+Expanded tree without CEA: RMST tertiles,validation,Intermediate,508,7.7,100,4.37,0.472
+Expanded tree without CEA: RMST tertiles,validation,Adverse,2124,32.1,578,3.68,0.395
