@@ -612,8 +612,8 @@ phen_tab = ana_os.groupby('PHENOTYPE').size().reindex(PHENO_ORDER)
 print(phen_tab.to_string())
 
 # %% [code]
-os_by_pheno = km_summary(ana_os, 'OS_YEARS', 'OS_EVENT', 'PHENOTYPE').set_index('group').loc[PHENO_ORDER].reset_index()
-rfs_by_pheno = km_summary(ana_os, 'RFS_YEARS', 'RFS_EVENT', 'PHENOTYPE').set_index('group').loc[PHENO_ORDER].reset_index()
+os_by_pheno = km_summary(ana_os, 'OS_YEARS', 'OS_EVENT', 'PHENOTYPE').set_index('group').reindex(PHENO_ORDER).reset_index()
+rfs_by_pheno = km_summary(ana_os, 'RFS_YEARS', 'RFS_EVENT', 'PHENOTYPE').set_index('group').reindex(PHENO_ORDER).reset_index()
 lr_os = multivariate_logrank_test(ana_os.OS_YEARS, ana_os.PHENOTYPE, ana_os.OS_EVENT)
 lr_rfs = multivariate_logrank_test(ana_os.RFS_YEARS, ana_os.PHENOTYPE, ana_os.RFS_EVENT)
 print(f'OS log-rank chi2={lr_os.test_statistic:.2f}, df=2, p={lr_os.p_value:.2e}')
@@ -1270,6 +1270,8 @@ report.append('* **OS:** days from time zero to last contact (`LASTNDTC`); event
 report.append('* **RFS:** recurrence date (earliest of `RECDT_F1`-`RECDT_F7`) if recorded; otherwise death or last contact. `alive_with_disease_no_date` (status from `PATSTAT_F1`) is an event at last contact, which is a known approximation.')
 report.append('* **TNM groups:** T1-2 (incl. T0), T3, T4 (incl. T4a/b); N0, N1 (incl. a/b/c), N2; M0, M1 (incl. a/b/c).')
 report.append('* **Phenotypes:** survival tree on TNM groups, training era only; terminal nodes labelled from KM median OS with the earlier thresholds (6 and 5 years).')
+empty_pheno = [p for p in PHENO_ORDER if (ana_os.PHENOTYPE == p).sum() == 0]
+report.append('* **Phenotype note:** ' + (('no patients were assigned to ' + ', '.join(empty_pheno) + ' under the pre-specified thresholds (highest training-node median OS = ' + f"{node_df.median_OS_years.replace('not reached', np.nan).astype(float).max():.2f} years). Analyses use the observed groups only; thresholds were not changed to create a group.") if empty_pheno else 'all three phenotypes populated.'))
 report.append('* **Treatment:** hepatectomy (`LE1HEPATECTYN_F1`) and peri-operative systemic chemotherapy (`LE1PREOPMCTYN_F1` or `LE1POSTOPMCTYN_F1`).')
 report.append('* **Metastases count:** values outside 1-50 set to missing; **size:** outside 1-300 mm set to missing; **CEA:** `LE1PREHEPCEA_F1` in ng/mL.')
 report.append('* `TIMELAST` is not used. It does not equal any date difference in the export and has negative values (`tables/T03_timelast_qc.csv`).\n')
