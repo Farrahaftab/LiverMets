@@ -1,0 +1,12 @@
+{
+  "Part1": {
+    "file": "LiverMet_Part1.xlsx",
+    "bytes": 13900251,
+    "sha256": "7eed0ab953a3b09da616e71b03664ea1dcacd5ad3c6a4b47e70d57bfc393a976"
+  },
+  "Part2": {
+    "file": "LiverMet_Part2.xlsx",
+    "bytes": 13975835,
+    "sha256": "a1839daaded4b5e4619154e247428a8f2e15fcdc53066a8d67a819b53a161049"
+  }
+}

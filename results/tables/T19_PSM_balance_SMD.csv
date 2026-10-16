@@ -1,0 +1,73 @@
+covariate,mean_treated,mean_control,SMD,phenotype,stage
+BAL_AGE,62.75,65.58,-0.291,Intermediate,before
+BAL_MALE,0.645,0.651,-0.011,Intermediate,before
+BAL_SYNC,0.511,0.331,0.371,Intermediate,before
+BAL_DFI_MO,7.67,9.294,-0.092,Intermediate,before
+BAL_METS,2.684,1.822,0.352,Intermediate,before
+BAL_SIZE_MM,35.848,34.264,0.065,Intermediate,before
+BAL_CEA_LOG,2.235,2.308,-0.066,Intermediate,before
+BAL_T_GRP_T3,0.924,0.948,-0.097,Intermediate,before
+BAL_T_GRP_T4,0.0,0.0,0.0,Intermediate,before
+BAL_N_GRP_N1,0.0,0.0,0.0,Intermediate,before
+BAL_N_GRP_N2,0.0,0.0,0.0,Intermediate,before
+BAL_M_GRP_M1,0.496,0.31,0.386,Intermediate,before
+BAL_ERA_TRAIN,0.478,0.547,-0.14,Intermediate,before
+BAL_AGE_MISS,0.049,0.218,-0.513,Intermediate,before
+BAL_METS_MISS,0.056,0.031,0.12,Intermediate,before
+BAL_SIZE_MM_MISS,0.177,0.151,0.07,Intermediate,before
+BAL_CEA_LOG_MISS,0.269,0.423,-0.328,Intermediate,before
+BAL_DFI_MO_MISS,0.173,0.277,-0.251,Intermediate,before
+BAL_AGE,65.348,65.779,-0.046,Intermediate,after matching
+BAL_MALE,0.657,0.655,0.003,Intermediate,after matching
+BAL_SYNC,0.356,0.356,0.0,Intermediate,after matching
+BAL_DFI_MO,9.722,9.86,-0.007,Intermediate,after matching
+BAL_METS,1.949,1.873,0.039,Intermediate,after matching
+BAL_SIZE_MM,35.698,34.247,0.057,Intermediate,after matching
+BAL_CEA_LOG,2.322,2.328,-0.005,Intermediate,after matching
+BAL_T_GRP_T3,0.935,0.944,-0.04,Intermediate,after matching
+BAL_T_GRP_T4,0.0,0.0,0.0,Intermediate,after matching
+BAL_N_GRP_N1,0.0,0.0,0.0,Intermediate,after matching
+BAL_N_GRP_N2,0.0,0.0,0.0,Intermediate,after matching
+BAL_M_GRP_M1,0.339,0.34,-0.003,Intermediate,after matching
+BAL_ERA_TRAIN,0.56,0.571,-0.022,Intermediate,after matching
+BAL_AGE_MISS,0.146,0.129,0.051,Intermediate,after matching
+BAL_METS_MISS,0.038,0.033,0.026,Intermediate,after matching
+BAL_SIZE_MM_MISS,0.148,0.151,-0.009,Intermediate,after matching
+BAL_CEA_LOG_MISS,0.375,0.378,-0.007,Intermediate,after matching
+BAL_DFI_MO_MISS,0.242,0.24,0.004,Intermediate,after matching
+BAL_AGE,60.827,64.191,-0.327,Adverse,before
+BAL_MALE,0.607,0.618,-0.023,Adverse,before
+BAL_SYNC,0.695,0.457,0.497,Adverse,before
+BAL_DFI_MO,4.053,5.687,-0.131,Adverse,before
+BAL_METS,3.086,2.116,0.353,Adverse,before
+BAL_SIZE_MM,34.302,32.426,0.078,Adverse,before
+BAL_CEA_LOG,2.313,2.336,-0.02,Adverse,before
+BAL_T_GRP_T3,0.696,0.668,0.06,Adverse,before
+BAL_T_GRP_T4,0.287,0.321,-0.075,Adverse,before
+BAL_N_GRP_N1,0.531,0.588,-0.115,Adverse,before
+BAL_N_GRP_N2,0.398,0.334,0.134,Adverse,before
+BAL_M_GRP_M1,0.697,0.454,0.506,Adverse,before
+BAL_ERA_TRAIN,0.489,0.517,-0.055,Adverse,before
+BAL_AGE_MISS,0.059,0.229,-0.499,Adverse,before
+BAL_METS_MISS,0.076,0.041,0.151,Adverse,before
+BAL_SIZE_MM_MISS,0.189,0.166,0.06,Adverse,before
+BAL_CEA_LOG_MISS,0.256,0.436,-0.384,Adverse,before
+BAL_DFI_MO_MISS,0.096,0.243,-0.4,Adverse,before
+BAL_AGE,63.595,64.294,-0.071,Adverse,after matching
+BAL_MALE,0.619,0.616,0.007,Adverse,after matching
+BAL_SYNC,0.492,0.494,-0.004,Adverse,after matching
+BAL_DFI_MO,5.585,6.034,-0.037,Adverse,after matching
+BAL_METS,2.24,2.163,0.038,Adverse,after matching
+BAL_SIZE_MM,32.372,32.64,-0.012,Adverse,after matching
+BAL_CEA_LOG,2.342,2.358,-0.014,Adverse,after matching
+BAL_T_GRP_T3,0.68,0.676,0.007,Adverse,after matching
+BAL_T_GRP_T4,0.311,0.313,-0.003,Adverse,after matching
+BAL_N_GRP_N1,0.594,0.58,0.027,Adverse,after matching
+BAL_N_GRP_N2,0.332,0.341,-0.018,Adverse,after matching
+BAL_M_GRP_M1,0.49,0.491,-0.003,Adverse,after matching
+BAL_ERA_TRAIN,0.534,0.537,-0.005,Adverse,after matching
+BAL_AGE_MISS,0.17,0.16,0.029,Adverse,after matching
+BAL_METS_MISS,0.049,0.044,0.021,Adverse,after matching
+BAL_SIZE_MM_MISS,0.173,0.163,0.027,Adverse,after matching
+BAL_CEA_LOG_MISS,0.385,0.391,-0.012,Adverse,after matching
+BAL_DFI_MO_MISS,0.2,0.188,0.029,Adverse,after matching

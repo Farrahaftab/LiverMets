@@ -1,0 +1,13 @@
+# Versions used for the executed run (see results/logs/environment.json)
+pandas>=2.2,<3
+numpy
+matplotlib
+scipy
+scikit-learn
+lifelines==0.30.3
+scikit-survival==0.28.0
+python-calamine
+pyarrow
+nbclient
+nbformat
+ipykernel

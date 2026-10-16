@@ -1,0 +1,11 @@
+PHENOTYPE,CHEMO_TIMING,n
+Adverse,after_6_months,472
+Adverse,before_time_zero,156
+Adverse,not_applicable,1706
+Adverse,start_date_missing,1771
+Adverse,within_6_months,3691
+Intermediate,after_6_months,195
+Intermediate,before_time_zero,51
+Intermediate,not_applicable,707
+Intermediate,start_date_missing,611
+Intermediate,within_6_months,1337

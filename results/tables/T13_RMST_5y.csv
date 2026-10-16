@@ -1,0 +1,7 @@
+comparison,group,n,RMST_5y_years
+phenotype,Intermediate,3580,4.065
+phenotype,Adverse,9705,3.604
+treatment (all patients),Surgery+Chemo,8284,3.914
+treatment (all patients),Surgery_Only,2413,3.605
+treatment (all patients),Chemo_Only,517,2.829
+treatment (all patients),No_Treatment,207,2.277

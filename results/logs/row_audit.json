@@ -1,0 +1,14 @@
+{
+  "Part1": {
+    "physical_rows": 14784,
+    "blank_rows": 1,
+    "header_rows": 1,
+    "patient_rows": 14782
+  },
+  "Part2": {
+    "physical_rows": 14784,
+    "blank_rows": 1,
+    "header_rows": 0,
+    "patient_rows": 14783
+  }
+}

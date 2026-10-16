@@ -1,0 +1,4 @@
+phenotype,note,n_treated,n_control,n_treated_pool,n_control_pool,matched_pairs,caliper_logit,HR_SurgChemo_vs_SurgOnly,HR_lower95,HR_upper95,HR_p_robust,logrank_p,RMST_5y_SurgChemo,RMST_5y_SurgOnly,RMST_diff_5y,RMST_diff_5y_boot_lo,RMST_diff_5y_boot_hi
+Favourable,too few patients in one arm,0.0,0.0,,,,,,,,,,,,,,
+Intermediate,,,,2194.0,707.0,629.0,0.1938,0.808,0.665,0.981,0.03120652183481945,0.03393907210675103,4.166,3.942,0.224,0.035,0.409
+Adverse,,,,6090.0,1706.0,1561.0,0.1891,0.695,0.621,0.778,2.7129058186994207e-10,3.2483616177074196e-10,3.865,3.46,0.405,0.278,0.523
