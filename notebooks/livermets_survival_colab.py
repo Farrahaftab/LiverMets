@@ -551,8 +551,8 @@ y_os = Surv.from_arrays(event=ana_os.OS_EVENT.values.astype(bool), time=ana_os.O
 min_leaf = max(200, int(0.02 * train_mask.sum()))
 tree = SurvivalTree(max_depth=3, min_samples_leaf=min_leaf, random_state=SEED)
 tree.fit(TNM_FEATS.values[train_mask], y_os[train_mask])
-leaf_train = tree.apply(TNM_FEATS.values[train_mask])
-leaf_all = tree.apply(TNM_FEATS.values)
+leaf_train = tree.apply(TNM_FEATS.values.astype(np.float32)[train_mask])
+leaf_all = tree.apply(TNM_FEATS.values.astype(np.float32))
 
 def phenotype_from_median(m):
     if m is None or not np.isfinite(m):
@@ -1148,7 +1148,7 @@ alt['OS_EVENT'] = np.where(alt.OS_DAYS_REF / DAYS_PER_YEAR > MAX_FU_YEARS, 0.0, 
 alt_tnm = pd.get_dummies(alt[['T_GRP', 'N_GRP', 'M_GRP']].astype(str), dtype=float)
 alt_tnm.columns = [c.replace(' ', '') for c in alt_tnm.columns]
 alt_tnm = alt_tnm.reindex(columns=TNM_FEATS.columns, fill_value=0.0)
-alt['PHENOTYPE'] = pd.Series(tree.apply(alt_tnm.values), index=alt.index).map(node_pheno).fillna('Adverse')
+alt['PHENOTYPE'] = pd.Series(tree.apply(alt_tnm.values.astype(np.float32)), index=alt.index).map(node_pheno).fillna('Adverse')
 alt['PH_INT'] = alt.PHENOTYPE.eq('Intermediate').astype(float)
 alt['PH_ADV'] = alt.PHENOTYPE.eq('Adverse').astype(float)
 sens.append(treat_hr(alt, 'Time zero = referral date (REFERDT)'))
