@@ -353,19 +353,22 @@ print('TIMELAST cross-check (matches within 1 day):'); display(timelast_qc)
 
 # %% [code]
 # Covariates, staging groups and treatment definitions
+def _map_group(s, mapping):
+    """Map raw stage strings to groups; anything not listed (ND, NA, blank) becomes NaN."""
+    return s.astype(object).map(lambda v: mapping.get(v, np.nan) if isinstance(v, str) else np.nan)
+
+T_MAP = {'T0': 'T1-2', 'T1': 'T1-2', 'T2': 'T1-2', 'T3': 'T3', 'T4': 'T4', 'T4a': 'T4', 'T4b': 'T4'}
+N_MAP = {'N0': 'N0', 'N1': 'N1', 'N1a': 'N1', 'N1b': 'N1', 'N1c': 'N1', 'N2': 'N2', 'N2a': 'N2', 'N2b': 'N2'}
+M_MAP = {'M0': 'M0', 'M1': 'M1', 'M1a': 'M1', 'M1b': 'M1', 'M1c': 'M1'}
+
 def group_t(s):
-    s = s.astype('string')
-    return s.map(lambda v: 'T1-2' if v in ('T0', 'T1', 'T2') else ('T3' if v == 'T3' else
-                 ('T4' if v in ('T4', 'T4a', 'T4b') else pd.NA)))
+    return _map_group(s, T_MAP)
 
 def group_n(s):
-    s = s.astype('string')
-    return s.map(lambda v: 'N0' if v == 'N0' else ('N1' if v in ('N1', 'N1a', 'N1b', 'N1c') else
-                 ('N2' if v in ('N2', 'N2a', 'N2b') else pd.NA)))
+    return _map_group(s, N_MAP)
 
 def group_m(s):
-    s = s.astype('string')
-    return s.map(lambda v: 'M0' if v == 'M0' else ('M1' if v in ('M1', 'M1a', 'M1b', 'M1c') else pd.NA))
+    return _map_group(s, M_MAP)
 
 ana['T_GRP'] = group_t(ana['STADET'])
 ana['N_GRP'] = group_n(ana['STADEN'])
