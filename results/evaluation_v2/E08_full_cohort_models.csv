@@ -1,0 +1,4 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,IBS_1_to_7y,n_leaves
+Cox no-CEA (full cohort),0.5962,0.6237,0.608-0.638,0.629,0.649,0.678,0.0366,0.0991,0.0668,0.0719,
+TNM-only survival tree (full cohort),0.5679,0.5806,0.564-0.597,0.544,0.606,0.617,0.0371,0.1024,0.0714,,7.0
+Expanded survival tree (no CEA) (full cohort),0.5786,0.5815,0.563-0.600,0.563,0.607,0.606,0.037,0.1021,0.0714,,7.0

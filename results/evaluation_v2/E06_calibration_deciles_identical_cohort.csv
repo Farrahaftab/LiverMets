@@ -1,0 +1,51 @@
+model,decile,n,predicted_S5,observed_S5
+Cox no-CEA,1,440,0.238,0.266
+Cox no-CEA,2,440,0.335,0.405
+Cox no-CEA,3,439,0.382,0.425
+Cox no-CEA,4,440,0.419,0.517
+Cox no-CEA,5,439,0.45,0.423
+Cox no-CEA,6,440,0.478,0.431
+Cox no-CEA,7,439,0.506,0.558
+Cox no-CEA,8,440,0.532,0.642
+Cox no-CEA,9,439,0.562,0.591
+Cox no-CEA,10,440,0.613,0.774
+Cox with CEA (complete case),1,440,0.201,0.307
+Cox with CEA (complete case),2,440,0.318,0.364
+Cox with CEA (complete case),3,439,0.377,0.375
+Cox with CEA (complete case),4,440,0.42,0.458
+Cox with CEA (complete case),5,439,0.458,0.419
+Cox with CEA (complete case),6,440,0.493,0.499
+Cox with CEA (complete case),7,439,0.526,0.536
+Cox with CEA (complete case),8,440,0.559,0.594
+Cox with CEA (complete case),9,439,0.595,0.721
+Cox with CEA (complete case),10,440,0.651,0.773
+TNM-only survival tree,1,440,0.295,0.291
+TNM-only survival tree,2,440,0.381,0.486
+TNM-only survival tree,3,439,0.401,0.489
+TNM-only survival tree,4,440,0.421,0.49
+TNM-only survival tree,5,439,0.487,0.525
+TNM-only survival tree,6,440,0.488,0.497
+TNM-only survival tree,7,439,0.488,0.455
+TNM-only survival tree,8,440,0.517,0.529
+TNM-only survival tree,9,439,0.554,0.633
+TNM-only survival tree,10,440,0.554,0.655
+Expanded survival tree (no CEA),1,440,0.292,0.388
+Expanded survival tree (no CEA),2,440,0.352,0.368
+Expanded survival tree (no CEA),3,439,0.355,0.544
+Expanded survival tree (no CEA),4,440,0.399,0.419
+Expanded survival tree (no CEA),5,439,0.469,0.506
+Expanded survival tree (no CEA),6,440,0.487,0.489
+Expanded survival tree (no CEA),7,439,0.487,0.491
+Expanded survival tree (no CEA),8,440,0.498,0.552
+Expanded survival tree (no CEA),9,439,0.614,0.687
+Expanded survival tree (no CEA),10,440,0.614,0.606
+Expanded survival tree (with CEA),1,440,0.288,0.361
+Expanded survival tree (with CEA),2,440,0.335,0.375
+Expanded survival tree (with CEA),3,439,0.349,0.399
+Expanded survival tree (with CEA),4,440,0.384,0.524
+Expanded survival tree (with CEA),5,439,0.466,0.462
+Expanded survival tree (with CEA),6,440,0.55,0.489
+Expanded survival tree (with CEA),7,439,0.578,0.614
+Expanded survival tree (with CEA),8,440,0.578,0.6
+Expanded survival tree (with CEA),9,439,0.578,0.57
+Expanded survival tree (with CEA),10,440,0.578,0.652

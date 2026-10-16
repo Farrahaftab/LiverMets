@@ -1,0 +1,3 @@
+validation_subperiod,n,logrank_p,Favourable_n,Favourable_median,Intermediate_n,Intermediate_median,Adverse_n,Adverse_median
+2010-2014,4990,3.617949590793471e-31,1563,7.43,1488,4.66,1939,3.57
+2015 onwards,1637,8.522333217803177e-09,482,,517,4.42,638,3.71

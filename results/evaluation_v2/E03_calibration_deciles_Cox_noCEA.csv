@@ -1,0 +1,11 @@
+model,decile,n,predicted_S5,observed_S5
+Cox no-CEA (full cohort),1,663,0.208,0.238
+Cox no-CEA (full cohort),2,663,0.305,0.327
+Cox no-CEA (full cohort),3,662,0.357,0.5
+Cox no-CEA (full cohort),4,663,0.397,0.429
+Cox no-CEA (full cohort),5,663,0.433,0.397
+Cox no-CEA (full cohort),6,662,0.466,0.435
+Cox no-CEA (full cohort),7,663,0.498,0.585
+Cox no-CEA (full cohort),8,662,0.528,0.644
+Cox no-CEA (full cohort),9,663,0.563,0.59
+Cox no-CEA (full cohort),10,663,0.616,0.762

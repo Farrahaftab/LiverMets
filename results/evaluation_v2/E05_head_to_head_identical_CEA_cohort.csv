@@ -1,0 +1,6 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,valid_tied_pair_share,n_leaves
+Cox no-CEA,0.5891,0.6201,0.595-0.642,0.64,0.638,0.652,0.0293,0.1015,0.075,,
+Cox with CEA (complete case),0.6099,0.6469,0.630-0.664,0.687,0.671,0.682,0.0291,0.0993,0.0739,,
+TNM-only survival tree,0.5593,0.5806,0.558-0.601,0.539,0.598,0.604,0.0294,0.1034,0.0787,0.1914,7.0
+Expanded survival tree (no CEA),0.5775,0.5858,0.568-0.605,0.562,0.618,0.609,0.0293,0.1026,0.0781,0.2013,8.0
+Expanded survival tree (with CEA),0.589,0.5979,0.578-0.616,0.585,0.628,0.612,0.0295,0.102,0.079,0.2735,7.0

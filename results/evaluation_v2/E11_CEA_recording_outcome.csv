@@ -1,0 +1,3 @@
+CEA_recorded,n,deaths,median_OS,median_95CI,S5
+False,4374,1564,4.21,4.04-4.44,0.436
+True,8911,3357,4.72,4.54-4.88,0.478

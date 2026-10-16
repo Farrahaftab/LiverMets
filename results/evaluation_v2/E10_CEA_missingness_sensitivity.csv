@@ -1,0 +1,5 @@
+strategy,n_train,n_valid,CEA_HR_per_log_unit,CEA_HR_95CI,valid_C
+Complete case (CEA recorded only),4515,4396,1.163,1.133-1.194,0.6469
+Median fill + not-recorded indicator (full cohort),6658,6627,1.162,1.132-1.192,0.6488
+"Zero fill + not-recorded indicator (full cohort, coding check only)",6658,6627,1.162,1.132-1.192,0.6488
+"Multiple imputation, 5 draws (predictors only; outcome not in imputation model)",6658,6627,1.118,draw range 1.110-1.127,0.6273
