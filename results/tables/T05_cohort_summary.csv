@@ -1,0 +1,11 @@
+quantity,value
+OS events (death),4921.0
+"OS median follow-up, reverse KM (years)",3.37
+RFS events,7464.0
+RFS source: recurrence date,277.0
+"RFS source: alive with disease, no date",2321.0
+Training era (<=2009),6658.0
+Validation era (>2009),6627.0
+Treatment categories available,11421.0
+Fong score computable (all 5 criteria),6082.0
+Nordlinger-type score computable,10499.0

@@ -1,0 +1,5 @@
+step,n,excluded_from_previous
+All patients in combined extract,29565,0
+"TNM complete (T, N and M stage recorded, not ND/NA)",19465,10100
+  ...and liver metastasis diagnosis date available,13588,5877
+"  ...and valid OS (known status, date > time zero)",13285,303
