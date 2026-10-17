@@ -1,0 +1,5 @@
+benchmark,train_n,valid_n,train_C,valid_C
+Fong CRS (CEA complete cases),3185,2897,0.5621,0.5849
+"Fong CRS (CEA complete cases) | comparator: Cox M3 linear predictor, same patients",3185,2897,0.5777,0.6339
+Nordlinger-type (full cohort),5323,5176,0.5598,0.5795
+"Nordlinger-type (full cohort) | comparator: Cox M3 linear predictor, same patients",5323,5176,0.5937,0.6347

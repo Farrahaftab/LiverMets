@@ -1,0 +1,8 @@
+score,criterion,source,proxy
+Fong CRS,node-positive primary,STADEN N1/N2,clinical N stage at diagnosis (pathological N not available)
+Fong CRS,disease-free interval < 12 months,DGKCOLDT to LE1DGMETADT (synchronous = 0),interval to liver-metastasis diagnosis
+Fong CRS,more than one liver tumour,LE1NBMETAHEPNUM > 1,count at liver episode 1
+Fong CRS,largest tumour > 5 cm,LE1HEPMETASIZENUM > 50 mm,size field not confirmed as largest lesion
+Fong CRS,pre-operative CEA > 200 ng/mL,LE1PREHEPCEA_F1 > 200,pre-hepatectomy CEA; complete cases only
+Nordlinger-type,age >= 60; T4; node-positive; DFI < 12 months,as above,unweighted count; published Nordlinger weights not verified
+Basingstoke,"differentiation grade, extrahepatic disease, margin",not available,not computed

@@ -1,0 +1,3 @@
+analysis,n,events,median_RFS_years,median_95CI,RFS_1y,RFS_3y,RFS_5y
+RFS primary (AWD without date = event at last contact),13285,7471,3.26,3.20-3.33,0.9,0.54,0.315
+RFS sensitivity (AWD without date censored),13285,5150,4.33,,0.939,0.655,0.447

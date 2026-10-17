@@ -1,0 +1,10 @@
+definition,n
+All patients,29565
+TNM complete,19465
+Surgery = Yes (any date),26814
+Surgery = Yes and TNM complete,17771
+"Surgery = Yes, TNM complete, valid last contact",17491
+"Hepatectomy date present (lesion 1), TNM complete",460
+"Diagnosis origin, TNM complete, valid OS (primary)",13285
+Earlier published survival-eligible cohort (not reproducible from repo),14759
+Earlier-cited surgery-origin cohort (no definition found in repo),26094

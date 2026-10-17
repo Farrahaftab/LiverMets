@@ -1,0 +1,2 @@
+strategy,CEA_HR_per_log_unit,CEA_HR_95CI,valid_C,valid_C_draw_range
+"Multiple imputation, 10 draws, outcome-compatible in development (Nelson-Aalen + event), predictor-only at validation",1.158,1.131-1.186,0.64,0.6265-0.6385

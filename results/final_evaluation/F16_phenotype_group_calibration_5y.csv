@@ -1,0 +1,10 @@
+phenotype,group,predicted_S5_training,observed_S5_validation
+Survival tree (merged leaves),Favourable,0.57,0.585
+Survival tree (merged leaves),Intermediate,0.468,0.515
+Survival tree (merged leaves),Adverse,0.325,0.395
+Cox M3 risk tertiles,Favourable,0.571,0.645
+Cox M3 risk tertiles,Intermediate,0.443,0.507
+Cox M3 risk tertiles,Adverse,0.344,0.348
+Cox M0 risk tertiles,Favourable,0.575,0.665
+Cox M0 risk tertiles,Intermediate,0.449,0.468
+Cox M0 risk tertiles,Adverse,0.335,0.374
