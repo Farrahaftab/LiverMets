@@ -1,0 +1,7 @@
+origin,period,group,n,share_pct,deaths,median_OS,median_95CI_lo,median_95CI_hi,S5
+surgery,training,Favourable,2997,33.3,1418,5.35,5.08,5.66,0.527
+surgery,training,Intermediate,2997,33.3,1694,3.76,3.5,3.95,0.405
+surgery,training,Adverse,2997,33.3,1971,2.75,2.61,2.89,0.284
+surgery,validation,Favourable,2767,30.2,401,7.38,6.14,,0.622
+surgery,validation,Intermediate,2988,32.6,635,4.31,4.12,4.67,0.453
+surgery,validation,Adverse,3412,37.2,975,3.05,2.92,3.31,0.336

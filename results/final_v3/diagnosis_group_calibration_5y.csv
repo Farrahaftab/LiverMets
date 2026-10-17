@@ -1,0 +1,4 @@
+origin,group,predicted_S5_training,observed_S5_validation
+diagnosis,Favourable,0.568,0.64
+diagnosis,Intermediate,0.446,0.515
+diagnosis,Adverse,0.344,0.349

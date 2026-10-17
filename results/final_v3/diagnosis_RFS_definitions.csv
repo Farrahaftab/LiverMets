@@ -1,0 +1,5 @@
+origin,RFS_definition,n,events,dated_recurrence_in_window,median_RFS,median_95CI_lo,median_95CI_hi,RFS_3y,RFS_5y
+diagnosis,evidence rule (primary),13078,7557.0,4800.0,2.14,2.08,2.18,0.379,0.251
+diagnosis,sensitivity: no-date recurrence censored,13078,7199.0,4800.0,2.19,2.14,2.25,0.393,0.27
+diagnosis,earlier rule: all alive-with-disease events,13078,8373.0,4800.0,1.95,1.91,1.99,0.339,0.214
+diagnosis,recurrence before time zero (excluded from RFS),207,,,,,,,

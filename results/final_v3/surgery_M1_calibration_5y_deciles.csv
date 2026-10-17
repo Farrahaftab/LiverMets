@@ -1,0 +1,11 @@
+origin,decile,n,predicted_S5,observed_S5_KM
+surgery,1,917,0.174,0.26
+surgery,2,917,0.269,0.303
+surgery,3,916,0.315,0.367
+surgery,4,917,0.354,0.434
+surgery,5,917,0.386,0.409
+surgery,6,916,0.418,0.416
+surgery,7,917,0.448,0.549
+surgery,8,916,0.477,0.587
+surgery,9,917,0.513,0.52
+surgery,10,917,0.568,0.757

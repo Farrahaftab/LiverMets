@@ -1,0 +1,4 @@
+origin,group,predicted_S5_training,observed_S5_validation
+surgery,Favourable,0.527,0.622
+surgery,Intermediate,0.405,0.453
+surgery,Adverse,0.284,0.336

@@ -1,0 +1,4 @@
+origin,tree_group,valid_n,valid_median_OS,valid_S5
+diagnosis,Favourable,1569,6.55,0.585
+diagnosis,Intermediate,2934,5.27,0.515
+diagnosis,Adverse,2124,3.68,0.395

@@ -1,0 +1,11 @@
+origin,decile,n,predicted_S5,observed_S5_KM
+diagnosis,1,663,0.205,0.264
+diagnosis,2,663,0.304,0.327
+diagnosis,3,662,0.357,0.442
+diagnosis,4,663,0.397,0.471
+diagnosis,5,663,0.434,0.36
+diagnosis,6,662,0.467,0.479
+diagnosis,7,663,0.5,0.547
+diagnosis,8,662,0.531,0.628
+diagnosis,9,663,0.565,0.608
+diagnosis,10,663,0.617,0.774
