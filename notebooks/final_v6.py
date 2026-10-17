@@ -431,7 +431,7 @@ print(stab.to_string(index=False))
 
 # ================================================================== day-convention sensitivity (same specification)
 day_rows = []
-for lab, dd in cohorts.items():
+for lab, dd in [(k, v) for k, v in cohorts.items() if not k.endswith('__G')]:
     mm = dd[dd.TNM].reset_index(drop=True)
     tr_ = (mm.ERA == 'train').values; va_ = (mm.ERA == 'valid').values
     mm['DFI_NR'] = mm.DFI.isna().astype(float); mm['METS_NR'] = mm.METS.isna().astype(float); mm['SIZE_NR'] = mm.SIZE.isna().astype(float)
