@@ -1,0 +1,9 @@
+predictor,source,basis,timing,coverage_pct,status
+Age at operation,BIRTHDT (date) and LE1OPERDT_F1 (date),confirmed date fields,before time zero,88.5,confirmed
+Sex,GENDER,no date field,baseline characteristic,99.9,assumed static
+"T, N, M stage","STADET, STADEN, STADEM",no date field,at primary staging (before liver metastasis diagnosis),100.0,assumed (stage date not in export)
+Diagnosis-to-metastasis interval,DGKCOLDT and LE1DGMETADT (dates),confirmed date fields,before time zero for 77.6% with both dates,76.6,confirmed (dates); DG after operation excluded by NR rule
+Synchronous presentation,LE1METASYNCYN,no date field,at liver metastasis diagnosis,98.9,assumed
+Number of liver metastases (episode 1),LE1NBMETAHEPNUM,no measurement date,episode 1 (assumed pre-operative),92.8,assumed
+Largest metastasis size (episode 1),LE1HEPMETASIZENUM,no measurement date,episode 1 (assumed pre-operative),80.8,assumed
+CEA (sensitivity only),LE1PREHEPCEA_F1,"field name: pre-hepatectomy, no date",pre-hepatectomy (assumed),65.8,assumed; not in primary model

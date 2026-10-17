@@ -1,0 +1,9 @@
+stratum,period,n,deaths,LP_tertile_Favourable_n,abs5_Favourable_n,LP_tertile_Intermediate_n,abs5_Intermediate_n,LP_tertile_Adverse_n,abs5_Adverse_n,mean_predicted_S5,observed_S5_KM
+"female, asynchronous",training,1285,679,621,566,451,446,213,273,0.453,0.456
+"female, asynchronous",validation,1243,234,561,507,411,406,271,330,0.441,0.51
+"female, synchronous",training,1970,1103,444,522,649,647,877,801,0.404,0.402
+"female, synchronous",validation,2072,479,411,508,668,663,993,901,0.392,0.456
+"male, asynchronous",training,2264,1237,1082,950,775,798,407,516,0.447,0.451
+"male, asynchronous",validation,2257,447,1024,903,722,743,511,611,0.438,0.488
+"male, synchronous",training,2944,1656,674,783,946,930,1324,1231,0.4,0.401
+"male, synchronous",validation,3227,756,654,771,1032,1000,1541,1456,0.386,0.442

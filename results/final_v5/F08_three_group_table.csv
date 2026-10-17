@@ -1,0 +1,7 @@
+period,group,n,share_pct,deaths,median_OS,median_95CI_lo,median_95CI_hi,S5
+training,Favourable,2821,33.3,1309,5.57,5.26,5.93,0.541
+training,Intermediate,2821,33.3,1556,3.91,3.75,4.19,0.418
+training,Adverse,2821,33.3,1810,2.98,2.81,3.14,0.308
+validation,Favourable,2650,30.1,389,7.19,6.07,8.11,0.619
+validation,Intermediate,2833,32.2,586,4.44,4.17,5.17,0.466
+validation,Adverse,3316,37.7,941,3.19,2.96,3.38,0.342

@@ -1,0 +1,7 @@
+grouping,group,train_n,valid_n,valid_deaths,valid_median_OS,valid_S5_KM,train_mean_predicted_S5,train_observed_S5_KM,valid_mean_predicted_S5
+pooled linear-predictor tertiles,Favourable,2821,2650,389,7.19,0.619,0.53,0.541,0.531
+pooled linear-predictor tertiles,Intermediate,2821,2833,586,4.44,0.466,0.428,0.418,0.429
+pooled linear-predictor tertiles,Adverse,2821,3316,941,3.19,0.342,0.306,0.308,0.294
+fixed-horizon 5-year predicted survival tertiles,Favourable,2821,2689,384,7.38,0.627,0.531,0.539,0.531
+fixed-horizon 5-year predicted survival tertiles,Intermediate,2821,2812,597,4.42,0.46,0.428,0.421,0.427
+fixed-horizon 5-year predicted survival tertiles,Adverse,2821,3298,935,3.19,0.342,0.305,0.306,0.293

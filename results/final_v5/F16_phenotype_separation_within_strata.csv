@@ -1,0 +1,3 @@
+grouping,valid_C_group_ordinal,valid_logrank_p,train_logrank_p,valid_logrank_p_female_asynchronous,valid_logrank_p_female_synchronous,valid_logrank_p_male_asynchronous,valid_logrank_p_male_synchronous
+pooled linear-predictor tertiles,0.6026,1.8940653777360806e-51,4.866923617927726e-78,1.8409602257469419e-06,3.8638319244524284e-13,1.5165092143278767e-10,5.257297104717559e-19
+fixed-horizon 5-year risk tertiles,0.5989,1.6909815062975765e-50,3.628984061712488e-79,6.351993404914809e-06,5.491673620262531e-14,4.6425059482151473e-10,8.361013124878122e-19

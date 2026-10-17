@@ -1,0 +1,8 @@
+step,rule,n,report,difference_from_report
+1,Original registry (all rows),29565,29565,0
+2,Registry inclusion: CINCLUSION = Yes,28979,28979,0
+3,Hepatectomy at first liver procedure: LE1HEPATECTYN_F1 = Yes,26677,26677,0
+4,Index operation date available (LE1OPERDT_F1 year and month present),26592,26592,0
+5,Vital status (PATSTATC) and last-news date (LASTNDTC) available,26271,26271,0
+6,Valid chronology: last-news date >= index operation date,26186,26186,0
+7,Positive follow-up or death,26094,26094,0
