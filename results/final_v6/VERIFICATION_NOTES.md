@@ -43,12 +43,12 @@ Log-rank p = 2.0 × 10⁻⁵² (validation); ordinal C 0.603. Bootstrap κ 0.832
 | All TNM-complete | 8,799 | 0.6216 | 0.408 | 0.466 | 1.142 | — |
 | Fong CRS (CEA recorded) | 3,642 | 0.6394 | 0.399 | 0.474 | 1.188 | Fong 0.5912 |
 | Nordlinger-type | 6,137 | 0.6303 | 0.399 | 0.461 | 1.155 | Nordlinger 0.583 |
-The model is well discriminating but over-predicts survival (O/E > 1; observed survival higher than predicted), and the validation set is not recalibrated in the primary report.
+The model discriminates reasonably but under-predicts survival in validation (O/E > 1: observed 5-y survival exceeds predicted in every subset).
 
 ## 7. Remaining limitations
 1. Metastasis count and size are assumed to be known at operation; operative-form counts agree with pre-operative counts for 13,130 of 20,553 patients only, and the resected count exceeds the pre-op count in 3,179.
 2. 3,074 deceased patients lack any DEATHKYN_F = Yes; death dates rely on LASTNDTC.
-3. Calibration: O/E 1.14 in validation; model is not recalibrated for the primary report.
+3. Calibration: validation O/E 1.14 and calibration slope 1.07–1.09 for the selected model; no recalibration is applied in these results.
 4. M-stage PH violation addressed by stratification (M2a), not by a hazard-ratio-only model.
 5. Undated recurrences (1,676) cannot be placed in time; RFS is secondary.
 6. The 19 same-day deaths are internally consistent but not independently verified.
