@@ -38,7 +38,7 @@ T0 = time.time()
 SEED = 42
 RNG = np.random.default_rng(SEED)
 W = Path(os.environ['LIVERMET_WORK_DIR'])
-RES = Path(os.environ['LIVERMET_RESULTS_DIR']) / 'final_v4'
+RES = Path(os.environ['LIVERMET_RESULTS_DIR']) / 'final_v5'
 RES.mkdir(parents=True, exist_ok=True)
 EP = pd.Timestamp('1899-12-30')
 MISS = ['ND', 'NA', '']

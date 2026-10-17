@@ -1,4 +1,4 @@
 group,predicted_S5_training,observed_S5_validation
-Favourable,0.542,0.617
-Intermediate,0.417,0.469
-Adverse,0.308,0.341
+Favourable,0.542,0.618
+Intermediate,0.416,0.468
+Adverse,0.308,0.34

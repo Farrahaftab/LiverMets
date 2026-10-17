@@ -1,4 +1,4 @@
 subset,train_n,valid_n,valid_deaths,M1_valid_C,tree_valid_C,published_score_valid_C,published_score
-All TNM-complete validation patients,8463,8799,1916,0.6224,0.5564,,
-"Fong CRS subset (CEA recorded, all criteria)",3424,3646,915,0.6383,0.5712,0.5915,Fong CRS
-"Nordlinger-type subset (age, T, N, DFI recorded)",5841,6155,1399,0.6311,0.5659,0.5834,Nordlinger-type (unweighted)
+All TNM-complete validation patients,8465,8800,1917,0.6222,0.5566,,
+"Fong CRS subset (CEA recorded, all criteria)",3424,3646,915,0.6383,0.5705,0.5914,Fong CRS
+"Nordlinger-type subset (age, T, N, DFI recorded)",5841,6155,1399,0.631,0.5654,0.5833,Nordlinger-type (unweighted)

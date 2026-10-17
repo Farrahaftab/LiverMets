@@ -1,7 +1,7 @@
 period,group,n,share_pct,deaths,median_OS,median_95CI_lo,median_95CI_hi,S5
-training,Favourable,2821,33.3,1307,5.57,5.26,5.94,0.542
-training,Intermediate,2821,33.3,1558,3.93,3.76,4.19,0.417
-training,Adverse,2821,33.3,1810,2.98,2.81,3.14,0.308
-validation,Favourable,2655,30.2,391,7.38,6.08,8.11,0.617
-validation,Intermediate,2830,32.2,584,4.51,4.18,5.36,0.469
-validation,Adverse,3314,37.7,941,3.18,2.96,3.38,0.341
+training,Favourable,2822,33.3,1307,5.57,5.26,5.94,0.542
+training,Intermediate,2821,33.3,1559,3.93,3.75,4.19,0.416
+training,Adverse,2822,33.3,1811,2.98,2.81,3.14,0.308
+validation,Favourable,2654,30.2,392,7.19,6.07,8.11,0.618
+validation,Intermediate,2833,32.2,584,4.51,4.18,5.17,0.468
+validation,Adverse,3313,37.6,941,3.18,2.96,3.38,0.34
