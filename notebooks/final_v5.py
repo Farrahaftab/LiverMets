@@ -573,7 +573,7 @@ na_fit = NelsonAalenFitter().fit(M.OS_Y.values[trm], M.OS_E.values[trm])
 H_na = np.interp(M.OS_Y.values, na_fit.cumulative_hazard_.index.values, na_fit.cumulative_hazard_.iloc[:, 0].values)
 Xp = M[pred_cols].astype(float).values
 dev = np.column_stack([Xp, M.CEA_LOG.values, H_na, M.OS_E.values])
-MI_COLS = ['T3', 'T4', 'N1', 'N2', 'M1', 'AGE10_F', 'MALE_F', 'SYNC_F', 'DFI12_F', 'METS_F', 'SIZE10_F', 'DFI_NR', 'METS_NR', 'SIZE_NR']
+MI_COLS = ['T3', 'T4', 'N1', 'N2', 'M1', 'AGE10_F', 'DFI12_F', 'METS_F', 'SIZE10_F', 'DFI_NR', 'METS_NR', 'SIZE_NR']  # sex and synchrony are the strata
 coefs, varis, lp_v, hrs = [], [], [], []
 for draw in range(10):
     imp = IterativeImputer(max_iter=10, sample_posterior=True, random_state=SEED + draw).fit(dev[trm])
