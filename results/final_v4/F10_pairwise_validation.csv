@@ -1,0 +1,4 @@
+comparison,valid_logrank_p_bonferroni
+Favourable vs Intermediate,1.9520037695384207e-09
+Intermediate vs Adverse,1.3306566938943434e-18
+Favourable vs Adverse,1.402909040957076e-48

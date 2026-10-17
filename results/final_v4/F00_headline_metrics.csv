@@ -1,0 +1,21 @@
+quantity,value
+M1_train_C,0.5937
+M1_valid_C,0.6222
+M1_Brier_1y,0.0604
+M1_Brier_3y,0.1011
+M1_Brier_5y,0.0651
+M1_IBS_1_7y,0.0752
+M1_mean_pred_S5,0.408
+M1_observed_S5,0.466
+M1_OE_5y,1.141
+M1_calib_slope_5y,1.089
+tertile_cut_LP_q33,1.2575
+tertile_cut_LP_q67,1.5316
+tertile_valid_C,0.6023
+tertile_valid_logrank_p,1.3752068120062044e-51
+tertile_train_logrank_p,3.356367647705116e-78
+bootstrap_kappa_median,0.856
+bootstrap_kappa_2.5pct,0.712
+bootstrap_resamples,100
+sensitivity_complete_operation_dates_only_n_train_/_valid,8299 / 8696
+sensitivity_complete-date_M1_valid_C,0.6208

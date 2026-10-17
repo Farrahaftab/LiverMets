@@ -1,0 +1,5 @@
+RFS_definition,n,events,dated_recurrence_after_operation,median_RFS,median_95CI_lo,median_95CI_hi,RFS_3y,RFS_5y
+"primary: dated recurrence, death, or recurrence count without date",16680,9675.0,5324.0,1.93,1.88,1.98,0.369,0.244
+sensitivity: recurrence without date censored,16680,8945.0,5324.0,2.03,1.99,2.09,0.393,0.276
+earlier rule: all alive-with-disease events,16680,10347.0,5324.0,1.76,1.72,1.81,0.339,0.222
+excluded: recurrence before operation,585,,,,,,,
