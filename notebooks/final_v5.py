@@ -116,7 +116,7 @@ save(flow, 'F01_patient_flow_report_rules')
 print(flow.to_string(index=False))
 diagnostic = {
     'index operation: complete serial date at step 4': int((s4 & OPD_ser.notna()).sum()),
-    'index operation: partial (day missing, set to 1st)': int((s4 & OPD_ser.isna()).sum()),
+    'index operation: partial (day missing, set to 15th)': int((s4 & OPD_ser.isna()).sum()),
     'last-news after administrative censoring date 2020-07-04': int((s7 & (LAST_ser > CENSOR)).sum()),
     'operation after censoring date': int((s7 & (OPD > CENSOR)).sum()),
 }
@@ -165,6 +165,7 @@ B.loc[(B.CEA < 0) | (B.CEA > 40000), 'CEA'] = np.nan
 B['DFI'] = (B.DG - B.DGK).dt.days / 30.4375
 B.loc[B.SYNC == 1, 'DFI'] = 0.0
 B.loc[B.DFI < 0, 'DFI'] = np.nan
+B.loc[B.DG > B.T0, 'DFI'] = np.nan   # liver metastasis diagnosed after time zero: not known at prediction time
 B['AGE10'] = B.AGE / 10
 B['DFI12'] = B.DFI / 12
 B['SIZE10'] = B.SIZE / 10
