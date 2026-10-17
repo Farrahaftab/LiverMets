@@ -1,0 +1,5 @@
+model,mean_pred_S5,observed_S5_KM,OE_ratio_5y,calib_slope
+"M0 Cox (original, no corrections)",0.437,0.491,1.123,1.119
+M1 Cox stratified (sex x synchronous),0.438,0.491,1.122,1.109
+M2 Cox time-varying (2-year split),0.438,0.491,1.123,1.122
+M3 Cox stratified + time-varying,0.438,0.491,1.121,1.113

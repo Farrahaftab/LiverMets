@@ -1,0 +1,5 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,IBS_1_to_7y
+"M0 Cox (original, no corrections)",0.5962,0.6237,0.608-0.638,0.629,0.649,0.678,0.0366,0.0991,0.0668,0.0719
+M1 Cox stratified (sex x synchronous),0.5955,0.6245,0.607-0.644,0.628,0.651,0.68,0.0367,0.0993,0.0668,0.072
+M2 Cox time-varying (2-year split),0.596,0.6233,0.608-0.641,0.628,0.649,0.678,0.0366,0.0991,0.0669,0.0719
+M3 Cox stratified + time-varying,0.5956,0.6238,0.608-0.640,0.627,0.65,0.679,0.0366,0.0992,0.0669,0.072

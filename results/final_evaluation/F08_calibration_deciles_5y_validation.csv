@@ -1,0 +1,41 @@
+model,decile,n,predicted_S5,observed_S5_KM
+"M0 Cox (original, no corrections)",1,663,0.208,0.238
+"M0 Cox (original, no corrections)",2,663,0.305,0.327
+"M0 Cox (original, no corrections)",3,662,0.357,0.5
+"M0 Cox (original, no corrections)",4,663,0.397,0.429
+"M0 Cox (original, no corrections)",5,663,0.433,0.397
+"M0 Cox (original, no corrections)",6,662,0.466,0.435
+"M0 Cox (original, no corrections)",7,663,0.498,0.585
+"M0 Cox (original, no corrections)",8,662,0.528,0.644
+"M0 Cox (original, no corrections)",9,663,0.563,0.59
+"M0 Cox (original, no corrections)",10,663,0.616,0.762
+M1 Cox stratified (sex x synchronous),1,663,0.205,0.264
+M1 Cox stratified (sex x synchronous),2,663,0.304,0.327
+M1 Cox stratified (sex x synchronous),3,662,0.357,0.442
+M1 Cox stratified (sex x synchronous),4,663,0.397,0.471
+M1 Cox stratified (sex x synchronous),5,663,0.434,0.36
+M1 Cox stratified (sex x synchronous),6,662,0.467,0.479
+M1 Cox stratified (sex x synchronous),7,663,0.5,0.547
+M1 Cox stratified (sex x synchronous),8,662,0.531,0.628
+M1 Cox stratified (sex x synchronous),9,663,0.565,0.608
+M1 Cox stratified (sex x synchronous),10,663,0.617,0.774
+M2 Cox time-varying (2-year split),1,663,0.211,0.237
+M2 Cox time-varying (2-year split),2,663,0.308,0.357
+M2 Cox time-varying (2-year split),3,662,0.359,0.462
+M2 Cox time-varying (2-year split),4,663,0.398,0.449
+M2 Cox time-varying (2-year split),5,663,0.433,0.374
+M2 Cox time-varying (2-year split),6,662,0.466,0.448
+M2 Cox time-varying (2-year split),7,663,0.498,0.574
+M2 Cox time-varying (2-year split),8,662,0.527,0.633
+M2 Cox time-varying (2-year split),9,663,0.562,0.592
+M2 Cox time-varying (2-year split),10,663,0.615,0.774
+M3 Cox stratified + time-varying,1,663,0.209,0.266
+M3 Cox stratified + time-varying,2,663,0.307,0.333
+M3 Cox stratified + time-varying,3,662,0.359,0.423
+M3 Cox stratified + time-varying,4,663,0.398,0.473
+M3 Cox stratified + time-varying,5,663,0.433,0.386
+M3 Cox stratified + time-varying,6,662,0.467,0.467
+M3 Cox stratified + time-varying,7,663,0.499,0.573
+M3 Cox stratified + time-varying,8,662,0.529,0.621
+M3 Cox stratified + time-varying,9,663,0.563,0.599
+M3 Cox stratified + time-varying,10,663,0.616,0.768

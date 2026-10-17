@@ -1,0 +1,9 @@
+model,term,early_coef,late_minus_early,p_time_variation,note
+M2,MALE_F,-0.0242,0.0703,0.3399808628765376,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M2,SYNC_F,-0.4032,0.2239,0.002691869201565339,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M2,N2,0.5954,-0.079,0.3033850400747718,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M2,SIZE10_F,0.0376,-0.0168,0.13662822400750174,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M2,METS_NR,0.566,-0.3086,0.01261374593392039,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M3,N2,0.5956,-0.0771,0.31503047681355456,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M3,SIZE10_F,0.0373,-0.0166,0.14153937373941977,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)
+M3,METS_NR,0.5663,-0.303,0.014346907470219748,coefficient changes after 2 years (p < 0.05 means the time-varying term is needed)

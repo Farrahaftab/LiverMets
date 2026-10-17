@@ -1,0 +1,5 @@
+model,constant_terms_violating_PH_training,n_violations,acceptable_by_training_rule
+M0,"MALE_F, METS_NR, N2, SIZE10_F, SYNC_F",5.0,False
+M1,none,0.0,True
+M2,"time-varying terms modelled; constant terms: T3, T4, N1, M1, AGE10_F, DFI12_F, METS_F, DFI_NR, SIZE_NR",,
+M3,"time-varying terms modelled; constant terms: T3, T4, N1, M1, AGE10_F, DFI12_F, METS_F, DFI_NR, SIZE_NR",,
