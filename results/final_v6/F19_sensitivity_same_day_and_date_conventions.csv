@@ -1,0 +1,7 @@
+analysis,modelling_TNM_n,train_n,valid_n,train_deaths,cut_S5_q33,cut_S5_q67,valid_C,STRATUM_M1_HR_male,M_stage_in_model,patients_in_common_with_primary,phenotype_identical_pct_vs_primary,kappa_vs_primary
+"primary: mid-month day, same-day deaths at half day",17262,8463,8799,4675,0.3794,0.4755,0.6217,,stratum,17262,100.0,1.0
+day convention: first day of month,17265,8465,8800,4677,0.3793,0.4752,0.6215,,stratum,17262,99.64,0.995
+day convention: month-end,17262,8463,8799,4675,0.3794,0.4755,0.6217,,stratum,17262,99.95,0.999
+same-day deaths: one day,17262,8463,8799,4675,0.3794,0.4755,0.6217,,stratum,17262,100.0,1.0
+same-day deaths: quarter day,17262,8463,8799,4675,0.3794,0.4755,0.6217,,stratum,17262,100.0,1.0
+same-day deaths: excluded (19 patients),17249,8453,8796,4665,0.38,0.476,0.6221,,stratum,17249,99.63,0.995

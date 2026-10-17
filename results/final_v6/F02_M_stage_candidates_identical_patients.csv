@@ -1,0 +1,4 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,IBS_1_7y,valid_observed_S5,valid_mean_predicted_S5,valid_OE_5y,valid_calib_slope_5y
+M1 stratified sex x synchronous (M-stage covariate),0.5947,0.6218,0.606-0.636,0.638,0.652,0.674,0.0604,0.1011,0.0651,0.0752,0.466,0.409,1.141,1.091
+M2a stratified sex x synchronous x M-stage,0.5952,0.6216,0.608-0.637,0.639,0.653,0.675,0.0604,0.101,0.0651,0.0752,0.466,0.408,1.142,1.074
+"M2b stratified sex x synchronous, time-varying M-stage (2-year split)",0.5947,0.6219,0.609-0.637,0.638,0.652,0.674,0.0604,0.101,0.0651,0.0752,0.466,0.409,1.14,1.091

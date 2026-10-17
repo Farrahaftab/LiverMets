@@ -1,0 +1,7 @@
+quantity,value
+selected_model,M2a
+phenotype_cut_S5_q33,0.3793
+phenotype_cut_S5_q67,0.4756
+primary_cohort_TNM_complete,17262
+primary_train_n,8463
+primary_valid_n,8799

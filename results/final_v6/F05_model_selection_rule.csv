@@ -1,0 +1,5 @@
+candidate,all_constant_PH_p_gt_0.05_training
+M1,False
+M2a,True
+M2b,M-stage time-varying; other constant terms: see F03 for M1 structure
+"SELECTED (first passing, simplest first)",M2a

@@ -15,3 +15,5 @@ These earlier results are retained only for audit. Do not cite them.
 | "M1 passes the training PH rule" | final_v3, final_v4 | Corrected cohort shows M-stage PH violation (p = 0.031) | Open item (see limitations) |
 | Interval predictor for 34 patients with diagnosis after operation | final_v4 | Predictor not known at time zero | Set missing (final_v5) |
 | RFS 277 dated recurrences | final_v1 notes | Used only RECDT_F1–F7 | 5,324 dated post-operative recurrences (final_v5) |
+| Day-convention phenotype agreement 33% (M1-based groups compared with M2a primary groups) | final_v6 F10 (deleted) | Compared groups built from different models; invalid | 99.6% (first day) and 99.95% (month-end) agreement with the primary, same M2a specification (final_v6 F19) |
+| Same-day death convention sensitivity not run | final_v6 notes | Not executed before v6 | Half, one and quarter day, and exclusion (final_v6 F19); no change in phenotypes |

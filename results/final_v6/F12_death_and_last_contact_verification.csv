@@ -1,0 +1,12 @@
+check,n
+deceased (PATSTATC),11594
+deceased with any DEATHKYN_F = Yes,8520
+deceased without any DEATHKYN_F = Yes,3074
+alive/lost but DEATHKYN_F = Yes,2
+last-news (LASTNDTC) present for deceased,11594
+LASTNDTC equals latest follow-up date (all with both),26832
+LASTNDTC earlier than latest follow-up date,9
+LASTNDTC later than latest follow-up date,1
+modelling deaths with time zero (operation) after last contact,0
+modelling deaths after censoring date 2020-07-04,0
+modelling deaths with event time > 15 years (censored),69

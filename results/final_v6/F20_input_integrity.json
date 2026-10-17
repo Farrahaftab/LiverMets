@@ -1,0 +1,14 @@
+{
+  "Part1": {
+    "file": "LiverMet_Part1.xlsx",
+    "sha256_now": "7eed0ab953a3b09da616e71b03664ea1dcacd5ad3c6a4b47e70d57bfc393a976",
+    "sha256_recorded": "7eed0ab953a3b09da616e71b03664ea1dcacd5ad3c6a4b47e70d57bfc393a976",
+    "unchanged": true
+  },
+  "Part2": {
+    "file": "LiverMet_Part2.xlsx",
+    "sha256_now": "a1839daaded4b5e4619154e247428a8f2e15fcdc53066a8d67a819b53a161049",
+    "sha256_recorded": "a1839daaded4b5e4619154e247428a8f2e15fcdc53066a8d67a819b53a161049",
+    "unchanged": true
+  }
+}

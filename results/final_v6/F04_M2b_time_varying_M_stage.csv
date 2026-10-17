@@ -1,0 +1,4 @@
+model,term,coef,HR_early,p_time_variation,HR_late
+M2b,M1 early coef,0.1148,1.122,,
+M2b,M1 change after 2 years,-0.1508,,0.20668107504738975,
+M2b,M1 late HR,-0.036,,,0.965
