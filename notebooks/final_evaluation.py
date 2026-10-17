@@ -374,8 +374,9 @@ for label, (be_, bl_, cols_, X_, strat_, S_v) in {
     S_shr = np.power(np.clip(S_v, 1e-9, 1), gamma)
     for variant, S_use in [('original', S_v), ('recent-baseline (train 2005-2009)', S_r),
                            ('shrinkage factor gamma (training optimism)', S_shr)]:
-        p = performance(f'{label} {variant}', S_use[trm], (-np.log(np.clip(S_use, 1e-12, 1))), S_use[vam],
-                        (-np.log(np.clip(S_use, 1e-12, 1))), trm, vam, Ttr, Etr, Tva, Eva)
+        H_use = -np.log(np.clip(S_use, 1e-12, 1))
+        p = performance(f'{label} {variant}', S_use[trm], H_use[trm], S_use[vam], H_use[vam],
+                        trm, vam, Ttr, Etr, Tva, Eva)
         p['gamma_apparent'] = round(gamma_app, 3)
         p['gamma_optimism_corrected'] = round(gamma, 3)
         rec_rows.append(p)
