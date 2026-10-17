@@ -141,7 +141,8 @@ def build(day_fill):
     d['N1'] = (d.N_GRP == 'N1').astype(float).where(d.N_GRP.notna())
     d['N2'] = (d.N_GRP == 'N2').astype(float).where(d.N_GRP.notna())
     d['M1'] = (d.M_GRP == 'M1').astype(float).where(d.M_GRP.notna())
-    d['OS_Y_raw'] = d.OS_DAYS / DAYS
+    # deaths on the operation date (report step 7 includes death): time set to half a day so episodes are defined
+    d['OS_Y_raw'] = np.where((d.OS_DAYS <= 0) & (d.DEATH == 1), 0.5, d.OS_DAYS) / DAYS
     d['OS_Y'] = np.minimum(d.OS_Y_raw, MAXFU)
     d['OS_E'] = np.where(d.OS_Y_raw > MAXFU, 0.0, d.DEATH)
     d['LAST_FU'] = LAST_FU[s7]
