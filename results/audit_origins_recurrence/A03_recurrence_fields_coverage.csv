@@ -1,0 +1,7 @@
+field group,patients_with_any_date,date_entries
+"RECDT_F1..F7 (generic recurrence date, follow-up forms)",436,490
+LRDGMETADT_M1..M5 (liver recurrence episode date),5530,6617
+LRDGMETA2DT_M1..M5 (second liver recurrence date),1110,1149
+EXHEXTRAHEPDGDT_M1..M8 (extrahepatic recurrence date),5530,7048
+"LRNBREC_M1..M5 (liver recurrence count, >0)",7011,8628
+"EXHNBREC2_M1..M8 (extrahepatic recurrence count, >0)",7284,9652

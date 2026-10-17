@@ -1,0 +1,5 @@
+check,n
+patients with any dated recurrence,9412
+dated recurrence before index operation,932
+dated recurrence after index operation,8238
+dated recurrence but no index operation date,242

@@ -1,0 +1,9 @@
+check,n
+operation dates present (LE1OPERDT_F1),28029
+operation date before liver metastasis diagnosis,79
+operation date same day as diagnosis,1225
+operation date with no diagnosis date,8328
+operation date after last contact,97
+operation date with dataset flag LE1HEPATECTYN_F1 = No,1649
+LE1HEPATECTYN_F1 = Yes but no operation date,474
+operation date components agree with serial,0

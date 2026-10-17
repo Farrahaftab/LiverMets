@@ -100,7 +100,6 @@ EXH_DATES = [f'EXHEXTRAHEPDGDT_M{i}' for i in range(1, 9)]
 RECDT = [f'RECDT_F{i}' for i in range(1, 8)]
 ALLREC = pd.concat([xl(raw[c]) for c in LIVER_DATES + EXH_DATES + RECDT], axis=1)
 B['REC_FIRST'] = ALLREC.min(axis=1)
-B['REC_LIST'] = None
 REC_CNT = pd.concat([num(raw[f'LRNBREC_M{i}']) for i in range(1, 6)] + [num(raw[f'EXHNBREC2_M{i}']) for i in range(1, 9)], axis=1)
 B['REC_COUNT_POS'] = (REC_CNT.fillna(0) > 0).any(axis=1)
 B['REC_DATE_ANY'] = B.REC_FIRST.notna()
@@ -203,7 +202,8 @@ def net_benefit(T, E, decision_by_pt, t, G, pts):
     for pt in pts:
         d = decision_by_pt(pt)
         odds = pt / (1 - pt)
-        nb = np.sum(w * (Y * d - (~Y) * known * odds * d)) / N
+        Yf, df_ = Y.astype(float), d.astype(float)
+        nb = np.sum(w * (Yf * df_ - (~Y).astype(float) * known.astype(float) * odds * df_)) / N
         out.append(nb)
     return np.array(out)
 
@@ -389,8 +389,7 @@ def analyse(origin):
         if mv.sum() < 50:
             bm.append({'origin': origin, 'benchmark': lab, 'valid_n': int(mv.sum()), 'note': 'too few'}); continue
         bm.append({'origin': origin, 'benchmark': lab, 'train_n': int(mt.sum()), 'valid_n': int(mv.sum()),
-                   'benchmark_valid_C': round(float(concordance_index(Tva[mv[vam]], -sc.values[mv], Eva[mv[vam]] if False else d.OS_E.values[mv])), 4) if False else
-                   round(float(concordance_index(d.OS_Y.values[mv], -sc.values[mv], d.OS_E.values[mv])), 4),
+                   'benchmark_valid_C': round(float(concordance_index(d.OS_Y.values[mv], -sc.values[mv], d.OS_E.values[mv])), 4),
                    'M1_same_patients_valid_C': round(float(concordance_index(d.OS_Y.values[mv], -lp_all[mv], d.OS_E.values[mv])), 4)})
     save(pd.DataFrame(bm), f'{tag}_benchmarks_same_patients')
 

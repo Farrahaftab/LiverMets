@@ -1,0 +1,10 @@
+definition,n,deaths
+index operation date present (LE1OPERDT_F1),28029,11150
+  + TNM complete,18580,7136
+  + valid status and last contact,27669,11150
+  + OS from operation > 0 days,27452,11098
+  + TNM complete + valid OS from operation,18158,7103
+  + LE1 surgery flag Yes (LE1HEPATECTYN_F1),26340,10135
+"  + valid OS from operation, any TNM",27452,11098
+  + operation on/after liver metastasis diagnosis,19246,7685
+"Diagnosis origin, TNM complete, valid OS (primary, for reference)",13285,4927
