@@ -1,0 +1,7 @@
+criterion,n_failing
+CINCLUSION not Yes,586
+no hepatectomy recorded,2751
+no operation year and month,1120
+no vital status,921
+no last-news date,909
+"TNM incomplete (any of T, N, M missing or unmapped)",10100

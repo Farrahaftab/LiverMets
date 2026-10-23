@@ -1,0 +1,13 @@
+characteristic,included_n,included,excluded_n,excluded,SMD
+Age at operation (years),15271,63.4 (IQR 55.7-70.6),7416,63.0 (IQR 55.3-69.9),0.051
+Metastasis count (known),16011,2.0 (IQR 1.0-3.0),7068,2.0 (IQR 1.0-3.0),0.017
+Largest metastasis mm (known),13956,30.0 (IQR 20.0-45.0),6425,35.0 (IQR 20.0-50.0),-0.186
+Pre-operative CEA (known),11364,7.2 (IQR 2.8-25.0),4898,9.7 (IQR 3.2-41.0),-0.029
+Male sex,17246,61.9%,8827,60.4%,0.031
+Synchronous presentation,17064,58.7%,8210,44.8%,0.282
+Death recorded,17262,38.2%,8832,41.9%,-0.076
+"Operation year, median",17262,2010,8832,2007,0.584
+Operated 2010 or later,17262,51.0%,8832,35.9%,0.308
+"Overall survival: KM median, years",17262,4.15,8832,3.84,
+Overall survival: KM 5-year,17262,43.6%,8832,40.7%,
+Death recorded (deaths / n),17262,"6,601",8832,"3,705",

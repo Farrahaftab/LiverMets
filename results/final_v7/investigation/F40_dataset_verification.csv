@@ -1,0 +1,16 @@
+check,value
+"rows read, Part 1 (non-blank, header excluded)",14782
+"rows read, Part 2 (non-blank)",14783
+rows combined,29565
+rows expected (report),29565
+"distinct Excel row sources (part, row) duplicated",0
+"STUDY_ID distinct values (constant ""LIVERMET"" = no patient-level ID)",1
+SUBJECT_ID blank rows,29565
+distinct country|site|centre|NUMPAT keys,29562
+rows sharing a country|site|centre|NUMPAT key with another row,6
+keys shared by two rows with different content (ID collisions),6
+rows whose analysis content is identical to another row (in pairs),46
+extra copies (second record of an identical pair),23
+countries,54
+sites,288
+header column names (unique),13658

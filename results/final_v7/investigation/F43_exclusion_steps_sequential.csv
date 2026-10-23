@@ -1,0 +1,9 @@
+step,n_remaining,excluded_at_step
+1 registry (all rows),29565,
+2 CINCLUSION = Yes,28979,586.0
+3 hepatectomy recorded,26677,2302.0
+4 operation date (year and month),26592,85.0
+5 vital status and last-news recorded,26271,321.0
+6 chronology consistent,26186,85.0
+7 positive follow-up or death,26094,92.0
+8 complete TNM (analytic cohort),17262,8832.0
