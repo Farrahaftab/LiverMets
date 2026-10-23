@@ -149,8 +149,9 @@ def rubin(bs, ses):
 
 
 # ---------- (a) complete-case M2a (check against v7: validation C 0.6216 on TNM-complete validation)
-cc = add_covariates(DF, DF.T_OBS.values, DF.N_OBS.values, DF.M_OBS.values)
-cc = cc[cc.TNM].reset_index(drop=True)
+# covariate medians come from TNM-complete development patients, as in the primary model
+cc_src = DF[DF.TNM].reset_index(drop=True)
+cc = add_covariates(cc_src, cc_src.T_OBS.values, cc_src.N_OBS.values, cc_src.M_OBS.values)
 train_cc = cc.DEV.values
 be_cc, se_cc, S5_cc = fit_pred(cc, M2A, 'STRAT_M', train_cc)
 C_cc = cstat(cc, -np.log(np.clip(S5_cc, 1e-12, 1)), ~train_cc)
@@ -199,8 +200,8 @@ C_nt_tnm = cstat(G_all, risk_nt, (~G_all.DEV.values) & G_all.TNM.values)
 
 # ---------- (d) duplicates removed (second copy of each identical pair dropped)
 dd = DF[~DF.DUP2].reset_index(drop=True)
+dd = dd[dd.TNM].reset_index(drop=True)
 Gd = add_covariates(dd, dd.T_OBS.values, dd.N_OBS.values, dd.M_OBS.values)
-Gd = Gd[Gd.TNM].reset_index(drop=True)
 be_d, se_d, S5_d = fit_pred(Gd, M2A, 'STRAT_M', Gd.DEV.values)
 C_d = cstat(Gd, -np.log(np.clip(S5_d, 1e-12, 1)), ~Gd.DEV.values)
 n_dup_tnm = int((DF.DUP2 & DF.TNM).sum())

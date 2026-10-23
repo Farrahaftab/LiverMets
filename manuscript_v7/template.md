@@ -12,13 +12,13 @@ author:
 
 # Abstract
 
-**Background:** Colorectal liver metastases (CRLM) remain a major cause of colorectal cancer death. Prognostic tools from single-centre cohorts may not reflect contemporary practice. We developed a survival model and prognostic groups for hepatectomy patients with CRLM and evaluated them in temporal validation.
+**Background:** Colorectal liver metastases (CRLM) remain a major cause of colorectal cancer death. We developed a survival model and prognostic groups for hepatectomy patients with CRLM and evaluated them in temporal validation.
 
-**Methods:** Retrospective analysis of the LiverMetSurvey international registry. The analytic cohort comprised 17,262 hepatectomy patients with complete TNM staging. Development used patients operated in 2009 or earlier (n = 8,463); temporal validation used patients operated in 2010 or later (n = 8,799). A stratified Cox model used TNM stage, age, interval from primary diagnosis to liver metastasis, and number and size of metastases. Prognostic groups were training-era tertiles of predicted 5-year survival. Performance was assessed by C-index, time-dependent AUC, Brier score, calibration and Kaplan–Meier separation.
+**Methods:** Retrospective analysis of the LiverMetSurvey international registry. The analytic cohort comprised 17,262 hepatectomy patients with complete TNM staging. Development used patients operated in 2009 or earlier (n = 8,463); temporal validation used patients operated in 2010 or later (n = 8,799). A stratified Cox model used TNM stage, age, interval from primary diagnosis to liver metastasis, and number and size of metastases. Prognostic groups were training-era tertiles of predicted 5-year survival. Performance was assessed by C-index, calibration and Kaplan–Meier separation.
 
-**Results:** In validation, the Favourable (n = 2,662), Intermediate (n = 2,824) and Adverse (n = 3,313) groups had median overall survival of 7.38, 4.44 and 3.18 years (log-rank p = 2 × 10⁻⁵²). The C-index was 0.622 (95% CI 0.608–0.637) and the integrated Brier score 0.075. Predicted 5-year survival was lower than observed (40.8% vs 46.6%). Without metastasis count and size, the C-index was 0.591. Median recurrence-free survival was 2.03 years (95% CI 1.98–2.09).
+**Results:** In validation, the Favourable (n = 2,662), Intermediate (n = 2,824) and Adverse (n = 3,313) groups had median overall survival of 7.38, 4.44 and 3.18 years (log-rank p = 2 × 10⁻⁵²). The C-index was 0.622 (95% CI 0.608–0.637) and the integrated Brier score 0.075. Predicted 5-year survival was lower than observed (40.8% vs 46.6%). Without metastasis count and size, the C-index was 0.591. A model without TNM staging gave a C-index of 0.599 on the same patients. Median recurrence-free survival was 2.03 years (95% CI 1.98–2.09).
 
-**Conclusions:** A stratified Cox model using routinely recorded variables separated three prognostic groups that remained distinct in temporal validation. Discrimination was modest, and survival was under-predicted in recent patients, so absolute estimates require recalibration before clinical use.
+**Conclusions:** A stratified Cox model using routinely recorded variables separated three prognostic groups that remained distinct in temporal validation. Discrimination was modest, survival was under-predicted in recent patients, and patients with incomplete staging differed systematically, raising concern about selection bias. Absolute estimates require recalibration before clinical use.
 
 **Keywords:** colorectal liver metastases; prognostic model; Cox regression; survival analysis; temporal validation; calibration; surgical oncology
 
@@ -38,7 +38,7 @@ This was a retrospective cohort analysis of the LiverMetSurvey registry, a prosp
 
 ## Study population
 
-Eligibility required: registry inclusion; hepatectomy recorded; an operation year and month; a vital status and last-news date on or after the operation date; and either positive follow-up or death. Patients with incomplete T, N or M staging were excluded from the analytic cohort. Figure 1 shows the flow. The analytic cohort comprised 17,262 patients. Patients who met the earlier eligibility steps but had incomplete TNM staging (n = 8,832) are compared with the analytic cohort in Supplementary Table S1.
+Eligibility required: registry inclusion; hepatectomy recorded; an operation year and month; a vital status and last-news date on or after the operation date; and either positive follow-up or death. Patients with incomplete T, N or M staging were excluded from the analytic cohort. Figure 1 shows the flow. The analytic cohort comprised 17,262 patients. Of 29,565 registry records, 586 were not recorded as eligible, 2,302 had no hepatectomy recorded, 85 had no operation date, 321 had no vital status or last-news date, 85 had inconsistent chronology and 92 had neither follow-up nor death. Of the 26,094 patients remaining, 8,832 (33.8%) had incomplete TNM staging and were excluded from the analytic cohort. Those excluded patients are compared with the analytic cohort in Supplementary Tables S1 and S5.
 
 Operation dates recorded to year and month only were assigned the 15th of the month (primary rule). The first-day and last-day-of-month rules were used as sensitivity analyses.
 
@@ -47,6 +47,7 @@ Operation dates recorded to year and month only were assigned the 15th of the mo
 * **Outcome:** overall survival (OS) from first hepatectomy to death from any cause or last-news date. Follow-up was capped at 15 years. All last-news dates in the analytic cohort fell on or before 4 July 2020 (checked).
 * **TNM stage:** T1–2, T3, T4; N0, N1, N2; M0, M1, using the AJCC staging categories [{{AJCC7}},{{AJCC8}}] with sub-categories collapsed. T1–2, N0 and M0 are the reference categories.
 * **Predictors:** age at operation (per 10 years); sex; synchronous presentation; interval from primary diagnosis to liver metastasis diagnosis (per 12 months; set to 0 for synchronous presentation and missing when the date was unknown, negative or after operation); number of liver metastases (continuous, 1–50); recorded liver metastasis size in mm (per 10 mm). Missing count and size were handled with missing-indicator variables and training-era medians.
+* **Deaths and follow-up window:** 6,601 deaths were recorded in the analytic cohort. Of these, 6,591 occurred within the 15-year analysis window and are the events used in the models; the remaining 10 occurred beyond 15 years and were censored at 15 years. 69 patients in total had follow-up beyond 15 years: the 10 who died and 59 who were alive or lost to follow-up. The count of 69 is a number of patients, not of deaths.
 * **Death:** status *Deceased* in the registry. Same-day deaths (operation date equal to last-news date) were assigned half a day of follow-up; other conventions were tested as sensitivity analyses.
 * **Recurrence-free survival (RFS):** time from hepatectomy to the earliest dated recurrence after operation, or to death. Recurrences dated before operation were excluded. Undated recurrences were censored in the primary analysis and handled by three alternative rules.
 
@@ -87,9 +88,15 @@ Harrell's C-index [{{HARRELL}}] was calculated in each cohort, with a 300-resamp
 
 The Fong Clinical Risk Score [{{FONG}}] and a Nordlinger-type score [{{NORD}}] were compared with the selected model on identical patients. The Fong subset comprised patients with CEA recorded; the Nordlinger-type subset comprised patients with age, T stage, N stage and interval data. The Fong score was computed from its five items (node-positive, interval < 12 months, more than one metastasis, size > 50 mm, CEA > 200 ng/mL). The Nordlinger-type score is an approximation built from four items available in this registry (age ≥ 60, T4, node-positive, interval < 12 months) and is not the published model. Both comparisons are therefore indicative.
 
+## Data quality, duplicate records and supplementary models
+
+The registry has no patient-level identifier: the study identifier is constant and the subject identifier is blank. Records were therefore screened for duplicates using every analysis column together with country, site, centre and patient number. An identical-content pair is two records with identical values in every analysis column. A probable duplicate additionally shares birth date and operation date and has at least 20 non-blank fields. The primary analysis retains all records. Probable duplicates were removed only in a sensitivity analysis, and a broader sensitivity analysis removed later records sharing birth date, operation date and sex. No record was permanently removed, pending confirmation from the registry coordinators.
+
+A model without TNM staging was fitted as a supplementary analysis. It used age, interval from primary diagnosis, metastasis count and size, with missingness indicators, stratified by sex and synchronous presentation. Its same-patient comparison used the same 8,463 development and 8,799 validation patients as the primary model, with a paired bootstrap of 300 resamples for the difference in C-index. A broader version was fitted on all development patients and evaluated on all validation patients, and is reported separately. Excluded patients were described by operation period, centre and country, by clinical characteristics and by outcomes. The no-TNM model was used to test whether their outcomes differed from what the recorded covariates predicted.
+
 ## Software and reproducibility
 
-Random seed was 42. Software: pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.0, scikit-learn 1.9.1, pyarrow 26.0.0 and python-calamine 0.8.3, on Python 3.13.16. The notebook was executed end to end. A reproduction check against the previously validated analysis passed for all ten key quantities (Results, Supplementary material). The analysis was not optimised for the C-index: the model was selected by the pre-specified PH rule, and cut-points were fixed in training. The treatment comparison is not part of this version and is not reported.
+Random seed was 42. Software: pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.0, scikit-learn 1.9.1, pyarrow 26.0.0 and python-calamine 0.8.3, on Python 3.13.16. The notebook was executed end to end. A reproduction check against the previously validated analysis passed for all ten key quantities (`F25_reproduction_check_against_v6.csv`). The primary analysis outputs are unchanged from the validated version; the v8 additions are supplementary. The analysis was not optimised for the C-index: the model was selected by the pre-specified PH rule, and cut-points were fixed in training. The treatment comparison is not part of this version and is not reported.
 
 # Results
 
@@ -112,6 +119,14 @@ Supplementary Table S1 compares the analytic cohort with patients who met steps 
 {{S1}}
 
 **Supplementary Table S1.** Analytic cohort compared with patients meeting steps 1–7 but with incomplete TNM staging. Source: `results/final_v7/F32_supp_S1_included_vs_excluded.csv`.
+
+## Patients excluded for incomplete staging
+
+Among the 26,094 patients meeting steps 1–7, T, N and M were missing together in 3,041 (11.7%); T alone in 2,324 (8.9%); M alone in 1,358 (5.2%); T and N in 1,220 (4.7%); T and M in 418 (1.6%); N alone in 402 (1.5%); and N and M in 69 (0.3%) (Supplementary Table S2). Each missing component was recorded either as not determined (ND) or left blank, and no recorded code was unmapped.
+
+The proportion excluded fell with time: 69.7% of operations in 1990–1999, 45.3% in 2000–2004, 28.3% in 2005–2009, 27.1% in 2010–2014 and 24.4% in 2015–2020. Of 259 centres with patients meeting steps 1–7, 57 had no excluded patients, 11 had only excluded patients and 34 had at least half of their patients excluded. The ten centres contributing most exclusions accounted for 54% of all exclusions (Supplementary Table S5). Excluded patients were less often synchronous (44.8% vs 58.7% of those with the variable recorded), had larger recorded metastases (median 35 vs 30 mm), were operated earlier (median year 2007 vs 2010), and more often had an unavailable interval among metachronous patients (66.2% vs 55.9%). Their 5-year overall survival was lower in the development era (39.1% vs 42.3%) and higher in the validation era (50.5% vs 46.6%). Using the no-TNM model, observed/expected 5-year survival was 1.03 and 1.16 for included patients in the development and validation eras, and 0.96 and 1.27 for excluded patients (Supplementary Table S5).
+
+These patterns are difficult to reconcile with missingness that depends only on the recorded covariates, and they raise concern about selection bias. The direction of any bias cannot be determined from the registry, and the assumption cannot be verified. Supplementary Tables S2–S5 give the full comparison.
 
 ## Model selection and performance
 
@@ -196,6 +211,12 @@ Re-estimating the baseline hazard from 2005–2009 patients reduced validation O
 
 *Dates.* Using the first day of the month instead of the 15th changed 0.3% of group assignments.
 
+## Duplicate records and the no-TNM model
+
+The duplicate screen found 23 identical-content pairs (46 records). Sixteen pairs met the probable-duplicate rule: 15 between Brazilian site 387 and Bulgarian site 385, and one within Spanish centre 27. Six second copies lie in the analytic cohort (2 development, 4 validation). Removing them left the validation C-index at 0.6216, 5-year survival at 46.6% and observed/expected at 1.142. Thirty-three patients (0.2%) changed group, and the lower cut-point moved from 0.3793 to 0.3794 (Supplementary Table S3). In a broader sensitivity analysis that removed 37 later records sharing birth date, operation date and sex, the C-index was unchanged at 0.6216, 5-year survival was 46.7%, and 138 patients (0.8%) changed group, giving group sizes of 2,656, 2,833 and 3,292 in validation (primary 2,662, 2,824 and 3,313). Fifty-five further groups share birth date, operation date and sex but differ in content; 31 of these have both copies in the analytic cohort. Their identity cannot be established from the registry extract, so they were not removed.
+
+On exactly the same validation patients (n = 8,799), the TNM model had a C-index of 0.6216 and the no-TNM model 0.5994, a difference of 0.022 (95% CI 0.009 to 0.034; Supplementary Table S4). A no-TNM model fitted on all development patients gave 0.5982 on the same 8,799 patients and 0.5972 on all 11,967 validation patients, including those with incomplete staging; the latter is not directly comparable with the TNM model.
+
 ## Recurrence-free survival
 
 Median RFS was 2.03 years (95% CI 1.98–2.09), with 39.3% and 27.6% recurrence-free at 3 and 5 years (primary definition; 8,942 events in 16,677 patients). Alternative handling of undated recurrences gave medians of 1.93 years (undated recurrences as events at last contact), 1.69 years (mid-interval) and 1.84 years (undated recurrences excluded). RFS is a secondary outcome.
@@ -223,6 +244,8 @@ RFS was analysed as a secondary outcome. Its median ranged from 1.69 to 2.03 yea
 
 Metastasis count and size improved discrimination, but they are recorded around the time of operation, and the pre-operative and resected counts disagreed in about 38% of patients. The pre-operative-only model is a sensitivity analysis and is not a pre-operative decision tool.
 
+Patients excluded for incomplete staging differed from the analytic cohort in period, synchrony, metastasis size and centre, and their outcomes differed from what the recorded covariates predicted, in opposite directions in the two eras. Exclusion was concentrated in early operations and in centres with poor staging completeness. This pattern raises concern about selection bias. The analytic cohort is therefore the population in which TNM-based prediction is valid, but it is not representative of all resected patients, and its survival estimates should not be extended to patients with incomplete staging without caution. The no-TNM model confirms that TNM staging adds about 0.02 to discrimination on the same patients, but it does not remove the selection concern.
+
 # Limitations
 
 1. **Calibration and absolute survival.** The model under-predicts 5-year survival in the validation era (O/E 1.14). Recalibration from recent data reduced but did not remove the gap. The groups rank patients consistently, but their absolute survival values should be interpreted with caution.
@@ -230,11 +253,13 @@ Metastasis count and size improved discrimination, but they are recorded around 
 3. **Predictor timing and missingness.** The interval predictor is unavailable for 3,941 of 7,049 metachronous patients (55.9%), mostly because the primary diagnosis date is missing. Its effect is therefore estimated from a minority of metachronous patients, and results should be read with this in mind.
 4. **Metastasis count and size.** These are recorded around operation, and the pre-operative and resected counts agreed for only 62% of patients with both recorded. The pre-operative-only model shows how much discrimination depends on these variables (C-index 0.591 vs 0.622).
 5. **Recurrence dates.** 1,676 recurrences have no usable date, and 41 are dated after last contact. RFS is therefore secondary and depends on the handling rule.
-6. **Death data.** Among 11,594 deceased patients, 3,074 have no death flag, so survival times for these patients rest on the last-news date. Seven unflagged same-day deaths are included in the primary analysis; excluding them made no material difference.
+6. **Death data.** Among 11,594 deceased patients, 3,074 have no death flag, so survival times for these patients rest on the last-news date. The death flag is missing or "No" at every follow-up interval: among deceased patients in the analytic cohort it reads Yes for 50% of deaths at 1–30 days, 73% at 31–365 days, 82% at 1–5 years and 70% beyond 5 years. Seven unflagged same-day deaths are included in the primary analysis; excluding them made no material difference.
 7. **Comparators.** The Fong and Nordlinger-type scores are approximations built from registry variables, not the published models.
 8. **Treatment effects.** Treatment comparisons are not included in this version. They have not been re-analysed in the final pipeline and must not be inferred from these results.
 9. **Missing covariates.** CEA was recorded for 65.8% of patients. Complete-case and multiple-imputation results were similar, and the CEA contribution to C-index was about 0.02.
-10. **Registry and design.** Validation is temporal within a single registry, and no external validation was performed. Molecular markers and performance status were not present in the extract analysed.
+10. **Selection and missing staging.** Patients with incomplete staging (8,832; 33.8% of those meeting the eligibility steps) differ systematically in period, centre, synchrony and metastasis size, and their outcomes differ from what the recorded covariates predict (Supplementary Table S5). Whether staging was missing at random cannot be verified, and the observed patterns raise concern about selection bias. The analytic cohort is not representative of all resected patients.
+11. **Possible duplicate records.** Sixteen probable duplicate pairs and 31 near-duplicate groups inside the analytic cohort await registry confirmation. Sensitivity analyses that remove them leave the primary conclusions unchanged (Supplementary Table S3), but the primary analysis retains all records until the registry confirms them.
+12. **Registry and design.** Validation is temporal within a single registry, and no external validation was performed. Molecular markers and performance status were not present in the extract analysed.
 
 # Conclusions
 
@@ -256,6 +281,24 @@ In an international registry of patients undergoing hepatic resection for CRLM, 
 
 {{REFERENCES}}
 
+# Supplementary tables
+
+**Supplementary Table S2.** Missing T, N and M components among patients meeting steps 1–7 (n = 26,094). Source: `F45`, `F46`.
+
+{{S2}}
+
+**Supplementary Table S3.** Possible duplicate records and sensitivity analyses (validation unless stated). Source: `F60`, `F61`.
+
+{{S3}}
+
+**Supplementary Table S4.** Model without TNM staging: same-patient comparison and broader result. Source: `F62`.
+
+{{S4}}
+
+**Supplementary Table S5.** Patients with incomplete staging by operation period, centre and country, characteristics, outcomes and informative-selection check. Source: `F63`–`F68`.
+
+{{S5}}
+
 # Figure and table index
 
 | Item | Source | Status |
@@ -269,4 +312,8 @@ In an international registry of patients undergoing hepatic resection for CRLM, 
 | Table 5 Sensitivity analyses | `F10`, `F13`, `F14`, `F19`, `F23` | From notebook |
 | Table 6 Benchmarks | `F16` | From notebook |
 | Supplementary Table S1 | `F32` | Generated from v7 cohort |
+| Supplementary Table S2 | `F45`, `F46` | From v8 notebook |
+| Supplementary Table S3 | `F60`, `F61` | From v8 notebook |
+| Supplementary Table S4 | `F62` | From v8 notebook |
+| Supplementary Table S5 | `F63`–`F68` | From v8 notebook |
 | Reproduction check | `F25` | 10 of 10 pass |

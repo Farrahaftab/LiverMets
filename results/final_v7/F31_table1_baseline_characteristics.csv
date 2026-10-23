@@ -26,6 +26,8 @@ Patients,"17,262","8,463","8,799"
 "Largest recorded metastasis, mm, median (IQR)",30.0 (20.0-45.0),30.0 (20.0-48.0),29.0 (19.0-45.0)
 "Size missing, n (%)","3,306 (19.2)","1,344 (15.9)","1,962 (22.3)"
 "Pre-operative CEA recorded, n (%)","11,364 (65.8)","5,517 (65.2)","5,847 (66.5)"
-"Deaths, n (%)","6,591 (38.2)","4,675 (55.2)","1,916 (21.8)"
+"Deaths recorded (PATSTATC = Deceased), n (%)","6,601 (38.2)","4,685 (55.4)","1,916 (21.8)"
+"Deaths inside the 15-year analysis window (events), n (%)","6,591 (38.2)","4,675 (55.2)","1,916 (21.8)"
+"Patients with follow-up beyond 15 years (censored; not deaths), n",69,69,0
 "Median follow-up, years (reverse Kaplan-Meier)",3.16,5.89,1.47
 "Median overall survival, years (KM, 95% CI not shown)",4.15,3.97,4.50

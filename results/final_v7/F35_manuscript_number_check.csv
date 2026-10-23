@@ -41,3 +41,55 @@ analytic cohort,"17,262",F31,17262,True
 development n,"8,463",F31,8463,True
 validation n,"8,799",F31,8799,True
 excluded incomplete TNM,"8,832",F32,8832,True
+deaths recorded (cohort),"6,601 deaths were recorded",F12,6601,True
+deaths inside window,"6,591 occurred within the 15-year analysis window",F12,6591,True
+deaths beyond 15 years,the remaining 10 occurred beyond 15 years,F12,10,True
+patients beyond 15 years,69 patients in total had follow-up,F12,69,True
+alive or lost beyond 15 years,the 10 who died and 59,F12,59,True
+Table 1 recorded deaths,"6,601 (38.2)",F31,"6,601 (38.2)",True
+Table 1 window deaths,"6,591 (38.2)",F31,"6,591 (38.2)",True
+excluded for incomplete TNM,"8,832 (33.8%)",F43,8832,True
+excluded pct of step 7,33.8%,F43,33.8,True
+metachronous unavailable interval excluded,66.2%,F65,66.2,True
+metachronous unavailable interval included,55.9%,F65,55.9,True
+median operation year excluded,2007,F65,2007,True
+largest metastasis excluded,35 vs 30 mm,F65,35,True
+synchronous included,58.7%,F65,58.7,True
+synchronous excluded,44.8%,F65,44.8,True
+exclusion 1990s,69.7%,F63,69.7,True
+exclusion 2000-2004,45.3%,F63,45.3,True
+exclusion 2005-2009,28.3%,F63,28.3,True
+exclusion 2010-2014,27.1%,F63,27.1,True
+exclusion 2015-2020,24.4%,F63,24.4,True
+sites no exclusions,57 had no excluded patients,F64,57,True
+sites all excluded,11 had only excluded patients,F64,11,True
+sites half or more excluded,34 had at least half,F64,34,True
+top-10 sites share,54%,F64,54.0,True
+development excluded KM 5-y,39.1%,F66,39.1,True
+development included KM 5-y,42.3%,F66,42.3,True
+validation excluded KM 5-y,50.5%,F66,50.5,True
+validation included KM 5-y,46.6%,F66,46.6,True
+O/E included development,1.03,F67,1.028,True
+O/E included validation,1.16,F67,1.161,True
+O/E excluded development,0.96,F67,0.963,True
+O/E excluded validation,1.27,F67,1.266,True
+pairs meeting probable-duplicate rule,Sixteen pairs met the probable-duplicate rule,F60 (16),Sixteen,True
+identical-content pairs,23 identical-content pairs (46 records),F60,23,True
+second copies in cohort,Six second copies lie in the analytic cohort,F60 (6),Six,True
+near-duplicate groups with both copies in cohort,31 of these have both copies,F60,31,True
+broad removal records,removed 37 later records,F60,37,True
+identical-pair removal C,Removing them left the validation C-index at 0.6216,F61,0.6216,True
+identical-pair reassigned,Thirty-three patients (0.2%),F61 (33),Thirty-three,True
+identical-pair cut-point,from 0.3793 to 0.3794,F61,0.3794,True
+broad removal 5-y KM,5-year survival was 46.7%,F61,46.7,True
+broad removal reassigned,138 patients (0.8%),F61,138,True
+broad group sizes Favourable,"2,656",F61,2656,True
+broad group sizes Intermediate,"2,833",F61,2833,True
+broad group sizes Adverse,"3,292",F61,3292,True
+no-TNM same-patient C,0.5994,F62,0.5994,True
+TNM same-patient C,0.6216,F62,0.6216,True
+no-TNM broad same-patient C,0.5982,F62,0.5982,True
+no-TNM broad all validation C,0.5972,F62,0.5972,True
+no-TNM difference,0.022 (95% CI 0.009 to 0.034,F62,0.0222,True
+no-TNM difference CI lower,0.009 to 0.034,F62,0.0094,True
+no-TNM difference CI upper,0.009 to 0.034,F62,0.0335,True

@@ -111,6 +111,7 @@ d['DFI'] = d.DFI_RAW.copy()
 d.loc[d.SYNC == 1, 'DFI'] = 0.0
 d.loc[(d.DFI < 0) | d.DG_AFTER_OP, 'DFI'] = np.nan
 d['ERA'] = np.where(d['T0'].dt.year <= 2009, 'Development (<=2009)', 'Validation (>=2010)')
+d['OS_Y_raw'] = np.where((d.OS_DAYS <= 0) & (d.DEATH == 1), 0.5, d.OS_DAYS) / DAYS
 d['OS_Y'] = np.minimum(np.where((d.OS_DAYS <= 0) & (d.DEATH == 1), 0.5, d.OS_DAYS) / DAYS, MAXFU)
 d['OS_E'] = np.where(np.where((d.OS_DAYS <= 0) & (d.DEATH == 1), 0.5, d.OS_DAYS) / DAYS > MAXFU, 0.0, d.DEATH)
 d['MET_CAT'] = pd.cut(d.METS, [0, 1, 3, np.inf], labels=['1', '2-3', '>=4']).astype(object)
@@ -166,7 +167,9 @@ def table1_block(frame):
     rows.append(('Largest recorded metastasis, mm, median (IQR)', median_iqr(frame.SIZE.dropna())))
     rows.append(('Size missing, n (%)', fmt_n(frame.SIZE.isna().sum(), n)))
     rows.append(('Pre-operative CEA recorded, n (%)', fmt_n(frame.CEA_AVAIL.sum(), n)))
-    rows.append(('Deaths, n (%)', fmt_n(frame.OS_E.sum(), n)))
+    rows.append(('Deaths recorded (PATSTATC = Deceased), n (%)', fmt_n(frame.DEATH.sum(), n)))
+    rows.append(('Deaths inside the 15-year analysis window (events), n (%)', fmt_n(frame.OS_E.sum(), n)))
+    rows.append(('Patients with follow-up beyond 15 years (censored; not deaths), n', f'{int((frame.OS_Y_raw > MAXFU).sum()):,}'))
     rows.append(('Median follow-up, years (reverse Kaplan-Meier)', f'{rev_km_median(frame.OS_Y.values, frame.OS_E.values):.2f}'))
     rows.append(('Median overall survival, years (KM, 95% CI not shown)', f'{km_median(frame.OS_Y.values, frame.OS_E.values):.2f}'))
     return rows
@@ -189,7 +192,8 @@ def s1_block(frame):
            ('Number of liver metastases known, n (%)', fmt_n(frame.METS.notna().sum(), n)),
            ('Largest recorded metastasis known, n (%)', fmt_n(frame.SIZE.notna().sum(), n)),
            ('Pre-operative CEA recorded, n (%)', fmt_n(frame.CEA_AVAIL.sum(), n)),
-           ('Deaths, n (%)', fmt_n(frame.OS_E.sum(), n)),
+           ('Deaths recorded, n (%)', fmt_n(frame.DEATH.sum(), n)),
+           ('Deaths inside the 15-year window (events), n (%)', fmt_n(frame.OS_E.sum(), n)),
            ('Median overall survival, years (KM)', f'{km_median(frame.OS_Y.values, frame.OS_E.values):.2f}')]
     return out
 s1 = pd.DataFrame(s1_block(A), columns=['characteristic', 'Analytic cohort (TNM complete, n=17,262)'])

@@ -1,7 +1,7 @@
 analysis,development_n,validation_n,validation_C,note
-"(a) complete-case M2a, TNM-complete validation patients (v7 primary check)",8463,8799,0.6215,reproduces v7 F02 (0.6216)
+"(a) complete-case M2a, TNM-complete validation patients (v7 primary check)",8463,8799,0.6216,reproduces v7 F02 (0.6216)
 "(b) M2a with multiple imputation of T, N, M (10 draws, covariates only), all validation patients",14127,11967,0.6115,range over draws 0.6081-0.6143; imputed TNM cannot be validated
 "(b) M2a with multiple imputation, TNM-complete validation patients only",14127,8799,0.6216,range over draws 0.6196-0.6231
 "(c) model without TNM (age, sex, synchrony, interval, metastasis count and size), all validation patients",14127,11967,0.5972,uses variables recorded for all patients
 "(c) model without TNM, TNM-complete validation patients (identical patients to (a))",14127,8799,0.5982,same patients as (a)
-(d) complete-case M2a after removing second copies of identical records,8461,8795,0.6214,6 duplicate second copies in the TNM-complete cohort (2 development)
+(d) complete-case M2a after removing second copies of identical records,8461,8795,0.6216,6 duplicate second copies in the TNM-complete cohort (2 development)
