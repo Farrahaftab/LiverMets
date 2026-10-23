@@ -1,0 +1,4 @@
+phenotype,train_n,valid_n,valid_deaths,valid_median_OS,valid_median_95CI,valid_S5_KM,train_median_OS,train_S5_KM,train_mean_predicted_S5,valid_mean_predicted_S5
+Favourable,2821,2662,383,7.38,6.14-NE,0.629,5.5,0.541,0.533,0.532
+Intermediate,2821,2824,598,4.44,4.14-4.88,0.454,3.89,0.419,0.428,0.428
+Adverse,2821,3313,935,3.18,2.97-3.38,0.343,2.97,0.307,0.304,0.291

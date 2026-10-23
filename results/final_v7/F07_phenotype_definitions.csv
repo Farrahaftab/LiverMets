@@ -1,0 +1,4 @@
+phenotype,definition
+Favourable,predicted 5-year OS >= 0.4756
+Intermediate,0.3793 <= predicted 5-year OS < 0.4756
+Adverse,predicted 5-year OS < 0.3793
