@@ -1,0 +1,10 @@
+item,n
+records in identical-content pairs,46
+identical-content pairs,23
+pairs meeting the probable-duplicate rule,15
+pairs with copies at different countries,16
+second copies of identical pairs inside the analytic cohort,6
+"near-duplicate groups (birth date, operation date, sex match; different content)",55
+near-duplicate groups with both copies in the analytic cohort,31
+near-duplicate groups with one copy in the analytic cohort,11
+"later records dropped in the broad sensitivity (birth date, operation date and sex match within the cohort)",37

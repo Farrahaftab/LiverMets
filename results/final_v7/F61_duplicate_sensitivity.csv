@@ -1,0 +1,4 @@
+analysis,analytic_n,development_n,validation_n,validation_C,validation_KM_5y,validation_O_over_E_5y,cut_S5_q33,cut_S5_q67,validation_Favourable_n,validation_Intermediate_n,validation_Adverse_n,patients_in_common_with_primary,pct_same_group_as_primary,kappa_vs_primary,reassigned_vs_primary
+primary (locked),17262,8463,8799,0.6216,0.4659,1.1425,0.3793,0.4756,2662,2824,3313,,,,
+identical-pair second copies removed,17256,8461,8795,0.6216,0.4659,1.1424,0.3794,0.4756,2660,2825,3310,17256.0,99.81,0.9971,33.0
+later copies of birth/operation/sex matches removed (broad),17225,8444,8781,0.6216,0.4668,1.1455,0.3785,0.4753,2656,2833,3292,17225.0,99.2,0.988,138.0

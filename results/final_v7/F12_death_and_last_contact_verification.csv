@@ -7,4 +7,8 @@ LASTNDTC earlier than latest follow-up date,9
 LASTNDTC later than latest follow-up date,1
 modelling cohort with last contact before time zero,0
 modelling deaths after censoring date 2020-07-04,0
-modelling deaths with event time > 15 years (censored),69
+modelling cohort: deaths recorded (PATSTATC = Deceased),6601
+modelling cohort: deaths inside the 15-year window (events in the models),6591
+modelling cohort: deaths beyond 15 years (censored at 15 years),10
+modelling cohort: PATIENTS with follow-up beyond 15 years (all statuses; not a death count),69
+"modelling cohort: of those patients, number who died",10

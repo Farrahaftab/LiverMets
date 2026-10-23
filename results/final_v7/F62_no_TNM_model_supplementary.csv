@@ -1,0 +1,5 @@
+analysis,development_n,validation_n,validation_C,note
+same patients: TNM M2a (primary),8463,8799,0.6216,reference
+same patients: no-TNM model (complete-case development),8463,8799,0.5994,"difference TNM minus no-TNM = 0.0222, 95% CI 0.0094 to 0.0335 (paired bootstrap, 300 resamples)"
+"broader: no-TNM model (all development patients), same 8,799 validation patients",14127,8799,0.5982,same patients as the primary validation set
+"broader: no-TNM model (all development patients), all validation patients",14127,11967,0.5972,includes patients with incomplete TNM; not comparable with the TNM model
