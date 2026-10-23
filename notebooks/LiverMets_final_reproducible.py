@@ -759,10 +759,13 @@ print(pd.DataFrame(agree_rows).to_string(index=False))
 
 # %% [code]
 def km_s5(T, E):
-    if len(T) == 0:
-        return np.nan, 0
+    """Kaplan-Meier survival at 5 years and the number with at least 5 years of follow-up.
+    Returns NaN when nobody has 5 years of follow-up (the curve would only repeat its last value)."""
+    n5 = int((T >= 5).sum())
+    if len(T) == 0 or n5 == 0:
+        return np.nan, n5
     k = KaplanMeierFitter().fit(T, E)
-    return float(k.survival_function_at_times(5).iloc[0]), int((T >= 5).sum())
+    return float(k.survival_function_at_times(5).iloc[0]), n5
 
 
 S5v = SEL["S"][:, 1]
@@ -775,7 +778,7 @@ for g in sorted(np.unique(dec_q)):
     rows_dec.append({'validation_decile': int(g) + 1, 'n': len(ii), 'deaths': int(PRIMARY.OS_E.values[ii].sum()),
                      'mean_predicted_5y': round(float(S5v[ii].mean()), 3), 'observed_5y_KM': round(obs, 3),
                      'observed_minus_predicted': round(obs - float(S5v[ii].mean()), 3),
-                     'at_risk_5y': n5})
+                     'patients_with_5y_follow_up': n5, 'reliable_5y_estimate': n5 >= 50})
 save(pd.DataFrame(rows_dec), 'F20_calibration_by_validation_decile')
 print(pd.DataFrame(rows_dec).to_string(index=False))
 
@@ -792,7 +795,7 @@ for lo, hi, lab in era_bins:
     pred = float(S5v[ii].mean())
     rows_era.append({'period': lab, 'n': len(ii), 'mean_predicted_5y': round(pred, 3),
                      'observed_5y_KM': round(obs, 3), 'O_over_E': round(obs / pred, 3),
-                     'patients_with_5y_follow_up': n5})
+                     'patients_with_5y_follow_up': n5, 'reliable_5y_estimate': n5 >= 50})
 save(pd.DataFrame(rows_era), 'F21_calibration_by_operation_period')
 print(pd.DataFrame(rows_era).to_string(index=False))
 
@@ -879,7 +882,7 @@ save(pd.DataFrame(rfs_rows), 'F17_RFS_sensitivity_final')
 print(pd.DataFrame(rfs_rows).to_string(index=False))
 
 # %% [markdown]
-# ## 11. Manifest and reproduction check
+# ## 11. Figures, manifest and reproduction check
 #
 # The manifest records input checksums, row counts and package versions. If earlier v6 results are available, the key
 # numbers are compared; the notebook reports PASS or FAIL for each.
@@ -920,4 +923,71 @@ if ref.exists():
     print('ALL PASS' if (rep.result == 'PASS').all() else 'SOME CHECKS DIFFER: see F25_reproduction_check_against_v6.csv')
 else:
     print(f'No v6 reference found at {ref}; reproduction check skipped.')
+
+# ---- figures: Cox M2a prognostic groups and calibration (survival-tree figures are not produced here)
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+FIG_DIR = OUT_DIR / 'figures'
+FIG_DIR.mkdir(parents=True, exist_ok=True)
+ORDER = ['Favourable', 'Intermediate', 'Adverse']
+COLOURS = {'Favourable': '#1B7837', 'Intermediate': '#E08214', 'Adverse': '#B2182B'}
+assert set(pd.unique(GRP[vam])) == set(ORDER), 'validation groups incomplete'
+assert set(pd.unique(GRP[trm])) == set(ORDER), 'training groups incomplete'
+
+
+def km_panel(ax, T, E, groups, title, xlabel):
+    for g in ORDER:
+        m = groups == g
+        k = KaplanMeierFitter().fit(T[m], E[m], label=f'{g} (n={int(m.sum()):,})')
+        k.plot_survival_function(ax=ax, ci_show=True, color=COLOURS[g], show_censors=False)
+    ax.set_xlim(0, 10); ax.set_ylim(0, 1.01); ax.grid(alpha=0.25)
+    ax.set_title(title, fontsize=10); ax.set_xlabel(xlabel); ax.set_ylabel('Survival probability')
+    ax.legend(frameon=False, fontsize=8, loc='upper right')
+
+
+# OS by Cox M2a group, validation era (cut-points from training)
+fig, ax = plt.subplots(figsize=(6, 4.6))
+km_panel(ax, PRIMARY.OS_Y.values[vam], PRIMARY.OS_E.values[vam], GRP[vam],
+         'Cox M2a prognostic groups: overall survival (validation, operated 2010+)', 'Years from hepatectomy')
+fig.savefig(FIG_DIR / 'COX_01_OS_by_M2a_group_validation.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+
+# RFS by Cox M2a group, validation era, primary RFS definition
+rfs_mask = elig & vam
+rT_p, rE_p = rfs_specs[0][1], rfs_specs[0][2]
+fig, ax = plt.subplots(figsize=(6, 4.6))
+km_panel(ax, rT_p[rfs_mask], rE_p[rfs_mask], GRP[rfs_mask],
+         'Cox M2a prognostic groups: recurrence-free survival (validation, primary RFS definition)',
+         'Years from hepatectomy')
+fig.savefig(FIG_DIR / 'COX_02_RFS_by_M2a_group_validation.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+
+# calibration by validation decile of predicted 5-year survival
+cal = pd.DataFrame(rows_dec)
+fig, ax = plt.subplots(figsize=(5.2, 5))
+ax.plot([0.1, 0.9], [0.1, 0.9], 'k--', lw=0.8, label='perfect calibration')
+ok = cal.reliable_5y_estimate
+ax.scatter(cal.mean_predicted_5y[ok], cal.observed_5y_KM[ok], color='#2166AC', s=30, label='>= 50 with 5-year follow-up')
+ax.scatter(cal.mean_predicted_5y[~ok], cal.observed_5y_KM[~ok], facecolors='none', edgecolors='#2166AC', s=30,
+           label='< 50 with 5-year follow-up (sparse)')
+ax.set_xlabel('Mean predicted 5-year survival'); ax.set_ylabel('Observed 5-year survival (Kaplan-Meier)')
+ax.set_title('Cox M2a calibration by validation decile', fontsize=10)
+ax.set_xlim(0.1, 0.9); ax.set_ylim(0.1, 0.9); ax.grid(alpha=0.25); ax.legend(frameon=False, fontsize=8, loc='upper left')
+fig.savefig(FIG_DIR / 'COX_03_calibration_by_decile_validation.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+
+# observed/expected ratio by operation period
+per = pd.DataFrame(rows_era).dropna(subset=['O_over_E'])
+fig, ax = plt.subplots(figsize=(6.4, 4.2))
+colours = ['#999999' if not r else '#2166AC' for r in per.reliable_5y_estimate]
+ax.bar(range(len(per)), per.O_over_E, color=colours)
+ax.axhline(1.0, color='k', lw=0.8, ls='--')
+ax.set_xticks(range(len(per))); ax.set_xticklabels([p.replace(' (', '\n(') for p in per.period], fontsize=7)
+for i, (oe, n5) in enumerate(zip(per.O_over_E, per.patients_with_5y_follow_up)):
+    ax.text(i, oe + 0.02, f'n(5y)={n5}', ha='center', fontsize=7)
+ax.set_ylabel('Observed / predicted 5-year survival'); ax.set_ylim(0, 1.5)
+ax.set_title('Cox M2a calibration by operation period (grey = sparse 5-year follow-up)', fontsize=9)
+ax.grid(alpha=0.25, axis='y')
+fig.savefig(FIG_DIR / 'COX_04_O_over_E_by_period.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+print('figures written to', FIG_DIR, sorted(p.name for p in FIG_DIR.glob('COX_*.png')))
+
 log(f'done -> {OUT_DIR}')
