@@ -1,0 +1,10 @@
+characteristic,"Analytic cohort (TNM complete, n=17,262)","Excluded, incomplete TNM (n=8,832)",note
+Patients,"17,262","8,832",Both groups met registry steps 1-7
+"Age at operation, years, median (IQR)",63.4 (55.7-70.6),63.0 (55.3-69.9),
+"Male sex, n (%)","10,676 (61.8)","5,333 (60.4)",
+"Synchronous presentation, n (%)","10,015 (58.0)","3,674 (41.6)",
+"Number of liver metastases known, n (%)","16,011 (92.8)","7,068 (80.0)",
+"Largest recorded metastasis known, n (%)","13,956 (80.8)","6,425 (72.7)",
+"Pre-operative CEA recorded, n (%)","11,364 (65.8)","4,898 (55.5)",
+"Deaths, n (%)","6,591 (38.2)","3,696 (41.8)",
+"Median overall survival, years (KM)",4.15,3.84,

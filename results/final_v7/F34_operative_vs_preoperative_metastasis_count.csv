@@ -1,0 +1,5 @@
+item,n
+Analytic cohort with both pre-operative and resected metastasis counts,14189
+Resected count equals pre-operative count,8847
+Resected count greater than pre-operative count,2244
+Resected count less than pre-operative count,3098

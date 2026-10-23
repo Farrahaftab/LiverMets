@@ -1,0 +1,14 @@
+item,n
+Analytic cohort (TNM complete),17262
+"Liver metastasis diagnosed after operation (interval set missing), analytic cohort",12
+"Metachronous, interval unavailable: primary diagnosis date missing (first reason in order)",3618
+"Metachronous, interval unavailable: liver metastasis date missing",302
+"Metachronous, interval unavailable: metastasis diagnosed before primary (negative)",12
+"Metachronous, interval unavailable: metastasis diagnosed after operation",9
+"Metachronous, interval available",3108
+Synchrony not recorded (not classed as either),198
+"Liver metastasis diagnosed after operation, all patients meeting steps 1-7",25
+"Dated recurrence before time zero (excluded from RFS), analytic cohort",585
+"Dated recurrence after operation and before last contact, analytic cohort",5324
+"Recurrence recorded with a date after last contact (notebook counts these as undated), analytic cohort",41
+"Recurrence recorded without usable date (count > 0; notebook definition), analytic cohort",1676
