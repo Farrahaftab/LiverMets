@@ -97,7 +97,8 @@ DATES = (['LE1OPERDT_F1', 'LASTNDTC', 'BIRTHDT', 'DGKCOLDT', 'LE1DGMETADT']
          + [f'LASTNDT_F{i}' for i in range(1, 8)])
 STATUS = [f'DEATHKYN_F{i}' for i in range(1, 8)] + [f'PATSTAT_F{i}' for i in range(1, 8)]
 COUNTS = [f'LRNBREC_M{i}' for i in range(1, 6)] + [f'EXHNBREC2_M{i}' for i in range(1, 9)]
-BASES = DIRECT + DATES + STATUS + COUNTS
+IDS = ['COUNTRY_ID', 'SITE_ID', 'CENTER', 'NUMPAT']          # identifiers: used for the duplicate screen and site summaries only
+BASES = DIRECT + DATES + STATUS + COUNTS + IDS
 PARTS = {'Part1': DATA_DIR / 'LiverMet_Part1.xlsx', 'Part2': DATA_DIR / 'LiverMet_Part2.xlsx'}
 EXTRACT = WORK_DIR / 'extract_raw.parquet'
 
@@ -243,6 +244,8 @@ def build_cohort(day_fill):
             '6 chronology': int(s6.sum()), '7 positive follow-up or death': int(s7.sum())}
     d = pd.DataFrame(index=X.index[s7])
     d['SRC'] = d.index
+    d['COUNTRY'] = X.COUNTRY_ID[s7]
+    d['SITE'] = X.SITE_ID[s7]
     d['T0'] = op[s7]
     d['PARTIAL'] = (op_ser[s7].isna() & op_ym[s7].notna())
     d['LAST'] = LAST_SER[s7]
@@ -675,7 +678,11 @@ cons = {
     'LASTNDTC later than latest follow-up date': int((LAST_SER > LAST_FU)[LAST_SER.notna() & LAST_FU.notna()].sum()),
     'modelling cohort with last contact before time zero': int((PRIMARY.OS_DAYS < 0).sum()),
     'modelling deaths after censoring date 2020-07-04': int((PRIMARY['LAST'] > CENSOR).sum()),
-    'modelling deaths with event time > 15 years (censored)': int((PRIMARY.OS_Y_raw > MAXFU).sum()),
+    'modelling cohort: deaths recorded (PATSTATC = Deceased)': int(PRIMARY.DEATH.sum()),
+    'modelling cohort: deaths inside the 15-year window (events in the models)': int(PRIMARY.OS_E.sum()),
+    'modelling cohort: deaths beyond 15 years (censored at 15 years)': int(((PRIMARY.DEATH == 1) & (PRIMARY.OS_Y_raw > MAXFU)).sum()),
+    'modelling cohort: PATIENTS with follow-up beyond 15 years (all statuses; not a death count)': int((PRIMARY.OS_Y_raw > MAXFU).sum()),
+    'modelling cohort: of those patients, number who died': int(((PRIMARY.OS_Y_raw > MAXFU) & (PRIMARY.DEATH == 1)).sum()),
 }
 save(pd.Series(cons).rename('n').rename_axis('check').reset_index(), 'F12_death_and_last_contact_verification')
 print(pd.Series(cons).to_string())
@@ -882,7 +889,256 @@ save(pd.DataFrame(rfs_rows), 'F17_RFS_sensitivity_final')
 print(pd.DataFrame(rfs_rows).to_string(index=False))
 
 # %% [markdown]
-# ## 11. Figures, manifest and reproduction check
+# ## 11. Supplementary: possible duplicate records and sensitivity analyses
+#
+# Duplicates are reported, not removed. A pair of records is an *identical-content pair* when all analysis columns are
+# identical (identifiers excluded). Records are a *probable duplicate* when, in addition, birth date, operation date
+# and at least 20 non-blank fields agree. A *near-duplicate* group shares birth date, operation date and sex with
+# different content. The primary analysis keeps every record. The sensitivity analyses below use the same
+# model specification as the primary analysis, refitted with the later copy of each group removed.
+
+# %% [code]
+ID_COLS = ['COUNTRY_ID', 'SITE_ID', 'CENTER', 'NUMPAT']
+HASH_COLS = [c for c in X.columns if c not in ID_COLS + ['SOURCE_PART', 'SOURCE_EXCEL_ROW']]
+ROW_HASH = pd.Series([hashlib.sha256('\x1f'.join('' if v is None else str(v) for v in row).encode('utf-8')).hexdigest()
+                      for row in X[HASH_COLS].itertuples(index=False, name=None)], index=X.index)
+ROW_NONBLANK = X[HASH_COLS].notna().sum(axis=1) - X[HASH_COLS].isin([''] ).sum(axis=1)
+dup_any = ROW_HASH.duplicated(keep=False)
+pair_hash = ROW_HASH[dup_any]
+pair_tbl_nb = pd.DataFrame({'hash': pair_hash, 'country': X.COUNTRY_ID[dup_any], 'site': X.SITE_ID[dup_any],
+                            'nonblank': ROW_NONBLANK[dup_any], 'birth': serial(X.BIRTHDT)[dup_any],
+                            'oper': serial(X.LE1OPERDT_F1)[dup_any]})
+pair_summary = pair_tbl_nb.groupby('hash').agg(cross_country=('country', lambda c: c.nunique() > 1),
+                                              nonblank=('nonblank', 'min'), same_birth=('birth', 'nunique'),
+                                              same_oper=('oper', 'nunique'))
+pair_summary['probable_duplicate'] = (pair_summary.same_birth == 1) & (pair_summary.same_oper == 1) & (pair_summary.nonblank >= 20)
+TNM_ROWS = PRIMARY.SRC.values
+dup_in_cohort = pd.Series(ROW_HASH.values[TNM_ROWS]).duplicated(keep='first').values
+dup_src = set(TNM_ROWS[dup_in_cohort])
+# near-duplicate screen (birth date, operation date, sex; different content)
+OPER_ALL = serial(X.LE1OPERDT_F1).fillna(ymd('LE1OPERDT_F1', 15))
+BIRTH_ALL = serial(X.BIRTHDT)
+kd = pd.DataFrame({'BD': BIRTH_ALL, 'OP': OPER_ALL, 'SEX': X.GENDER, 'H': ROW_HASH, 'ROW': np.arange(len(X))}).dropna(subset=['BD', 'OP'])
+near_groups = [g.ROW.tolist() for _, g in kd.groupby(['BD', 'OP', 'SEX']) if len(g) > 1 and g.H.nunique() > 1]
+cohort_rows = set(TNM_ROWS)
+near_both = sum(1 for g in near_groups if sum(r in cohort_rows for r in g) >= 2)
+near_one = sum(1 for g in near_groups if sum(r in cohort_rows for r in g) == 1)
+# later copy of any birth-date/operation-date/sex match within the cohort
+key_c = pd.DataFrame({'SRC': TNM_ROWS, 'BD': BIRTH_ALL.values[TNM_ROWS], 'OP': OPER_ALL.values[TNM_ROWS], 'SEX': X.GENDER.values[TNM_ROWS]}).dropna(subset=['BD', 'OP']).sort_values('SRC')
+near_dup_src = set(key_c.SRC[key_c.duplicated(['BD', 'OP', 'SEX'], keep='first')].values)
+dup_tbl_nb = pd.DataFrame([
+    {'item': 'records in identical-content pairs', 'n': int(dup_any.sum())},
+    {'item': 'identical-content pairs', 'n': int(pair_summary.shape[0])},
+    {'item': 'pairs meeting the probable-duplicate rule', 'n': int(pair_summary.probable_duplicate.sum())},
+    {'item': 'pairs with copies at different countries', 'n': int(pair_summary.cross_country.sum())},
+    {'item': 'second copies of identical pairs inside the analytic cohort', 'n': int(dup_in_cohort.sum())},
+    {'item': 'near-duplicate groups (birth date, operation date, sex match; different content)', 'n': len(near_groups)},
+    {'item': 'near-duplicate groups with both copies in the analytic cohort', 'n': near_both},
+    {'item': 'near-duplicate groups with one copy in the analytic cohort', 'n': near_one},
+    {'item': 'later records dropped in the broad sensitivity (birth date, operation date and sex match within the cohort)', 'n': len(near_dup_src)},
+])
+save(dup_tbl_nb, 'F60_duplicate_records_screen')
+print(dup_tbl_nb.to_string(index=False))
+
+
+def arm_summary(F, fit_, name, ref_groups=None):
+    S = fit_['S']; S5 = S[:, 1]
+    tr = F.ERA.eq('train').values; va = F.ERA.eq('valid').values
+    q33, q67 = np.quantile(S5[tr], [1 / 3, 2 / 3])
+    G_ = np.where(S5 >= q67, 'Favourable', np.where(S5 >= q33, 'Intermediate', 'Adverse'))
+    H5 = -np.log(np.clip(S5, 1e-12, 1))
+    km = KaplanMeierFitter().fit(F.OS_Y.values[va], F.OS_E.values[va])
+    row = {'analysis': name, 'analytic_n': len(F), 'development_n': int(tr.sum()), 'validation_n': int(va.sum()),
+           'validation_C': valid_C(F, H5, va), 'validation_KM_5y': round(float(km.survival_function_at_times(5).iloc[0]), 4),
+           'validation_O_over_E_5y': round(float(km.survival_function_at_times(5).iloc[0]) / float(S5[va].mean()), 4),
+           'cut_S5_q33': round(float(q33), 4), 'cut_S5_q67': round(float(q67), 4),
+           'validation_Favourable_n': int((va & (G_ == 'Favourable')).sum()),
+           'validation_Intermediate_n': int((va & (G_ == 'Intermediate')).sum()),
+           'validation_Adverse_n': int((va & (G_ == 'Adverse')).sum())}
+    if ref_groups is not None:
+        common = np.intersect1d(F.SRC.values, PRIMARY.SRC.values)
+        a = pd.Series(G_, index=F.SRC.values).loc[common].values
+        b = pd.Series(ref_groups, index=PRIMARY.SRC.values).loc[common].values
+        row['patients_in_common_with_primary'] = len(common)
+        row['pct_same_group_as_primary'] = round(100 * float((a == b).mean()), 2)
+        row['kappa_vs_primary'] = round(float(cohen_kappa_score(a, b)), 4)
+        row['reassigned_vs_primary'] = int((a != b).sum())
+    return row, G_
+
+
+dup_arms = []
+r_p, _ = arm_summary(PRIMARY, SEL, 'primary (locked)')
+dup_arms.append(r_p)
+D15_all = COHORTS['mid-month (15th, primary)']
+F_dup = model_frame(D15_all[~D15_all.SRC.isin(dup_src)], 'half')
+r_d, _ = arm_summary(F_dup, fit_cox(F_dup, SEL_COLS, SEL_STRAT), 'identical-pair second copies removed', ref_groups=GRP)
+dup_arms.append(r_d)
+F_near = model_frame(D15_all[~D15_all.SRC.isin(near_dup_src)], 'half')
+r_n, _ = arm_summary(F_near, fit_cox(F_near, SEL_COLS, SEL_STRAT), 'later copies of birth/operation/sex matches removed (broad)', ref_groups=GRP)
+dup_arms.append(r_n)
+dup_sens = pd.DataFrame(dup_arms)
+save(dup_sens, 'F61_duplicate_sensitivity')
+print(dup_sens.to_string(index=False))
+
+# %% [markdown]
+# ## 12. Supplementary: the same model without TNM staging
+#
+# The no-TNM model uses the variables recorded for almost all patients (age, interval, metastasis count and size, and
+# their missing indicators), stratified by sex and synchronous presentation. It is not a replacement for the primary
+# model. **Same-patient comparison:** both models are fitted on the same 8,463 TNM-complete development patients and
+# evaluated on the same 8,799 TNM-complete validation patients. **Broader result:** the no-TNM model is fitted on all
+# development patients (14,127) and evaluated on all validation patients (11,967), reported separately.
+
+# %% [code]
+NOTNM_COLS = ['AGE10_F', 'DFI12_F', 'METS_F', 'SIZE10_F', 'DFI_NR', 'METS_NR', 'SIZE_NR']
+fit_nt = fit_cox(PRIMARY, NOTNM_COLS, 'STRATUM')
+H_tnm = -np.log(np.clip(SEL['S'][:, 1], 1e-12, 1))
+H_nt = -np.log(np.clip(fit_nt['S'][:, 1], 1e-12, 1))
+C_tnm_same = valid_C(PRIMARY, H_tnm, vam)
+C_nt_same = valid_C(PRIMARY, H_nt, vam)
+RNG_SUPP = np.random.default_rng(2026)
+idx_v = np.where(vam)[0]
+diff_boot = []
+for _ in range(300):
+    b_ = RNG_SUPP.choice(idx_v, len(idx_v), replace=True)
+    diff_boot.append(concordance_index(PRIMARY.OS_Y.values[b_], -H_tnm[b_], PRIMARY.OS_E.values[b_])
+                     - concordance_index(PRIMARY.OS_Y.values[b_], -H_nt[b_], PRIMARY.OS_E.values[b_]))
+diff_boot = np.array(diff_boot)
+
+
+def all_patient_frame(D):
+    F = D.copy()
+    sd = (F.DEATH == 1) & (F.OS_DAYS <= 0)
+    F['OS_Y_raw'] = np.where(sd, 0.5, F.OS_DAYS) / DAYS
+    F['OS_Y'] = np.minimum(F.OS_Y_raw, MAXFU)
+    F['OS_E'] = np.where(F.OS_Y_raw > MAXFU, 0.0, F.DEATH)
+    trn = F.ERA.eq('train')
+    for col in ['DFI', 'METS', 'SIZE']:
+        F[col + '_NR'] = F[col].isna().astype(float)
+    for col in ['AGE', 'MALE', 'SYNC', 'DFI', 'METS', 'SIZE']:
+        F[col + '_F'] = F[col].fillna(F.loc[trn, col].median())
+    F['AGE10_F'] = F.AGE_F / 10; F['DFI12_F'] = F.DFI_F / 12; F['SIZE10_F'] = F.SIZE_F / 10
+    F['STRATUM'] = F.MALE_F.round().astype(int) * 2 + F.SYNC_F.round().astype(int)
+    return F.reset_index(drop=True)
+
+
+ALLP = all_patient_frame(COHORTS['mid-month (15th, primary)'])
+fit_nt_all = fit_cox(ALLP, NOTNM_COLS, 'STRATUM')
+H_nt_all = -np.log(np.clip(fit_nt_all['S'][:, 1], 1e-12, 1))
+va_all = ALLP.ERA.eq('valid').values
+va_tnm = va_all & ALLP.TNM.values
+C_nt_broad_tnm = valid_C(ALLP, H_nt_all, va_tnm)
+C_nt_broad_all = valid_C(ALLP, H_nt_all, va_all)
+nt_tbl = pd.DataFrame([
+    {'analysis': 'same patients: TNM M2a (primary)', 'development_n': int(trm.sum()), 'validation_n': int(vam.sum()), 'validation_C': C_tnm_same, 'note': 'reference'},
+    {'analysis': 'same patients: no-TNM model (complete-case development)', 'development_n': int(trm.sum()), 'validation_n': int(vam.sum()), 'validation_C': C_nt_same,
+     'note': f'difference TNM minus no-TNM = {C_tnm_same - C_nt_same:.4f}, 95% CI {np.percentile(diff_boot, 2.5):.4f} to {np.percentile(diff_boot, 97.5):.4f} (paired bootstrap, 300 resamples)'},
+    {'analysis': 'broader: no-TNM model (all development patients), same 8,799 validation patients', 'development_n': int((ALLP.ERA.eq('train')).sum()),
+     'validation_n': int(va_tnm.sum()), 'validation_C': C_nt_broad_tnm, 'note': 'same patients as the primary validation set'},
+    {'analysis': 'broader: no-TNM model (all development patients), all validation patients', 'development_n': int((ALLP.ERA.eq('train')).sum()),
+     'validation_n': int(va_all.sum()), 'validation_C': C_nt_broad_all, 'note': 'includes patients with incomplete TNM; not comparable with the TNM model'},
+])
+save(nt_tbl, 'F62_no_TNM_model_supplementary')
+print(nt_tbl.to_string(index=False))
+
+# %% [markdown]
+# ## 13. Supplementary: patients with incomplete TNM staging
+#
+# These analyses describe the 8,832 patients who met steps 1–7 but had incomplete staging. They do not change the
+# primary cohort. Missingness is examined by operation period, centre and country, and by clinical characteristics and
+# outcomes. The informative-selection check asks whether the outcomes of excluded patients match what the no-TNM model
+# (fitted on all development patients) predicts, for each group and period.
+
+# %% [code]
+ALLP['YEAR'] = ALLP.T0.dt.year
+E13 = ALLP[~ALLP.TNM].copy()
+A13 = ALLP[ALLP.TNM].copy()
+BANDS = [1989, 1999, 2004, 2009, 2014, 2020]
+LABELS = ['1990-1999', '2000-2004', '2005-2009', '2010-2014', '2015-2020']
+ALLP['YEARBAND'] = pd.cut(ALLP.YEAR, BANDS, labels=LABELS)
+band_rows = []
+for b in LABELS:
+    a_ = int((ALLP.TNM & (ALLP.YEARBAND == b)).sum()); e_ = int((~ALLP.TNM & (ALLP.YEARBAND == b)).sum())
+    band_rows.append({'operation_years': b, 'analytic_n': a_, 'excluded_n': e_, 'pct_excluded': round(100 * e_ / max(a_ + e_, 1), 1)})
+save(pd.DataFrame(band_rows), 'F63_incomplete_TNM_by_operation_year')
+print(pd.DataFrame(band_rows).to_string(index=False))
+
+site_n = ALLP.groupby('SITE').agg(n=('TNM', 'size'), excluded=('TNM', lambda s: int((~s).sum())))
+site_n['pct'] = 100 * site_n.excluded / site_n.n
+cty_n = ALLP.groupby('COUNTRY').agg(n=('TNM', 'size'), excluded=('TNM', lambda s: int((~s).sum())))
+cty_n['pct'] = 100 * cty_n.excluded / cty_n.n
+clust = pd.DataFrame([
+    {'level': 'sites', 'units': len(site_n), 'units_no_exclusions': int((site_n.pct == 0).sum()),
+     'units_only_exclusions': int((site_n.pct == 100).sum()), 'units_50pct_or_more_excluded': int((site_n.pct >= 50).sum()),
+     'median_patients_per_unit': int(site_n.n.median()), 'pct_of_exclusions_in_10_largest_units': round(100 * site_n.excluded.nlargest(10).sum() / site_n.excluded.sum(), 1)},
+    {'level': 'countries', 'units': len(cty_n), 'units_no_exclusions': int((cty_n.pct == 0).sum()),
+     'units_only_exclusions': int((cty_n.pct == 100).sum()), 'units_50pct_or_more_excluded': int((cty_n.pct >= 50).sum()),
+     'median_patients_per_unit': int(cty_n.n.median()), 'pct_of_exclusions_in_10_largest_units': round(100 * cty_n.excluded.nlargest(10).sum() / cty_n.excluded.sum(), 1)}])
+save(clust, 'F64_incomplete_TNM_clustering_centre_country')
+print(clust.to_string(index=False))
+
+
+def char_row(col, lab, kind):
+    a_ = A13[col].dropna(); e_ = E13[col].dropna()
+    if kind == 'bin':
+        pa_, pe_ = a_.mean(), e_.mean()
+        sd_ = np.sqrt((pa_ * (1 - pa_) + pe_ * (1 - pe_)) / 2)
+        return {'characteristic': lab, 'included': f'{100 * pa_:.1f}% (n={len(a_):,})', 'excluded': f'{100 * pe_:.1f}% (n={len(e_):,})', 'SMD': round(float((pa_ - pe_) / sd_), 3)}
+    sd_ = np.sqrt((a_.var() + e_.var()) / 2)
+    return {'characteristic': lab, 'included': f'{a_.median():.1f} (IQR {a_.quantile(.25):.1f}-{a_.quantile(.75):.1f}; n={len(a_):,})',
+            'excluded': f'{e_.median():.1f} (IQR {e_.quantile(.25):.1f}-{e_.quantile(.75):.1f}; n={len(e_):,})', 'SMD': round(float((a_.mean() - e_.mean()) / sd_), 3)}
+
+
+meta_a = A13[A13.SYNC == 0]; meta_e = E13[E13.SYNC == 0]
+char_rows = [char_row('AGE', 'Age at operation, years', 'cont'), char_row('MALE', 'Male sex', 'bin'),
+             char_row('SYNC', 'Synchronous presentation', 'bin'), char_row('METS', 'Number of liver metastases (known)', 'cont'),
+             char_row('SIZE', 'Largest metastasis, mm (known)', 'cont'), char_row('CEA', 'Pre-operative CEA, ng/mL (known)', 'cont'),
+             char_row('YEAR', 'Operation year', 'cont')]
+char_rows.append({'characteristic': 'Metachronous: interval unavailable', 'included': f'{100 * meta_a.DFI.isna().mean():.1f}% (n={len(meta_a):,})',
+                  'excluded': f'{100 * meta_e.DFI.isna().mean():.1f}% (n={len(meta_e):,})', 'SMD': None})
+save(pd.DataFrame(char_rows), 'F65_included_vs_excluded_characteristics')
+print(pd.DataFrame(char_rows).to_string(index=False))
+
+out_rows = []
+for lab, a_, e_ in [('all', A13, E13), ('development (<=2009)', A13[A13.ERA.eq('train')], E13[E13.ERA.eq('train')]),
+                    ('validation (>=2010)', A13[A13.ERA.eq('valid')], E13[E13.ERA.eq('valid')])]:
+    out_rows.append({'group': lab, 'included_n': len(a_), 'excluded_n': len(e_),
+                     'included_deaths_pct': round(100 * a_.DEATH.mean(), 1), 'excluded_deaths_pct': round(100 * e_.DEATH.mean(), 1),
+                     'included_KM_5y': round(float(KaplanMeierFitter().fit(a_.OS_Y.values, a_.OS_E.values).survival_function_at_times(5).iloc[0]), 3),
+                     'excluded_KM_5y': round(float(KaplanMeierFitter().fit(e_.OS_Y.values, e_.OS_E.values).survival_function_at_times(5).iloc[0]), 3),
+                     'included_KM_median_y': round(float(KaplanMeierFitter().fit(a_.OS_Y.values, a_.OS_E.values).median_survival_time_), 2),
+                     'excluded_KM_median_y': round(float(KaplanMeierFitter().fit(e_.OS_Y.values, e_.OS_E.values).median_survival_time_), 2)})
+save(pd.DataFrame(out_rows), 'F66_incomplete_TNM_outcomes_by_era')
+print(pd.DataFrame(out_rows).to_string(index=False))
+
+sel_rows = []
+for lab, mk in [('included (TNM complete)', ALLP.TNM.values), ('excluded (TNM incomplete)', ~ALLP.TNM.values)]:
+    for per, pm in [('development', ALLP.ERA.eq('train').values), ('validation', ALLP.ERA.eq('valid').values)]:
+        m_ = mk & pm
+        pred5 = float(fit_nt_all['S'][m_, 1].mean())
+        obs5 = float(KaplanMeierFitter().fit(ALLP.OS_Y.values[m_], ALLP.OS_E.values[m_]).survival_function_at_times(5).iloc[0])
+        sel_rows.append({'group': lab, 'period': per, 'n': int(m_.sum()), 'predicted_5y_no_TNM': round(pred5, 3),
+                         'observed_5y_KM': round(obs5, 3), 'O_over_E': round(obs5 / pred5, 3)})
+save(pd.DataFrame(sel_rows), 'F67_informative_selection_check_no_TNM_model')
+print(pd.DataFrame(sel_rows).to_string(index=False))
+
+try:
+    import statsmodels.api as sm
+    Xl = pd.DataFrame({'const': 1.0, 'operated_2010_or_later': (ALLP.YEAR.values >= 2010).astype(float),
+                       'synchronous': ALLP.SYNC.fillna(0).values, 'age_per_10y': ALLP.AGE.fillna(ALLP.AGE.median()).values / 10,
+                       'male': ALLP.MALE.fillna(0).values, 'largest_metastasis_per_10mm': ALLP.SIZE.fillna(ALLP.SIZE.median()).values / 10,
+                       'metastases_per_1': ALLP.METS.fillna(ALLP.METS.median()).values})
+    lm = sm.Logit(ALLP.TNM.astype(float).values, Xl).fit(disp=0)
+    ci = lm.conf_int()
+    logit_tbl = pd.DataFrame({'term': lm.params.index, 'odds_ratio_complete_TNM': np.exp(lm.params.values),
+                              'CI_low': np.exp(ci[0].values), 'CI_high': np.exp(ci[1].values), 'p': lm.pvalues.values}).round(4)
+    save(logit_tbl, 'F68_logistic_TNM_completeness')
+    print(logit_tbl.to_string(index=False))
+except ImportError:
+    print('statsmodels not installed: logistic model skipped (install statsmodels to reproduce F68)')
+
+# %% [markdown]
+# ## 14. Figures, manifest and reproduction check
 #
 # The manifest records input checksums, row counts and package versions. If earlier v6 results are available, the key
 # numbers are compared; the notebook reports PASS or FAIL for each.
