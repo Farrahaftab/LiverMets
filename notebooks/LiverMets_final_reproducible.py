@@ -765,7 +765,7 @@ def km_s5(T, E):
     return float(k.survival_function_at_times(5).iloc[0]), int((T >= 5).sum())
 
 
-S5v = SEL.S[:, 1]
+S5v = SEL["S"][:, 1]
 va_idx = np.where(vam)[0]
 dec_q = pd.qcut(S5v[vam], 10, labels=False, duplicates='drop')
 rows_dec = []
