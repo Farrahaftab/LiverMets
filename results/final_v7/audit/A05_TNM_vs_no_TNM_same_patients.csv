@@ -1,0 +1,5 @@
+model,validation_population,validation_n,C_index,C_95CI_paired_diff_vs_no_TNM
+"TNM M2a (complete-case development, 8,463)","TNM-complete validation (8,799)",8799,0.6216,
+"no-TNM model (complete-case development, 8,463)","TNM-complete validation (8,799)",8799,0.5994,difference TNM - no-TNM = 0.0222 (95% CI 0.0105 to 0.0336)
+"no-TNM model (broad development, 14,127)","TNM-complete validation (8,799)",8799,0.5982,
+"no-TNM model (broad development, 14,127)",all validation patients incl. TNM-incomplete,11967,0.5972,not comparable with TNM model (different patients)

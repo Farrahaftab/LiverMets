@@ -1,0 +1,10 @@
+characteristic,included,excluded,SMD
+"Age, years","63.4 (IQR 55.7-70.6), n=15,271","63.0 (IQR 55.3-69.9), n=7,416",0.051
+Male sex,"61.9%, n=17,246","60.4%, n=8,827",0.031
+Synchronous presentation,"58.7%, n=17,064","44.8%, n=8,210",0.282
+"Interval primary to liver metastasis, months (metachronous with interval known)","16.0 (IQR 9.8-26.9), n=3,108","16.5 (IQR 9.4-28.3), n=1,534",-0.047
+Number of liver metastases (known),"2.0 (IQR 1.0-3.0), n=16,011","2.0 (IQR 1.0-3.0), n=7,068",0.017
+"Largest metastasis, mm (known)","30.0 (IQR 20.0-45.0), n=13,956","35.0 (IQR 20.0-50.0), n=6,425",-0.186
+"Pre-operative CEA, ng/mL (known)","7.2 (IQR 2.8-25.0), n=11,364","9.7 (IQR 3.2-41.0), n=4,898",-0.029
+Operation year,"2010.0 (IQR 2007.0-2013.0), n=17,262","2007.0 (IQR 2001.0-2011.0), n=8,832",0.584
+"Metachronous: interval unavailable (date missing, negative or after operation)","55.9%, n=7,049","66.2%, n=4,536",

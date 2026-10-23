@@ -1,0 +1,4 @@
+group,included_n,excluded_n,included_deaths_pct,excluded_deaths_pct,included_KM_5y,excluded_KM_5y,included_KM_median_y,excluded_KM_median_y
+all,17262,8832,38.2,41.9,0.436,0.407,4.15,3.84
+development (<=2009),8463,5664,55.4,55.0,0.423,0.391,3.97,3.67
+validation (>=2010),8799,3168,21.8,18.5,0.466,0.505,4.5,5.25

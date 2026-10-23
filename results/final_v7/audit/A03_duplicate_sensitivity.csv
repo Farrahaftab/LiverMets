@@ -1,0 +1,4 @@
+analysis,analytic_n,development_n,validation_n,validation_deaths,validation_C,validation_KM_5y,validation_mean_predicted_5y,validation_O_over_E_5y,validation_median_OS_years,cut_S5_q33,cut_S5_q67,Favourable_validation_n,Intermediate_validation_n,Adverse_validation_n,kappa_vs_primary_common_patients,pct_same_group_common_patients,patients_reassigned
+primary (all TNM-complete records),17262,8463,8799,1916,0.6216,0.4659,0.4078,1.1425,4.504,0.3793,0.4756,2662,2824,3313,,,
+second copies of identical records removed,17256,8461,8795,1916,0.6216,0.4659,0.4078,1.1424,4.446,0.3794,0.4756,2660,2825,3310,0.9971,99.81,33.0
+"exact or near duplicates removed (later record of birth date, operation date and sex match)",17225,8444,8781,1911,0.6216,0.4668,0.4075,1.1455,4.504,0.3785,0.4753,2656,2833,3292,0.988,99.2,138.0

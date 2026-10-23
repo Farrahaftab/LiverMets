@@ -1,0 +1,5 @@
+group,period,n,predicted_5y_no_TNM,observed_5y_KM,O_over_E
+included (TNM complete),development,8463,0.411,0.423,1.028
+included (TNM complete),validation,8799,0.401,0.466,1.161
+excluded (TNM incomplete),development,5664,0.406,0.391,0.963
+excluded (TNM incomplete),validation,3168,0.399,0.505,1.266

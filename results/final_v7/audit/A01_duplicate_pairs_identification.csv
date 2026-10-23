@@ -1,0 +1,24 @@
+pair_id,centres_country_site,cross_country,same_patient_number_in_centre,nonblank_analysis_fields,identical_on_all_fields_hash,same_birth_date,same_operation_date,in_step7_population,in_analytic_cohort,era_of_copies,probable_duplicate_rule
+1,BR-387  /  BG-385,True,False,34,True,True,True,1/1,0/0,not in cohort,True
+2,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False
+3,BR-387  /  BG-385,True,False,34,True,True,True,1/1,1/1,validation,True
+4,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False
+5,BR-387  /  BG-385,True,False,25,True,True,True,0/0,0/0,not in cohort,True
+6,BR-387  /  BG-385,True,False,18,True,True,True,0/0,0/0,not in cohort,False
+7,BR-387  /  BG-385,True,False,34,True,True,True,1/1,1/1,validation,True
+8,BR-387  /  BG-385,True,False,32,True,True,True,1/1,0/0,not in cohort,True
+9,BR-387  /  BG-385,True,True,43,True,True,True,1/1,1/1,development,True
+10,BR-387  /  BG-385,True,False,33,True,True,True,1/1,1/1,development,True
+11,BR-387  /  BG-385,True,False,38,True,True,True,1/1,1/1,validation,True
+12,BR-387  /  BG-385,True,False,38,True,True,True,1/1,0/0,not in cohort,True
+13,BR-387  /  BG-385,True,True,26,True,True,True,0/0,0/0,not in cohort,True
+14,BR-387  /  BG-385,True,False,34,True,True,True,1/1,1/1,validation,True
+15,ES-27  /  ES-27,False,False,25,True,True,True,0/0,0/0,not in cohort,True
+16,BR-387  /  BG-385,True,True,34,True,True,True,1/1,0/0,not in cohort,True
+17,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False
+18,BR-387  /  BG-385,True,False,36,True,True,True,1/1,0/0,not in cohort,True
+19,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False
+20,BR-387  /  BG-385,True,False,34,True,True,True,1/1,0/0,not in cohort,True
+21,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False
+22,BR-387  /  BG-385,True,False,34,True,True,True,0/0,0/0,not in cohort,True
+23,IE-566  /  IE-566,False,False,5,True,True,True,0/0,0/0,not in cohort,False

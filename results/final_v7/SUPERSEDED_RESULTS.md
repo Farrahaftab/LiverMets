@@ -33,3 +33,12 @@ These earlier results are retained for audit only. Do not cite them in the manus
 | Earlier STROBE Figure 1 (14,759 flow) | `manuscript_v7` (earlier draft) | Superseded flow | `results/final_v7/figures/FIG1_STROBE_flow_v7.png` (`F30`) |
 | Earlier Table 1 and Supplementary Table S1 (n = 14,759, with treatment) | earlier draft | Superseded cohort; included treatment variables | Table 1 and Supplementary Table S1 from v7 (`F31`, `F32`); treatment excluded |
 | Earlier 41-reference list | earlier draft | Supported superseded CART, treatment and adjuvant-chemotherapy text | 12 references cited in the revised text |
+
+## Added during the dataset audit
+
+| Earlier result | Where | Why superseded | Replacement |
+|---|---|---|---|
+| Duplicate-removed validation C-index 0.6214 (and 17,256-patient cohort) | `investigation/F51` row (d), `notebooks/investigation_stage_c_v7.py` | Covariate medians were computed from all development patients rather than TNM-complete patients, so the re-implementation differed from the primary model | 0.6216 with second copies removed (`audit/A03`, same model as primary) |
+| No-TNM validation C-index 0.598 described as the broader result | `investigation/F51` rows (b)–(c) | Same median issue as above | No-TNM C 0.5982 on the same 8,799 patients; 0.5972 on all 11,967 validation patients (`audit/A05`) |
+| "69 deaths beyond 15 years" | notebook output F12 row label; earlier summary | The row counts patients with follow-up beyond 15 years; 10 of them died | 69 patients (10 deaths), with 6,601 recorded deaths and 6,591 events inside the window (`audit/A04`) |
+| Duplicate-removed TNM analysis described as "the duplicates do not change the conclusions" without the broader set | `investigation/DATASET_INVESTIGATION_REPORT.md` | Only identical pairs were tested | Broader sensitivity (exact or near duplicates) also tested: C unchanged, 138 patients reassigned (`audit/A03`) |

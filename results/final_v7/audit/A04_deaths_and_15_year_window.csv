@@ -1,0 +1,9 @@
+quantity,n,note
+"deaths recorded (PATSTATC = Deceased), analytic cohort",6601,all recorded deaths
+"deaths inside the 15-year analysis window (OS_E = 1), analytic cohort",6591,used in the models
+"deaths beyond 15 years, censored at 15 years",10,recorded deaths not counted as events
+"patients with follow-up beyond 15 years (the notebook F12 row, labelled ""deaths"")",69,"this is a patient count, not a death count"
+  of whom died,10,the deaths counted above
+  of whom alive or lost to follow-up,59,censored at 15 years
+development: deaths recorded / inside window,"4,685 / 4,675",
+validation: deaths recorded / inside window,"1,916 / 1,916",

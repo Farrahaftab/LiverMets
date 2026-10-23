@@ -1,0 +1,7 @@
+quantity,value
+analytic cohort (TNM complete),17262
+excluded for incomplete TNM,8832
+primary validation C (reproduction),0.6216
+duplicate-removed validation C,0.6216
+"TNM vs no-TNM C on the same 8,799 validation patients",0.6216 vs 0.5994
+no-TNM C on all validation patients (broad model),0.5972
