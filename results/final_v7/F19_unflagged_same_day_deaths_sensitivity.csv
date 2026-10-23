@@ -1,0 +1,4 @@
+analysis,modelling_cohort_TNM,same_day_deaths_in_cohort,valid_C,cut_S5_q33,cut_S5_q67,phenotype_identical_pct_vs_primary,kappa_vs_primary
+"primary: half-day, all same-day deaths kept",17262,13,0.6216,0.3793,0.4756,100.0,1.0
+exclude same-day deaths without death flag,17255,6,0.6226,0.3797,0.476,99.63,0.994
+same-day deaths without flag treated as censored at half-day,17262,13,0.6226,0.3796,0.4759,99.63,0.994

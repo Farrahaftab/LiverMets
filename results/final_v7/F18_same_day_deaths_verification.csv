@@ -1,0 +1,3 @@
+GROUP,n,in_model_cohort,operation_date_complete,forms_with_last_news_median,patstat_F1_deceased
+death flag = Yes,8,6,8,1.0,8
+death flag absent (No / ND),11,7,11,1.0,11

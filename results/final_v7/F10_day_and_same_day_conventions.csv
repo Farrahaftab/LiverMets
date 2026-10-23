@@ -1,0 +1,13 @@
+day_convention,same_day_rule,modelling_cohort_TNM,train_n,valid_n,valid_C,cut_S5_q33,cut_S5_q67,patients_in_common_with_primary,phenotype_identical_pct_vs_primary,kappa_vs_primary
+first day (1st),half,17265,8465,8800,0.6214,0.3793,0.4755,17262,99.71,0.996
+first day (1st),one,17265,8465,8800,0.6214,0.3793,0.4755,17262,99.71,0.996
+first day (1st),quarter,17265,8465,8800,0.6214,0.3793,0.4755,17262,99.71,0.996
+first day (1st),exclude_all,17249,8453,8796,0.6221,0.3799,0.4761,17249,99.62,0.994
+"mid-month (15th, primary)",half,17262,8463,8799,0.6216,0.3793,0.4756,17262,100.0,1.0
+"mid-month (15th, primary)",one,17262,8463,8799,0.6216,0.3793,0.4756,17262,100.0,1.0
+"mid-month (15th, primary)",quarter,17262,8463,8799,0.6216,0.3793,0.4756,17262,100.0,1.0
+"mid-month (15th, primary)",exclude_all,17249,8453,8796,0.6221,0.3799,0.4762,17249,99.62,0.994
+month-end,half,17262,8463,8799,0.6217,0.3793,0.4756,17262,99.98,1.0
+month-end,one,17262,8463,8799,0.6217,0.3793,0.4756,17262,99.98,1.0
+month-end,quarter,17262,8463,8799,0.6217,0.3793,0.4756,17262,99.98,1.0
+month-end,exclude_all,17249,8453,8796,0.6222,0.3799,0.4762,17249,99.64,0.995
