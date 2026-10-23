@@ -905,9 +905,11 @@ ROW_HASH = pd.Series([hashlib.sha256('\x1f'.join('' if v is None else str(v) for
 ROW_NONBLANK = X[HASH_COLS].notna().sum(axis=1) - X[HASH_COLS].isin([''] ).sum(axis=1)
 dup_any = ROW_HASH.duplicated(keep=False)
 pair_hash = ROW_HASH[dup_any]
+OPER_ALL = serial(X.LE1OPERDT_F1).fillna(ymd('LE1OPERDT_F1', 15))     # year-and-month records use the 15th, as in the cohort
+BIRTH_ALL = serial(X.BIRTHDT)
 pair_tbl_nb = pd.DataFrame({'hash': pair_hash, 'country': X.COUNTRY_ID[dup_any], 'site': X.SITE_ID[dup_any],
-                            'nonblank': ROW_NONBLANK[dup_any], 'birth': serial(X.BIRTHDT)[dup_any],
-                            'oper': serial(X.LE1OPERDT_F1)[dup_any]})
+                            'nonblank': ROW_NONBLANK[dup_any], 'birth': BIRTH_ALL[dup_any],
+                            'oper': OPER_ALL[dup_any]})
 pair_summary = pair_tbl_nb.groupby('hash').agg(cross_country=('country', lambda c: c.nunique() > 1),
                                               nonblank=('nonblank', 'min'), same_birth=('birth', 'nunique'),
                                               same_oper=('oper', 'nunique'))
@@ -916,8 +918,6 @@ TNM_ROWS = PRIMARY.SRC.values
 dup_in_cohort = pd.Series(ROW_HASH.values[TNM_ROWS]).duplicated(keep='first').values
 dup_src = set(TNM_ROWS[dup_in_cohort])
 # near-duplicate screen (birth date, operation date, sex; different content)
-OPER_ALL = serial(X.LE1OPERDT_F1).fillna(ymd('LE1OPERDT_F1', 15))
-BIRTH_ALL = serial(X.BIRTHDT)
 kd = pd.DataFrame({'BD': BIRTH_ALL, 'OP': OPER_ALL, 'SEX': X.GENDER, 'H': ROW_HASH, 'ROW': np.arange(len(X))}).dropna(subset=['BD', 'OP'])
 near_groups = [g.ROW.tolist() for _, g in kd.groupby(['BD', 'OP', 'SEX']) if len(g) > 1 and g.H.nunique() > 1]
 cohort_rows = set(TNM_ROWS)
