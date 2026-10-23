@@ -985,7 +985,7 @@ ax.set_xticks(range(len(per))); ax.set_xticklabels([p.replace(' (', '\n(') for p
 for i, (oe, n5) in enumerate(zip(per.O_over_E, per.patients_with_5y_follow_up)):
     ax.text(i, oe + 0.02, f'n(5y)={n5}', ha='center', fontsize=7)
 ax.set_ylabel('Observed / predicted 5-year survival'); ax.set_ylim(0, 1.5)
-ax.set_title('Cox M2a calibration by operation period (grey = sparse 5-year follow-up)', fontsize=9)
+ax.set_title('Cox M2a calibration by operation period\n(2016+ omitted: no patient has 5-year follow-up)', fontsize=9)
 ax.grid(alpha=0.25, axis='y')
 fig.savefig(FIG_DIR / 'COX_04_O_over_E_by_period.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 print('figures written to', FIG_DIR, sorted(p.name for p in FIG_DIR.glob('COX_*.png')))
