@@ -21,3 +21,15 @@ These earlier results are retained for audit only. Do not cite them in the manus
 | RFS median 1.76 (count-based events) | `results/final_v4` | Counted alive-with-disease as events | RFS 2.03 (primary, v7 `F17`) |
 | Operation-date rule = 1st of month for all partial dates | `results/final_v4` | Does not reproduce report counts at steps 6–7 | 15th-of-month rule (v7 `F01`) |
 | Modelling cohort 17,265 (day-1 rule) | `results/final_v4` notes | Day-1 rule; 17,265 is the first-day sensitivity | 17,262 primary (v7) |
+
+## Added during the manuscript revision
+
+| Earlier result | Where | Why superseded | Replacement |
+|---|---|---|---|
+| "Operative-form counts agree with pre-operative counts in 13,130 of 20,553; resected count exceeds pre-operative count in 3,179" | earlier audit notes and the earlier reproducibility notes | Different denominator and definition from the analytic cohort audit. Not reproducible from the v7 outputs | Analytic cohort, 14,189 patients with both counts: equal 8,847 (62.4%), resected greater 2,244 (15.8%), resected lower 3,098 (21.8%) (`F34`) |
+| "Interval predictor set missing for 34 patients whose metastasis was diagnosed after operation" | earlier notes (final_v4) | Counted across a different population and before the synchronous-status fix | 12 metachronous patients in the analytic cohort; 25 across steps 1–7 with a metachronous interval (`F33`) |
+| Interval predictor described as available for all patients | earlier draft Methods | Missing for 3,941 of 7,049 metachronous patients (55.9%), mostly because the primary diagnosis date is missing | Reported in Table 4 of the revised manuscript (`F33`) |
+| Recurrence dates treated as exact for all patients | earlier draft Methods (RFS approximated from PATSTAT_F1) | Dated recurrences exist in the registry: 5,324 after operation, 585 before operation, 41 dated after last contact, 1,676 undated | RFS uses dated recurrences; uncertainty documented (`F11`, `F17`, `F33`) |
+| Earlier STROBE Figure 1 (14,759 flow) | `manuscript_v7` (earlier draft) | Superseded flow | `results/final_v7/figures/FIG1_STROBE_flow_v7.png` (`F30`) |
+| Earlier Table 1 and Supplementary Table S1 (n = 14,759, with treatment) | earlier draft | Superseded cohort; included treatment variables | Table 1 and Supplementary Table S1 from v7 (`F31`, `F32`); treatment excluded |
+| Earlier 41-reference list | earlier draft | Supported superseded CART, treatment and adjuvant-chemotherapy text | 12 references cited in the revised text |

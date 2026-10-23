@@ -1,0 +1,43 @@
+item,text_value,source_file,source_value,in_manuscript_and_matches
+Favourable validation n,"2,662",F06,2662,True
+Intermediate validation n,"2,824",F06,2824,True
+Adverse validation n,"3,313",F06,3313,True
+Favourable median OS,7.38,F06,7.38,True
+Intermediate median OS,4.44,F06,4.44,True
+Adverse median OS,3.18,F06,3.18,True
+validation C-index,0.622 (0.608–0.637),F02 (valid_C 0.6216),0.6216,True
+integrated Brier,0.075,F02,0.0752,True
+predicted 5-y S,40.8%,F02,0.408,True
+observed 5-y S,46.6%,F02,0.466,True
+O/E 5-y,1.14,F02,1.142,True
+log-rank validation p,2.0 × 10⁻⁵²,F08,2.0 × 10⁻⁵²,True
+ordinal C,0.603,F08,0.6032,True
+bootstrap kappa median,0.832,F09,0.832,True
+RFS median,2.03 years (95% CI 1.98–2.09),F17,2.03 years (95% CI 1.98–2.09),True
+RFS 3-y,39.3%,F17,0.393,True
+RFS 5-y,27.6%,F17,0.276,True
+first-day agreement,99.7%,F10,99.71,True
+month-end agreement,99.98%,F10,99.98,True
+excluding unflagged same-day deaths: C,0.623,F19,0.6226,True
+pre-op M1 C,0.591 (0.573–0.606),F14,0.591 (0.573–0.606),True
+pre-op M2a C,0.591 (0.575–0.604),F23,0.591 (0.575–0.604),True
+CEA complete-case HR,1.16 per log unit,F13,1.16,True
+period O/E 2013–2015,1.23,F21,1.234,True
+period n with 5-y FU 2013–2015,109,F21,109,True
+recalibration O/E,1.115,F22,1.115,True
+top decile observed,75.8%,F20,75.8,True
+top decile predicted,58.0%,F20,58.0,True
+deceased,"11,594",F12,11594,True
+deceased without flag,"3,074",F12,3074,True
+undated recurrence,"1,676",F33,1676,True
+dated after operation,"5,324",F33,5324,True
+dated before operation,585,F33,585,True
+dated after last contact,41,F33,41,True
+metachronous unavailable interval,"3,941",F33 (sum of four reasons),3941,True
+operative resected = pre-op,"8,847 (62.4%)",F34,8847,True
+operative resected > pre-op,"2,244 (15.8%)",F34,2244,True
+operative resected < pre-op,"3,098 (21.8%)",F34,3098,True
+analytic cohort,"17,262",F31,17262,True
+development n,"8,463",F31,8463,True
+validation n,"8,799",F31,8799,True
+excluded incomplete TNM,"8,832",F32,8832,True

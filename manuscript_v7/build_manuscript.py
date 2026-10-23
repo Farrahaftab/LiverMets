@@ -1,0 +1,206 @@
+"""Build the revised manuscript (Markdown and Word) from template.md and the v7 output files.
+
+Tables 1, S1 and the predictor audit are inserted from the CSV outputs, so the numbers in the text match the files.
+Writes Revised_manuscript_v7.md and Revised_manuscript_v7.docx, and a check file of the quoted numbers.
+"""
+import re
+import subprocess
+from pathlib import Path
+
+import pandas as pd
+
+HERE = Path(__file__).resolve().parent
+RES = HERE.parent / 'results' / 'final_v7'
+tpl = (HERE / 'template.md').read_text(encoding='utf-8')
+
+
+def md_table(df):
+    cols = list(df.columns)
+    lines = ['| ' + ' | '.join(str(c) for c in cols) + ' |', '|' + '---|' * len(cols)]
+    for _, r in df.iterrows():
+        lines.append('| ' + ' | '.join('' if pd.isna(v) else str(v) for v in r.values) + ' |')
+    return '\n'.join(lines)
+
+
+# ---------- citation numbers in order of first appearance
+CITE = {'{{FONG}}': '1', '{{KM}}': '2', '{{COX}}': '3', '{{STROBE}}': '4', '{{TRIPOD}}': '5',
+        '{{AJCC7}}': '6', '{{AJCC8}}': '7', '{{SCHOEN}}': '8', '{{BRESLOW}}': '9', '{{HARRELL}}': '10',
+        '{{GRAF}}': '11', '{{NORD}}': '12'}
+REFS = [
+    'Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score for predicting recurrence after hepatic resection for metastatic colorectal cancer: analysis of 1001 consecutive cases. Ann Surg. 1999;230(3):309–318.',
+    'Kaplan EL, Meier P. Nonparametric estimation from incomplete observations. J Am Stat Assoc. 1958;53(282):457–481.',
+    'Cox DR. Regression models and life-tables. J R Stat Soc B. 1972;34(2):187–220.',
+    'von Elm E, Altman DG, Egger M, et al. The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement: guidelines for reporting observational studies. PLoS Med. 2007;4(10):e296.',
+    'Collins GS, Reitsma JB, Altman DG, Moons KGM. Transparent reporting of a multivariable prediction model for individual prognosis or diagnosis (TRIPOD): the TRIPOD statement. Ann Intern Med. 2015;162(1):55–63. **[TO CHECK]**',
+    'Edge SB, Compton CC. The American Joint Committee on Cancer: the 7th edition of the AJCC cancer staging manual and the future of TNM. Ann Surg Oncol. 2010;17(6):1471–1474.',
+    'Amin MB, Greene FL, Edge SB, et al. The 8th edition AJCC cancer staging manual: continuing to build a bridge from a population-based to a more "personalized" approach to cancer staging. CA Cancer J Clin. 2017;67(2):93–99.',
+    'Schoenfeld D. Partial residuals for the proportional hazards regression model. Biometrika. 1982;69(1):239–241.',
+    'Breslow NE. Discussion of "Regression models and life-tables" by D. R. Cox. J R Stat Soc B. 1972;34(2):216–217. **[TO CHECK]**',
+    'Harrell FE Jr. Regression Modeling Strategies. 2nd ed. Springer; 2015.',
+    'Graf E, Schmoor C, Sauerbrei W, Schumacher M. Assessment and comparison of prognostic classification schemes for survival data. Stat Med. 1999;18(17–18):2529–2545.',
+    'Nordlinger B, Guiguet M, Vaillant JC, et al. Surgical resection of colorectal carcinoma metastases to the liver. A prognostic scoring system to improve case selection. Cancer. 1996;77(7):1254–1262.',
+]
+ref_text = '\n'.join(f'{i + 1}. {r}' for i, r in enumerate(REFS))
+
+# ---------- tables from CSV
+t1 = pd.read_csv(RES / 'F31_table1_baseline_characteristics.csv')
+s1 = pd.read_csv(RES / 'F32_supp_S1_included_vs_excluded.csv').drop(columns=['note'])
+aud = pd.read_csv(RES / 'F33_predictor_and_recurrence_date_audit.csv')
+opa = pd.read_csv(RES / 'F34_operative_vs_preoperative_metastasis_count.csv')
+audit_tbl = pd.concat([aud.rename(columns={'item': 'Item', 'n': 'n'}),
+                       opa.rename(columns={'item': 'Item', 'n': 'n'})], ignore_index=True)
+audit_tbl['n'] = audit_tbl['n'].map(lambda v: f'{int(v):,}')
+
+text = tpl
+text = text.replace('{{TABLE1}}', md_table(t1))
+text = text.replace('{{S1}}', md_table(s1))
+text = text.replace('{{TABLE3}}', md_table(audit_tbl))
+text = text.replace('{{FIG1}}', '![](figures/FIG1_STROBE_flow_v7.png)')
+text = text.replace('{{REFERENCES}}', ref_text)
+for k, v in CITE.items():
+    text = text.replace(k, v)
+
+# ---------- corrections found on review (see cover note)
+FIXES = [
+    ("Excluded patients were more often synchronous (41.6% vs 58.0%) and had less frequently recorded metastasis size and CEA.",
+     "Excluded patients were less often synchronous (41.6% vs 58.0%), and less often had metastasis size (72.7% vs 80.8% recorded) or CEA (55.5% vs 65.8%) recorded."),
+    ("The missing-indicator term means that the coefficient for the interval is estimated only from patients with a usable interval, and the model is therefore weakly identified for the interval term. Predictions for patients without an interval rely on the missing-indicator term.",
+     "Patients without a usable interval received the training median together with a missing-indicator term. The interval coefficient therefore reflects patients with a usable interval, and predictions for patients without one depend on the imputed value and the indicator term."),
+    ("All last-news dates in the analytic cohort fell on or before 4 July 2020 (checked).",
+     "No deaths in the analytic cohort occurred after 4 July 2020 (checked)."),
+    ("Both are reported in Results (Table 3)", "Both are reported in Results (Table 4)"),
+    ("The three groups were clearly separated in both cohorts (Table 4, Figures 2 and 3).",
+     "The three groups were clearly separated in both cohorts (Table 3, Figures 2 and 3)."),
+    ("**Table 4.** Prognostic groups (M2a) with training-only cut-points.", "**Table 3.** Prognostic groups (M2a) with training-only cut-points."),
+    ("**Table 3.** Predictor-timing and recurrence-date audit", "**Table 4.** Predictor-timing and recurrence-date audit"),
+    ("A reproduction check against the previously validated analysis passed for all ten key quantities (Results, Supplementary material).",
+     "A reproduction check against the previously validated analysis passed for all ten key quantities (`F25_reproduction_check_against_v6.csv`)."),
+    ("| Table 3 Predictor and recurrence audit | `F33`, `F34` | Generated from v7 cohort |\n| Table 4 Prognostic groups | `F06` | From notebook |",
+     "| Table 3 Prognostic groups | `F06` | From notebook |\n| Table 4 Predictor and recurrence audit | `F33`, `F34` | Generated from v7 cohort |"),
+]
+for a, b in FIXES:
+    assert text.count(a) == 1, ('fix not applied', a[:70])
+    text = text.replace(a, b)
+
+assert '{{' not in text, 'unfilled placeholder'
+(HERE / 'Revised_manuscript_v7.md').write_text(text, encoding='utf-8')
+
+# ---------- abstract word count (Background to Conclusions)
+abstract = text.split('# Abstract', 1)[1].split('**Keywords:**', 1)[0]
+abstract_words = len(re.findall(r"[A-Za-z0-9][A-Za-z0-9’'\-–.,%/()×≥<≤=+]*", re.sub(r'\*\*', '', abstract)))
+
+# ---------- number check against the output files
+checks = []
+
+
+def _tokens(s):
+    return re.findall(r'\d[\d,]*(?:\.\d+)?', s)
+
+
+def _norm(s):
+    return s.replace(' years', '').replace(' ', '').replace('-', '–')
+
+
+def chk(label, expected_in_text, value_from_file, file, pct=False):
+    """Pass only if the source value, at the precision written in the text, equals a number quoted in the text,
+    and the quoted text is present in the manuscript."""
+    v = value_from_file
+    if isinstance(v, str):
+        matches = _norm(v) in _norm(expected_in_text)
+    else:
+        v = float(v) * (100 if pct else 1)
+        matches = False
+        for tok in _tokens(expected_in_text):
+            t = tok.replace(',', '')
+            dec = len(t.split('.')[1]) if '.' in t else 0
+            if abs(round(v, dec) - float(t)) < 1e-9:
+                matches = True
+                break
+    ok_text = expected_in_text in text and matches
+    checks.append({'item': label, 'text_value': expected_in_text, 'source_file': file,
+                   'source_value': value_from_file, 'in_manuscript_and_matches': ok_text})
+
+
+f06 = pd.read_csv(RES / 'F06_phenotypes_counts_survival_calibration.csv').set_index('phenotype')
+f02 = pd.read_csv(RES / 'F02_M_stage_candidates_identical_patients.csv').iloc[1]
+f17 = pd.read_csv(RES / 'F17_RFS_sensitivity_final.csv').iloc[0]
+f16 = pd.read_csv(RES / 'F16_identical_subset_comparison_calibration.csv')
+f08 = pd.read_csv(RES / 'F08_phenotype_separation.csv').set_index('quantity')['value']
+f09 = pd.read_csv(RES / 'F09_phenotype_bootstrap_stability.csv').iloc[0]
+chk('Favourable validation n', '2,662', int(f06.loc['Favourable', 'valid_n']), 'F06')
+chk('Intermediate validation n', '2,824', int(f06.loc['Intermediate', 'valid_n']), 'F06')
+chk('Adverse validation n', '3,313', int(f06.loc['Adverse', 'valid_n']), 'F06')
+chk('Favourable median OS', '7.38', float(f06.loc['Favourable', 'valid_median_OS']), 'F06')
+chk('Intermediate median OS', '4.44', float(f06.loc['Intermediate', 'valid_median_OS']), 'F06')
+chk('Adverse median OS', '3.18', float(f06.loc['Adverse', 'valid_median_OS']), 'F06')
+chk('validation C-index', '0.622 (0.608–0.637)', round(float(f02.valid_C), 4), 'F02 (valid_C 0.6216)')
+chk('integrated Brier', '0.075', float(f02.IBS_1_7y), 'F02')
+chk('predicted 5-y S', '40.8%', float(f02.valid_mean_predicted_S5), 'F02', pct=True)
+chk('observed 5-y S', '46.6%', float(f02.valid_observed_S5), 'F02', pct=True)
+chk('O/E 5-y', '1.14', float(f02.valid_OE_5y), 'F02')
+_m, _e = f"{f08['valid_logrank_p']:.2e}".split('e')
+_sup = str.maketrans('0123456789-', '⁰¹²³⁴⁵⁶⁷⁸⁹⁻')
+chk('log-rank validation p', '2.0 × 10⁻⁵²', f"{round(float(_m), 1)} × 10{str(int(_e)).translate(_sup)}", 'F08')
+chk('ordinal C', '0.603', float(f08['valid_C_ordinal']), 'F08')
+chk('bootstrap kappa median', '0.832', float(f09.kappa_median), 'F09')
+chk('RFS median', '2.03 years (95% CI 1.98–2.09)', f"{f17['median_RFS']} years (95% CI {f17['median_95CI'].replace('-', '–')})", 'F17')
+chk('RFS 3-y', '39.3%', float(f17.RFS_3y), 'F17', pct=True)
+chk('RFS 5-y', '27.6%', float(f17.RFS_5y), 'F17', pct=True)
+f10 = pd.read_csv(RES / 'F10_day_and_same_day_conventions.csv')
+chk('first-day agreement', '99.7%', float(f10[(f10.day_convention == 'first day (1st)') & (f10.same_day_rule == 'half')].phenotype_identical_pct_vs_primary.iloc[0]), 'F10')
+chk('month-end agreement', '99.98%', float(f10[(f10.day_convention == 'month-end') & (f10.same_day_rule == 'half')].phenotype_identical_pct_vs_primary.iloc[0]), 'F10')
+f19 = pd.read_csv(RES / 'F19_unflagged_same_day_deaths_sensitivity.csv')
+chk('excluding unflagged same-day deaths: C', '0.623', float(f19.iloc[1].valid_C), 'F19')
+f14 = pd.read_csv(RES / 'F14_preoperative_only_sensitivity.csv').iloc[0]
+from decimal import Decimal, ROUND_HALF_UP
+
+
+def _r3(x):
+    return str(Decimal(str(x)).quantize(Decimal('0.001'), rounding=ROUND_HALF_UP))
+
+
+chk('pre-op M1 C', '0.591 (0.573–0.606)', f"{_r3(f14.valid_C)} ({f14.valid_C_95CI.replace('-', '–')})", 'F14')
+f23 = pd.read_csv(RES / 'F23_preoperative_only_selected_structure.csv').iloc[0]
+chk('pre-op M2a C', '0.591 (0.575–0.604)', f"{_r3(f23.valid_C)} ({f23.valid_C_95CI.replace('-', '–')})", 'F23')
+f13 = pd.read_csv(RES / 'F13_CEA_sensitivity_final.csv')
+chk('CEA complete-case HR', '1.16 per log unit', round(float(f13.iloc[0].CEA_HR_per_log_unit), 2), 'F13')
+f21 = pd.read_csv(RES / 'F21_calibration_by_operation_period.csv')
+chk('period O/E 2013–2015', '1.23', float(f21.iloc[3].O_over_E), 'F21')
+chk('period n with 5-y FU 2013–2015', '109', int(f21.iloc[3].patients_with_5y_follow_up), 'F21')
+f22 = pd.read_csv(RES / 'F22_recalibration_sensitivity.csv')
+chk('recalibration O/E', '1.115', float(f22.iloc[1].valid_O_over_E), 'F22')
+f20 = pd.read_csv(RES / 'F20_calibration_by_validation_decile.csv')
+chk('top decile observed', '75.8%', round(100 * float(f20.iloc[9].observed_5y_KM), 1), 'F20')
+chk('top decile predicted', '58.0%', round(100 * float(f20.iloc[9].mean_predicted_5y), 1), 'F20')
+f12 = pd.read_csv(RES / 'F12_death_and_last_contact_verification.csv').set_index('check')['n']
+chk('deceased', '11,594', int(f12['deceased (PATSTATC)']), 'F12')
+chk('deceased without flag', '3,074', int(f12['deceased without any DEATHKYN_F = Yes']), 'F12')
+def aud_n(key):
+    hits = aud[aud.item.str.startswith(key)]
+    assert len(hits) == 1, (key, list(hits.item))
+    return int(hits.n.iloc[0])
+
+
+chk('undated recurrence', '1,676', aud_n('Recurrence recorded without usable date'), 'F33')
+chk('dated after operation', '5,324', aud_n('Dated recurrence after operation'), 'F33')
+chk('dated before operation', '585', aud_n('Dated recurrence before time zero'), 'F33')
+chk('dated after last contact', '41', aud_n('Recurrence recorded with a date after last contact'), 'F33')
+chk('metachronous unavailable interval', '3,941', aud_n('Metachronous, interval unavailable: primary diagnosis date missing') + aud_n('Metachronous, interval unavailable: liver metastasis date missing') + aud_n('Metachronous, interval unavailable: metastasis diagnosed before primary') + aud_n('Metachronous, interval unavailable: metastasis diagnosed after operation'), 'F33 (sum of four reasons)')
+chk('operative resected = pre-op', '8,847 (62.4%)', int(opa.iloc[1].n), 'F34')
+chk('operative resected > pre-op', '2,244 (15.8%)', int(opa.iloc[2].n), 'F34')
+chk('operative resected < pre-op', '3,098 (21.8%)', int(opa.iloc[3].n), 'F34')
+chk('analytic cohort', '17,262', int(t1.iloc[0, 1].replace(',', '')), 'F31')
+chk('development n', '8,463', int(t1.iloc[0, 2].replace(',', '')), 'F31')
+chk('validation n', '8,799', int(t1.iloc[0, 3].replace(',', '')), 'F31')
+chk('excluded incomplete TNM', '8,832', int(s1.iloc[0, 2].replace(',', '')), 'F32')
+pd.DataFrame(checks).to_csv(RES / 'F35_manuscript_number_check.csv', index=False)
+bad = [c for c in checks if not c['in_manuscript_and_matches']]
+print('abstract words (approx.):', abstract_words)
+print('numbers checked:', len(checks), 'missing from manuscript text:', len(bad))
+for c in bad:
+    print('  MISSING:', c)
+
+# ---------- Word
+subprocess.run(['pandoc', 'Revised_manuscript_v7.md', '-o', 'Revised_manuscript_v7.docx', '--resource-path=.'],
+               cwd=HERE, check=True)
+print('written Revised_manuscript_v7.md and .docx')
