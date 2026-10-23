@@ -1,0 +1,10 @@
+group,horizon_years,n,deaths_before_horizon,at_risk_at_horizon
+Favourable,1,2662,98,1470
+Favourable,3,2662,275,568
+Favourable,5,2662,355,194
+Intermediate,1,2824,151,1583
+Intermediate,3,2824,469,534
+Intermediate,5,2824,581,129
+Adverse,1,3313,332,1701
+Adverse,3,3313,800,472
+Adverse,5,3313,912,118

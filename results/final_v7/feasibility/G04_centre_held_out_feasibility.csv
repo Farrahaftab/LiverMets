@@ -1,0 +1,4 @@
+threshold_TNM_complete_patients_per_unit,sites_meeting_threshold,sites_with_validation_events_20plus,patients_in_qualifying_sites_pct,countries_meeting_threshold
+20,122,32,95.5,37
+50,78,32,87.0,27
+100,51,29,76.0,22
