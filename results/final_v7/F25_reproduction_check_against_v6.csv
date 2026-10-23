@@ -1,0 +1,11 @@
+check,this_run,v6_reference,result
+selected model,M2a,M2a,PASS
+cut-point q33,0.3793,0.3793,PASS
+cut-point q67,0.4756,0.4756,PASS
+primary cohort,17262,17262,PASS
+M2a validation C,0.6216,0.6216,PASS
+RFS primary median,2.03,2.03,PASS
+pre-operative (M1 structure) validation C,0.5913,0.5913,PASS
+Fong subset C,0.6394,0.6394,PASS
+Nordlinger subset C,0.6303,0.6303,PASS
+CEA complete-case HR,1.159,1.159,PASS

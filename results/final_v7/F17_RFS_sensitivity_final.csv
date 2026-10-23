@@ -1,0 +1,5 @@
+RFS_analysis,n,events,median_RFS,median_95CI,RFS_3y,RFS_5y
+PRIMARY: dated recurrence and death events; undated censored,16677,8942,2.03,1.98-2.09,0.393,0.276
+undated recurrences events at last contact,16677,9672,1.93,1.88-1.98,0.369,0.244
+undated recurrences events at mid-interval,16677,9672,1.69,1.65-1.74,0.329,0.228
+undated recurrence patients excluded,15001,7996,1.84,1.78-1.90,0.368,0.268

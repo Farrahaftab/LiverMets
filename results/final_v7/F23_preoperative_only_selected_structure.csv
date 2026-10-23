@@ -1,0 +1,2 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,IBS_1_7y,valid_observed_S5,valid_mean_predicted_S5,valid_OE_5y,valid_calib_slope_5y,note
+"pre-operative-only, selected M2a structure (no count or size)",0.5706,0.5905,0.575-0.604,0.593,0.624,0.64,0.0611,0.1035,0.0676,0.0773,0.466,0.413,1.128,1.307,like-for-like with selected model

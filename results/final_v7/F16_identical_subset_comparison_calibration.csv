@@ -1,0 +1,4 @@
+subset,valid_n,valid_deaths,selected_model_C,mean_predicted_S5,observed_S5_KM,OE_5y,Fong_CRS_C,Nordlinger_C
+All TNM-complete validation,8799,1916,0.6216,0.408,0.466,1.142,,
+Fong CRS subset (CEA recorded),3642,914,0.6394,0.399,0.474,1.188,0.5912,
+Nordlinger-type subset,6137,1396,0.6303,0.399,0.461,1.155,,0.583

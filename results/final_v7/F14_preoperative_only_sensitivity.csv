@@ -1,0 +1,2 @@
+model,train_C,valid_C,valid_C_95CI,tAUC_1y,tAUC_3y,tAUC_5y,Brier_1y,Brier_3y,Brier_5y,IBS_1_7y,valid_observed_S5,valid_mean_predicted_S5,valid_OE_5y,valid_calib_slope_5y
+"pre-operative-only, M1 structure (no count or size)",0.57,0.5913,0.573-0.606,0.594,0.623,0.638,0.0611,0.1036,0.0676,0.0773,0.466,0.414,1.126,1.358

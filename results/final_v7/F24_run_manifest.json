@@ -1,0 +1,29 @@
+{
+  "inputs": {
+    "LiverMet_Part1.xlsx": {
+      "sha256": "7eed0ab953a3b09da616e71b03664ea1dcacd5ad3c6a4b47e70d57bfc393a976",
+      "matches_recorded": true
+    },
+    "LiverMet_Part2.xlsx": {
+      "sha256": "a1839daaded4b5e4619154e247428a8f2e15fcdc53066a8d67a819b53a161049",
+      "matches_recorded": true
+    }
+  },
+  "row_counts": {
+    "Part1": 14782,
+    "Part2": 14783
+  },
+  "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+  "python": "3.13.16",
+  "packages": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.3",
+    "lifelines": "0.30.3",
+    "scikit-survival": "0.28.0",
+    "scikit-learn": "1.9.1",
+    "pyarrow": "26.0.0",
+    "python-calamine": "0.8.3"
+  },
+  "selected_model": "M2a",
+  "runtime_seconds": 433
+}

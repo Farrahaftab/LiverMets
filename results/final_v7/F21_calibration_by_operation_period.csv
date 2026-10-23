@@ -1,0 +1,6 @@
+period,n,mean_predicted_5y,observed_5y_KM,O_over_E,patients_with_5y_follow_up
+operation 1990-2004,2462,0.434,0.415,0.955,822
+operation 2005-2009 (training),5967,0.416,0.427,1.025,1272
+operation 2010-2012 (validation),4315,0.411,0.447,1.088,332
+operation 2013-2015 (validation),3084,0.406,0.5,1.234,109
+operation 2016+ (validation),1400,0.403,0.507,1.258,0

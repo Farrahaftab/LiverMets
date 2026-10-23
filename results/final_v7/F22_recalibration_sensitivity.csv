@@ -1,0 +1,4 @@
+analysis,valid_mean_predicted_5y,valid_observed_5y_KM,valid_O_over_E,valid_C,agreement_validation_kappa,agreement_pct_validation
+primary (baseline from all training years),0.408,0.466,1.142,0.6216,,
+recent-baseline sensitivity (2005-2009),0.418,0.466,1.115,0.6197,,
+phenotype agreement of recent-baseline groups with primary,,,,,0.883,92.2
