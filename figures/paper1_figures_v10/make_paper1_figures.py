@@ -269,6 +269,13 @@ check("common", "Group development n sum equals development cohort", N_DEV, sum(
 check("common", "Group validation n sum equals validation cohort", N_VAL, sum(G[g]["val_n"] for g in GROUPS))
 check("common", "Group validation deaths sum equals validation window events", EV_VAL,
       sum(G[g]["val_deaths"] for g in GROUPS))
+_cand = read_csv(SRC["cand"])
+_f02_m2a = [r for r in _cand[1:] if r[0].startswith("M2a")][0]
+F02_CI = _f02_m2a[_cand[0].index("valid_C_95CI")]
+check("common", "Validation C-index 95% CI: F02 (candidate table, M2a row) equals F02b (selected model)",
+      F02_CI, C_CI, severity="DISCREPANCY")
+record("common", "C_ci_F02", "C-index 95% CI, M2a row of candidate table (Supplementary S4)", F02_CI.replace("-", "–"),
+       rel(SRC["cand"]), "valid_C_95CI, row M2a", F02_CI)
 check("common", "Validation 5-y observed survival: F02b equals G01", OBS5, as_float(g1["observed_KM_survival"]), tol=0.0005)
 check("common", "Validation 5-y predicted survival: F02b equals G01", PRED5, as_float(g1["mean_predicted_survival"]), tol=0.0005)
 check("common", "Validation 5-y O/E: F02b equals G01", OE5, as_float(g1["O_over_E"]), tol=0.0005)

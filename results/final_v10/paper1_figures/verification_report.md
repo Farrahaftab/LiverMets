@@ -1,10 +1,10 @@
 # Paper 1 figure set: verification report (v10)
 
-Automated checks: 50 run; 50 passed; 0 discrepancy(ies) reported; 0 failed.
+Automated checks: 51 run; 50 passed; 1 discrepancy(ies) reported; 0 failed.
 
 ## Discrepancies between locked outputs (reported, not corrected)
 
-None.
+- [common] Validation C-index 95% CI: F02 (candidate table, M2a row) equals F02b (selected model): expected 0.608-0.637, observed 0.608-0.636
 
 ## Failed checks (figure not drawn)
 
@@ -14,6 +14,7 @@ None.
 
 | Figure | ID | Label | Displayed | Source file | Field | Raw |
 |---|---|---|---|---|---|---|
+| common | C_ci_F02 | C-index 95% CI, M2a row of candidate table (Supplementary S4) | 0.608–0.637 | `results/final_v7/F02_M_stage_candidates_identical_patients.csv` | valid_C_95CI, row M2a | 0.608-0.637 |
 | common | N_registry | Registry records | 29,565 | `results/final_v7/F30_flow_counts_for_figure1.csv` | n, step '1 registry' | 29565 |
 | common | N_analytic | Analytic cohort | 17,262 | `results/final_v7/F30_flow_counts_for_figure1.csv` | n, step '8 complete TNM' | 17262 |
 | common | N_dev | Development n | 8,463 | `results/final_v7/F31_table1_baseline_characteristics.csv` | Patients / Development | 8463 |
@@ -90,6 +91,7 @@ None.
 | common | Group development n sum equals development cohort | 8463 | 8463 | **PASS** |
 | common | Group validation n sum equals validation cohort | 8799 | 8799 | **PASS** |
 | common | Group validation deaths sum equals validation window events | 1916 | 1916 | **PASS** |
+| common | Validation C-index 95% CI: F02 (candidate table, M2a row) equals F02b (selected model) | 0.608-0.637 | 0.608-0.636 | **DISCREPANCY** |
 | common | Validation 5-y observed survival: F02b equals G01 | 0.466 | 0.466 | **PASS** |
 | common | Validation 5-y predicted survival: F02b equals G01 | 0.408 | 0.408 | **PASS** |
 | common | Validation 5-y O/E: F02b equals G01 | 1.142 | 1.142 | **PASS** |

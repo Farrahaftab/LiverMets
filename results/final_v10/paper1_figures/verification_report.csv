@@ -1,4 +1,5 @@
 section,figure,id,label,displayed,source_file,source_field,raw
+value,common,C_ci_F02,"C-index 95% CI, M2a row of candidate table (Supplementary S4)",0.608–0.637,results/final_v7/F02_M_stage_candidates_identical_patients.csv,"valid_C_95CI, row M2a",0.608-0.637
 value,common,N_registry,Registry records,"29,565",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '1 registry'",29565
 value,common,N_analytic,Analytic cohort,"17,262",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '8 complete TNM'",17262
 value,common,N_dev,Development n,"8,463",results/final_v7/F31_table1_baseline_characteristics.csv,Patients / Development,8463
@@ -70,6 +71,7 @@ check,common,Recorded minus window events equal F12 deaths beyond 15 years,,PASS
 check,common,Group development n sum equals development cohort,,PASS,,expected=8463,observed=8463
 check,common,Group validation n sum equals validation cohort,,PASS,,expected=8799,observed=8799
 check,common,Group validation deaths sum equals validation window events,,PASS,,expected=1916,observed=1916
+check,common,"Validation C-index 95% CI: F02 (candidate table, M2a row) equals F02b (selected model)",,DISCREPANCY,,expected=0.608-0.637,observed=0.608-0.636
 check,common,Validation 5-y observed survival: F02b equals G01,,PASS,,expected=0.466,observed=0.466
 check,common,Validation 5-y predicted survival: F02b equals G01,,PASS,,expected=0.408,observed=0.408
 check,common,Validation 5-y O/E: F02b equals G01,,PASS,,expected=1.142,observed=1.142
