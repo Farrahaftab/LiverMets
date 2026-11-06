@@ -225,6 +225,9 @@ for name in GROUPS:
 
 rfs = pick(read_csv(SRC["rfs"]), "RFS_analysis", "PRIMARY", startswith=True)
 RFS_MED, RFS_CI = as_float(rfs["median_RFS"]), rfs["median_95CI"]
+RFS_N = as_int(rfs["n"])
+_f33 = read_csv(F7 / "F33_predictor_and_recurrence_date_audit.csv")
+PRE_OP_REC = as_int([r for r in _f33[1:] if r[0].startswith("Dated recurrence before time zero")][0][1])
 
 g1 = pick(read_csv(SRC["horizon"]), "horizon_years", "5")
 EVAL5 = as_float(g1["pct_evaluable"])
@@ -330,8 +333,8 @@ def build_figure1():
 
     ax.text(50, 148.2, "Figure 1. STROBE patient flow: selection, development and temporal validation",
             ha="center", va="center", fontsize=8.6, weight="bold", color=INK)
-    MX, MW, MH = 6, 58, 6.2
-    EX, EW, EH = 72, 26, 5.4
+    MX, MW, MH = 6, 58, 5.3
+    EX, EW, EH = 72, 26, 5.0
     steps = [
         ("registry", "LiverMetSurvey registry", None),
         ("eligible", "Recorded as eligible (CINCLUSION = Yes)", "not recorded as eligible"),
@@ -343,66 +346,66 @@ def build_figure1():
         ("analytic", "Complete TNM staging: analytic cohort", "incomplete TNM staging"),
     ]
     pct_incomplete = 100.0 * EXCL["analytic"] / N["followup"]
-    y = 141.0
+    y = 141.5
     step_y = {}
     for key, title, excl_label in steps:
         last = key == "analytic"
         box(MX, y - MH, MW, MH, "#0E2A47" if last else NAVY, NAVY_EDGE)
-        ax.text(MX + MW / 2, y - 2.1, title, ha="center", va="center", fontsize=7.4, weight="bold", color="white", zorder=4)
-        ax.text(MX + MW / 2, y - 4.6, f"n = {fmt_n(N[key])}" + ("   (analytic cohort)" if last else ""),
-                ha="center", va="center", fontsize=7.0, color="white", zorder=4)
+        ax.text(MX + MW / 2, y - 1.9, title, ha="center", va="center", fontsize=7.6, weight="bold", color="white", zorder=4)
+        ax.text(MX + MW / 2, y - 3.9, f"n = {fmt_n(N[key])}" + ("   (analytic cohort)" if last else ""),
+                ha="center", va="center", fontsize=7.2, color="white", zorder=4)
         record(fig_id, f"N_{key}", f"Step count: {title}", fmt_n(N[key]), src_flow, f"n, step '{dict(STEP)[key]}'", N[key])
         step_y[key] = y
         if excl_label is not None:
-            ex_y = y - 5.0 - EH / 2 + 2.8
+            ex_y = y - MH / 2
             box(EX, ex_y - EH / 2 + 0.2, EW, EH, RED_FILL, RED_EDGE, lw=0.8)
-            extra = f"\n{pct_incomplete:.1f}% of patients meeting criteria" if last else ""
-            ax.text(EX + EW / 2, ex_y + 0.3, f"Excluded: {excl_label}\nn = {fmt_n(EXCL[key])}{extra}",
-                    ha="center", va="center", fontsize=6.3, color="#6E1C15", zorder=4, linespacing=1.25)
+            extra = f" ({pct_incomplete:.1f}%)" if last else ""
+            ax.text(EX + EW / 2, ex_y, f"Excluded: {excl_label}\nn = {fmt_n(EXCL[key])}{extra}",
+                    ha="center", va="center", fontsize=6.6, color="#6E1C15", zorder=4, linespacing=1.2)
             line([MX + MW, EX], [ex_y, ex_y], color=RED_EDGE, lw=0.7, ls=(0, (3, 2)))
             record(fig_id, f"X_{key}", f"Excluded: {excl_label}", fmt_n(EXCL[key]), src_flow,
                    f"difference of consecutive steps into '{dict(STEP)[key]}'", EXCL[key])
         if not last:
-            arrow(MX + MW / 2, y - MH, MX + MW / 2, y - MH - 3.0)
-        y -= 9.6
+            arrow(MX + MW / 2, y - MH, MX + MW / 2, y - MH - 2.6)
+        y -= 7.9
     record(fig_id, "P_incomplete", "Percent excluded for incomplete TNM", f"{pct_incomplete:.1f}%", src_flow,
            "computed: excluded / step 7", round(pct_incomplete, 3))
 
     analytic_bottom = step_y["analytic"] - MH
     DEV_X, DEV_W, VAL_X, VAL_W = 2, 40, 56, 42
-    split_y = analytic_bottom - 3.4
+    split_y = analytic_bottom - 2.8
     line([MX + MW / 2, MX + MW / 2], [analytic_bottom, split_y])
     line([DEV_X + DEV_W / 2, VAL_X + VAL_W / 2], [split_y, split_y])
     arrow(DEV_X + DEV_W / 2, split_y, DEV_X + DEV_W / 2, split_y - 2.6)
     arrow(VAL_X + VAL_W / 2, split_y, VAL_X + VAL_W / 2, split_y - 2.6)
 
-    coh_y = split_y - 2.6 - 7.4
-    box(DEV_X, coh_y, DEV_W, 7.4, DEV_FILL, DEV_EDGE, lw=1.1)
+    coh_y = split_y - 2.2 - 6.8
+    box(DEV_X, coh_y, DEV_W, 6.8, DEV_FILL, DEV_EDGE, lw=1.1)
     ax.text(DEV_X + DEV_W / 2, coh_y + 5.4, "Development cohort", ha="center", va="center", fontsize=7.6, weight="bold", color=DEV_EDGE)
     ax.text(DEV_X + DEV_W / 2, coh_y + 3.0, "operated 2009 or earlier", ha="center", va="center", fontsize=6.6, color=INK)
     ax.text(DEV_X + DEV_W / 2, coh_y + 1.0, f"n = {fmt_n(N_DEV)}   |   events = {fmt_n(EV_DEV)}", ha="center", va="center", fontsize=7.0, weight="bold", color=INK)
-    box(VAL_X, coh_y, VAL_W, 7.4, VAL_FILL, VAL_EDGE, lw=1.1)
+    box(VAL_X, coh_y, VAL_W, 6.8, VAL_FILL, VAL_EDGE, lw=1.1)
     ax.text(VAL_X + VAL_W / 2, coh_y + 5.4, "Temporal validation cohort", ha="center", va="center", fontsize=7.6, weight="bold", color=VAL_EDGE)
     ax.text(VAL_X + VAL_W / 2, coh_y + 3.0, "operated 2010 or later", ha="center", va="center", fontsize=6.6, color=INK)
     ax.text(VAL_X + VAL_W / 2, coh_y + 1.0, f"n = {fmt_n(N_VAL)}   |   events = {fmt_n(EV_VAL)}", ha="center", va="center", fontsize=7.0, weight="bold", color=INK)
 
-    mod_y = coh_y - 3.0 - 9.0
+    mod_y = coh_y - 2.4 - 8.2
     arrow(DEV_X + DEV_W / 2, coh_y, DEV_X + DEV_W / 2, mod_y + 9.2)
     arrow(VAL_X + VAL_W / 2, coh_y, VAL_X + VAL_W / 2, mod_y + 9.2)
-    box(DEV_X, mod_y, DEV_W, 9.0, "white", DEV_EDGE, lw=1.0)
+    box(DEV_X, mod_y, DEV_W, 8.2, "white", DEV_EDGE, lw=1.0)
     ax.text(DEV_X + 1.5, mod_y + 7.4, "Model development (training only)", ha="left", va="center", fontsize=7.0, weight="bold", color=DEV_EDGE)
     ax.text(DEV_X + 1.5, mod_y + 5.0, f"Stratified Cox model M2a: {N_TERMS} terms,\n{N_STRATA} strata (sex x synchrony x M-stage)",
             ha="left", va="center", fontsize=6.5, color=INK, linespacing=1.3)
     ax.text(DEV_X + 1.5, mod_y + 1.9, f"Group cut-points (training tertiles):\npredicted 5-y survival {CUT_LO:.4f} and {CUT_HI:.4f}",
             ha="left", va="center", fontsize=6.5, color=INK, linespacing=1.3)
-    box(VAL_X, mod_y, VAL_W, 9.0, "white", VAL_EDGE, lw=1.0)
+    box(VAL_X, mod_y, VAL_W, 8.2, "white", VAL_EDGE, lw=1.0)
     ax.text(VAL_X + 1.5, mod_y + 7.4, "Validation: fixed model, no refit", ha="left", va="center", fontsize=7.0, weight="bold", color=VAL_EDGE)
     ax.text(VAL_X + 1.5, mod_y + 4.9, f"C-index {C_VAL:.3f} (95% CI {C_CI.replace('-', '–')})\nO/E at 5 years {OE5:.2f}; IBS (1-7 y) {IBS:.3f}",
             ha="left", va="center", fontsize=6.5, color=INK, linespacing=1.3)
     ax.text(VAL_X + 1.5, mod_y + 1.6, f"5-y survival: observed {pct(OBS5)}, predicted {pct(PRED5)}\nFavourable/Intermediate/Adverse groups applied",
             ha="left", va="center", fontsize=6.5, color=INK, linespacing=1.3)
 
-    grp_top = mod_y - 4.0
+    grp_top = mod_y - 3.0
     bus_y = grp_top + 1.8
     COL_W = 30.6
     COL_X = {"Favourable": 1.5, "Intermediate": 34.7, "Adverse": 67.9}
@@ -415,31 +418,31 @@ def build_figure1():
         arrow(COL_CX[n], bus_y, COL_CX[n], grp_top + 0.2)
     defn = {"Favourable": f"predicted 5-y ≥ {CUT_HI:.4f}", "Intermediate": f"{CUT_LO:.4f} to < {CUT_HI:.4f}",
             "Adverse": f"predicted 5-y < {CUT_LO:.4f}"}
-    GH = 31.0
+    GH = 26.0
     for n in GROUPS:
         x, g = COL_X[n], G[n]
         box(x, grp_top - GH, COL_W, GH, "white", GRP_COL[n], lw=1.3)
         box(x, grp_top - 4.8, COL_W, 4.8, GRP_COL[n], GRP_COL[n], lw=0.0)
         ax.text(COL_CX[n], grp_top - 2.4, f"{n} group", ha="center", va="center", fontsize=7.8, weight="bold", color="white", zorder=4)
-        ax.text(COL_CX[n], grp_top - 7.2, defn[n], ha="center", va="center", fontsize=6.3, color=INK, style="italic")
+        ax.text(COL_CX[n], grp_top - 6.4, defn[n], ha="center", va="center", fontsize=6.4, color=INK, style="italic")
         rows = [("Development n", fmt_n(g["dev_n"])), ("Development 5-y KM", pct(g["dev_s5"])),
                 ("Validation n (deaths)", f"{fmt_n(g['val_n'])} ({fmt_n(g['val_deaths'])})"),
                 ("Validation median OS, y", f"{g['val_med']:.2f}"), ("  95% CI", g["val_med_ci"].replace("-", "–")),
                 ("Validation 5-y KM", pct(g["val_s5"]))]
-        yy = grp_top - 11.0
+        yy = grp_top - 9.6
         for lab, val in rows:
             ax.text(x + 1.4, yy, lab, ha="left", va="center", fontsize=6.2, color=GREY)
             ax.text(x + COL_W - 1.4, yy, val, ha="right", va="center", fontsize=6.6, color=INK, weight="bold")
-            yy -= 2.9
+            yy -= 2.45
         record(fig_id, f"G_{n[:3].upper()}", f"{n} group counts and outcomes",
                f"dev n {fmt_n(g['dev_n'])}; val n {fmt_n(g['val_n'])} ({fmt_n(g['val_deaths'])}); median {g['val_med']:.2f}; 5-y {pct(g['val_s5'])}",
                rel(SRC["groups"]), f"row '{n}': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM", n)
-    ax.text(50, grp_top - GH - 1.6, "Development group n is one third of the development cohort (training tertiles). "
+    ax.text(50, grp_top - GH - 1.3, "Development group n is one third of the development cohort (training tertiles). "
             "Validation outcomes use the fixed cut-points.", ha="center", va="center", fontsize=5.9, color=GREY, style="italic")
 
-    sum_y = grp_top - GH - 4.6 - 16.0
-    box(2, sum_y, 96, 15.6, NAVY, NAVY_EDGE, lw=0.9)
-    ax.text(50, sum_y + 13.2, "Model performance and survival findings (temporal validation unless stated)",
+    sum_y = grp_top - GH - 4.0 - 14.0
+    box(2, sum_y, 96, 13.6, NAVY, NAVY_EDGE, lw=0.9)
+    ax.text(50, sum_y + 11.9, "Model performance and survival findings (temporal validation unless stated)",
             ha="center", va="center", fontsize=7.6, weight="bold", color="white")
     lines_txt = [
         f"Group separation: log-rank p = {sci(P_VAL)} in validation; p = {sci(P_DEV)} in development.  Ordinal C-index {ORD_C:.3f}.",
@@ -449,8 +452,8 @@ def build_figure1():
         f"Secondary outcome: median recurrence-free survival {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}).",
     ]
     for i, t in enumerate(lines_txt):
-        ax.text(5, sum_y + 10.4 - i * 2.1, "•  " + t, ha="left", va="center", fontsize=6.2, color="white")
-    foot_y = sum_y - 2.2
+        ax.text(5, sum_y + 10.2 - i * 2.0, "•  " + t, ha="left", va="center", fontsize=6.4, color="white")
+    foot_y = sum_y - 1.8
     ax.text(2, foot_y,
             "Excluded counts are differences between consecutive steps.\n"
             "Events = deaths within the 15-year analysis window. Development recorded deaths: "
@@ -458,8 +461,8 @@ def build_figure1():
             "TNM = tumour-node-metastasis; M2a = stratified Cox model; KM = Kaplan–Meier; O/E = observed/expected;\n"
             "IBS = integrated Brier score; RFS = recurrence-free survival.\n"
             "Every number is read from the locked v8 outputs by make_paper1_figures.py; see verification_report.md.",
-            ha="left", va="top", fontsize=5.4, color=GREY, linespacing=1.35)
-    bottom = foot_y - 10.0
+            ha="left", va="top", fontsize=6.0, color=GREY, linespacing=1.3)
+    bottom = foot_y - 7.4
     ax.set_ylim(bottom, 150)
     fig.set_size_inches(7.2, (150 - bottom) * 0.072)
     return fig
@@ -654,18 +657,29 @@ def build_figureS1():
     n_map = {g: RISK[scen][g][0][1] for g in GROUPS}
     check(fig_id, "RFS validation n (sum over groups) does not exceed validation cohort n",
           True, sum(n_map.values()) <= N_VAL)
+    check(fig_id, "Primary RFS n (F17) equals analytic cohort minus dated pre-operative recurrences (F33)",
+          RFS_N, N["analytic"] - PRE_OP_REC)
     for g in GROUPS:
         check(fig_id, f"{g}: at-risk at t=0 equals group n", n_map[g], RISK[scen][g][0][0])
         record(fig_id, f"RFSN_{g[:3].upper()}", f"{g} RFS n (validation)", fmt_n(n_map[g]), rel(SRC["risk"]),
                f"n, scenario RFS_validation, group {g}", n_map[g])
-    fig = plt.figure(figsize=(6.4, 4.4))
-    km_panel(fig, (0.12, 0.12, 0.84, 0.84), scen, 10, n_map,
-             f"Recurrence-free survival, temporal validation cohort (n = {fmt_n(N_VAL)})", show_legend=True)
-    fig.text(0.12, 0.02, f"Overall median RFS {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}). "
-             "Primary definition: dated recurrence or death as events; undated recurrences censored.",
-             fontsize=6.2, color=GREY)
-    record(fig_id, "RFS_CI_fig", "Overall median RFS shown on figure", f"{RFS_MED:.2f} ({RFS_CI.replace('-', '–')})",
-           rel(SRC["rfs"]), "median_RFS; median_95CI (PRIMARY row)", RFS_MED)
+    fig = plt.figure(figsize=(6.4, 4.6))
+    n_rfs_val = sum(n_map.values())
+    km_panel(fig, (0.12, 0.14, 0.84, 0.82), scen, 10, n_map,
+             f"Recurrence-free survival, temporal validation (RFS-eligible n = {fmt_n(n_rfs_val)} of {fmt_n(N_VAL)})",
+             show_legend=True)
+    fig.text(0.12, 0.02, f"Primary RFS median, whole analytic cohort (n = {fmt_n(RFS_N)}): {RFS_MED:.2f} years "
+             f"(95% CI {RFS_CI.replace('-', '–')}). No validation-only median is in the locked outputs.\n"
+             f"{fmt_n(N_VAL - n_rfs_val)} validation patients lack RFS eligibility (dated recurrence before operation; derived).",
+             fontsize=5.9, color=GREY, linespacing=1.3)
+    record(fig_id, "RFS_CI_fig", "Primary RFS median, whole analytic cohort, shown on figure",
+           f"{RFS_MED:.2f} ({RFS_CI.replace('-', '–')})", rel(SRC["rfs"]), "median_RFS; median_95CI (PRIMARY row)", RFS_MED)
+    record(fig_id, "RFS_N", "RFS-eligible n, whole analytic cohort", fmt_n(RFS_N), rel(SRC["rfs"]), "n (PRIMARY row)", RFS_N)
+    record(fig_id, "RFS_VAL_N", "RFS-eligible n, validation (sum of groups)", fmt_n(n_rfs_val), rel(SRC["risk"]),
+           "n at time 0, scenario RFS_validation, summed over groups", n_rfs_val)
+    record(fig_id, "RFS_VAL_EXCL", "Validation patients without RFS eligibility (derived: N_val minus RFS-eligible)",
+           fmt_n(N_VAL - n_rfs_val), "derived from " + rel(SRC["table1"]) + " and " + rel(SRC["risk"]),
+           "N_val - sum(RFS n)", N_VAL - n_rfs_val)
     return fig
 
 
@@ -761,8 +775,7 @@ def build_figureS3():
     ax.grid(alpha=0.22, lw=0.5, axis="y")
     for sp in ["top", "right"]:
         ax.spines[sp].set_visible(False)
-    ax.text(0.0, 0.565, "M2a: F02 CI 0.608–0.637 vs F02b CI 0.608–0.636 (discrepancy; see caption)",
-            fontsize=5.6, color=RED_EDGE)
+    # discrepancy is reported in the caption and verification report, not on the graph
 
     axb = fig.add_axes([0.60, 0.17, 0.37, 0.70])
     sub = [b for b in brows if b["Fong_CRS_C"] or b["Nordlinger_C"]]
@@ -797,8 +810,7 @@ def build_figureS3():
                frameon=False, fontsize=6.0, loc="upper right")
     fig.text(0.08, 0.02, "Point estimates only: no bootstrap intervals for the benchmark scores in the locked outputs. "
              "Benchmarks are registry approximations (Methods).", fontsize=5.8, color=GREY)
-    ax.text(-0.30, 1.03, "A", transform=ax.transAxes, fontsize=10, weight="bold", color=INK)
-    axb.text(-0.25, 1.03, "B", transform=axb.transAxes, fontsize=10, weight="bold", color=INK)
+    # panel identity is carried by the panel titles (A., B.); no separate letters
     return fig
 
 
@@ -813,20 +825,28 @@ def write_captions():
         f"Patients operated in 2009 or earlier formed the development cohort (n = {fmt_n(N_DEV)}; {fmt_n(EV_DEV)} events within 15 years) "
         f"and those operated in 2010 or later the temporal validation cohort (n = {fmt_n(N_VAL)}; {fmt_n(EV_VAL)} events). "
         f"The stratified Cox model (M2a; {N_TERMS} terms; {N_STRATA} strata) was fitted in development only and applied unchanged to validation. "
-        f"Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points {CUT_LO:.4f} and {CUT_HI:.4f}).")
+        f"Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points {CUT_LO:.4f} and {CUT_HI:.4f}). "
+        f"Median follow-up was {FU_DEV:.2f} years in development and {FU_VAL:.2f} years in validation (reverse Kaplan–Meier).")
     cap["Figure2"] = (
         f"**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = {fmt_n(N_DEV)}) and the temporal "
         f"validation cohort (B, n = {fmt_n(N_VAL)}). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. "
-        f"Cut-points {CUT_LO:.4f} and {CUT_HI:.4f} were set in development. Log-rank p = {sci(P_DEV)} (A) and {sci(P_VAL)} (B).")
+        f"Cut-points {CUT_LO:.4f} and {CUT_HI:.4f} were set in development. Log-rank p = {sci(P_DEV)} (A) and {sci(P_VAL)} (B). "
+        f"Follow-up is short in validation (median {FU_VAL:.2f} years, reverse Kaplan–Meier; development {FU_DEV:.2f} years), so "
+        f"validation curves beyond about 5 years rest on few patients.")
     cap["Figure3"] = (
-        "**Figure 3.** Calibration of the M2a model in the temporal validation cohort. (A) Mean predicted against observed "
+        f"**Figure 3.** Calibration of the M2a model in the temporal validation cohort (median follow-up {FU_VAL:.2f} years). (A) Mean predicted against observed "
         "5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted "
         "5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with "
         "5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).")
+    _n_rfs_val = sum(RISK["RFS_validation"][g][0][1] for g in GROUPS)
     cap["FigureS1"] = (
-        f"**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (n = {fmt_n(N_VAL)}; "
-        "primary definition: dated recurrence or death as events, undated recurrences censored). Kaplan–Meier curves with 95% "
-        f"confidence bands; numbers at risk beneath. Overall median RFS {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}).")
+        f"**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (RFS-eligible n = "
+        f"{fmt_n(_n_rfs_val)} of {fmt_n(N_VAL)}; the remaining {fmt_n(N_VAL - _n_rfs_val)} had a dated recurrence before operation "
+        "and are excluded from RFS; this difference is derived by subtraction). Primary definition: dated recurrence or death as "
+        "events; undated recurrences censored. Kaplan–Meier curves with 95% confidence bands; numbers at risk beneath. The primary "
+        f"RFS median of {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}) is for the whole analytic cohort (n = {fmt_n(RFS_N)}); "
+        "the locked outputs contain no validation-only RFS median. "
+        f"Median follow-up in validation was {FU_VAL:.2f} years, so late RFS estimates rest on few patients.")
     cap["FigureS2"] = (
         "**Figure S2.** Forest plot of the selected stratified Cox model (M2a) for overall survival. Points are hazard ratios and bars "
         "95% confidence intervals (log scale). Hazard ratios are within strata defined by sex, synchronous presentation and M-stage. "
@@ -837,7 +857,7 @@ def write_captions():
         "approximations on identical validation patients (Fong subset, n = {}; Nordlinger-type subset, n = {}); point estimates only. "
         "**[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected "
         "model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; "
-        "CI_discrepancy_investigation.md). The manuscript reports the F02b value; the supervisor must confirm this choice."
+        "investigation record in the verification materials). The manuscript reports the F02b value; the supervisor must confirm this choice."
         ).format(fmt_n(BENCH_FONG_N), fmt_n(BENCH_NORD_N))
     for k, v in cap.items():
         (OUT / f"{k}_caption.md").write_text(v + "\n", encoding="utf-8")
