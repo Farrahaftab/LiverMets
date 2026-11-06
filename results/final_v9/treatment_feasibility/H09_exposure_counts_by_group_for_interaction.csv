@@ -1,0 +1,4 @@
+group,treated_n,untreated_n,treated_deaths,untreated_deaths
+Favourable,3515,1161,1048,365
+Intermediate,3693,1183,1351,507
+Adverse,4373,1073,1873,525

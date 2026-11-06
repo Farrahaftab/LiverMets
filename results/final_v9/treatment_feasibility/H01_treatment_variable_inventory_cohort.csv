@@ -1,0 +1,12 @@
+variable,field,coding,yes_n,no_n,ND_or_NA_n,blank_n,pct_usable
+Pre-operative chemotherapy for liver metastases,LE1PREOPMCTYN_F1,Yes/No; start date LE1PREOPMSTDT_F1,7485,8886,759,132,94.8
+Post-operative chemotherapy for liver metastases,LE1POSTOPMCTYN_F1,Yes/No; start date LE1POSTOPMSTDT_F1,7755,5592,3729,186,77.3
+Post-operative chemotherapy after primary colorectal surgery,POSTCOLCTYN_F1,Yes/No; start date POSTCOLSTDT_F1 (components available),7246,8584,1351,81,91.7
+Pre-operative chemotherapy for primary colorectal cancer,PRECOLCHIYN,Yes/No (no date),2572,13519,973,198,93.2
+Pre-operative radiotherapy for primary colorectal cancer,PRECOLRADYN,Yes/No (no date),1935,13971,1048,308,92.1
+Chemotherapy intent after primary surgery,POSTCOLINTENT_F1,Yes/No (intent; not defined in extract),1100,5276,585,10301,36.9
+Targeted therapy after primary surgery,POSTCOLTARGTHEYN_F1,Yes/No,979,6205,1,10077,41.6
+Oxaliplatin after primary surgery,POSTCOLOXALIYN_F1,Yes/No,3441,2634,1101,10086,35.2
+Local treatment of liver metastases (other than resection),LE1LOCALTRTYN_F1,Yes/No,1566,15684,1,11,99.9
+Liver metastasis resection (LE1METARESECYN_L1),LE1METARESECYN_L1,Yes/No (repeat resection context),482,438,97,16245,5.3
+KRAS / RAS status proxy (KPEGFRYN),KPEGFRYN,"Not KRAS; EGFR-related field, mostly blank",0,28,5,16453,0.2

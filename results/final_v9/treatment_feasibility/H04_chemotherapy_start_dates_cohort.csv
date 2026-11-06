@@ -1,0 +1,4 @@
+exposure,recorded_yes,yes_with_start_date,yes_missing_start_date,pct_yes_with_date,start_before_operation_n,start_on_or_after_operation_n,median_days_from_operation_start
+pre-operative liver-metastasis chemotherapy,7485,4320,3165,57.7,4259,61,-146.0
+post-operative liver-metastasis chemotherapy,7755,4425,3330,57.1,88,4337,43.0
+post-operative chemotherapy after primary surgery,7246,3416,3830,47.1,2954,462,-300.0

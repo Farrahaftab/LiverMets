@@ -1,0 +1,14 @@
+field,meaning,usable_yes_no_or_value,pct_of_records,top_values
+COMORBYN,comorbidity recorded (baseline),1438,4.9,blank=28126; Yes=813; No=625; ND=1
+KPKRASMUTYN,"KRAS mutation (baseline, primary tumour)",686,2.3,blank=28301; Unknown=559; No=398; Yes=288; ND=19
+LE1MKRASMUTYN,KRAS mutation (metastasis),611,2.1,blank=28341; Unknown=611; No=347; Yes=264; ND=2
+KPBRAFMUTYN,BRAF mutation,467,1.6,blank=28328; Unknown=750; No=449; ND=20; Yes=18
+KPMSSMSI,MSI/MSS status,226,0.8,blank=28344; Unknown=972; MSS=204; ND=23; MSI=22
+LE1PREOPMOXALIYN_F1,pre-operative oxaliplatin (liver chemotherapy),10509,35.5,blank=18047; Yes=6850; No=3659; ND=1008; NA=1
+LE1PREOPMLV5FUYN_F1,pre-operative leucovorin/5-FU (liver chemotherapy),10549,35.7,blank=18071; Yes=8483; No=2066; ND=944; NA=1
+LE1PREOPMIRIYN_F1,pre-operative irinotecan (liver chemotherapy),10374,35.1,blank=18085; No=7224; Yes=3150; ND=1105; NA=1
+LE1PREOPMTARGTHEYN_F1,pre-operative targeted therapy (liver chemotherapy),11619,39.3,blank=17918; No=7312; Yes=4307; ND=20; NA=8
+LE1PREOPMCAPEYN_F1,pre-operative capecitabine (liver chemotherapy),11628,39.3,blank=17932; No=10026; Yes=1602; ND=5
+LE1MINMARGNUM_F1,"resection margin, post-operative (not baseline)",17742,60.0,blank=8221; ND=3602; 0.0=2888; 10.0=2311; 1.0=2238; 5.0=1585
+CINCLUSION,registry inclusion,29338,99.2,Yes=28979; No=359; blank=227
+LE1HEPATECTYN_F1,hepatectomy recorded,28632,96.8,Yes=26814; No=1818; blank=893; ND=36; NA=4

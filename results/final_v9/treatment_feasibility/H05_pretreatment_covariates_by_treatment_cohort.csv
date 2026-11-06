@@ -1,0 +1,11 @@
+covariate,treated_n,treated,untreated_n,untreated,SMD
+"Age, years (median)",10716,62.6,2550,66.3,-0.329
+Metastasis count (median),10684,2.0,3253,1.0,0.352
+"Largest metastasis, mm (median)",9317,30.0,2801,30.0,0.072
+"Pre-operative CEA, ng/mL (median)",8079,6.5,1861,9.0,-0.027
+Synchronous presentation (%),11581,64.6,3417,42.4,0.456
+Male sex (%),11581,61.8,3417,62.5,-0.013
+Operated 2010 or later (%),11581,52.4,3417,48.6,0.075
+T4 (%),11581,21.5,3417,23.8,-0.057
+N2 (%),11581,29.1,3417,23.8,0.121
+M1 (%),11581,64.4,3417,41.5,0.472

@@ -1,0 +1,4 @@
+group,n,pre_op_liver_chemo_yes,post_op_liver_chemo_yes,any_liver_chemo_recorded,no_recorded_liver_chemo,unknown_treatment_status,deaths
+Favourable,5483,1969,2532,3515,1161,807,1695
+Intermediate,5645,2328,2494,3693,1183,769,2167
+Adverse,6134,3188,2729,4373,1073,688,2739
