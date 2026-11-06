@@ -1,69 +1,72 @@
-# Reporting checklists — Paper 1 (draft)
+# Reporting checklists — Paper 1 (revision 2)
 
-**Scope.** The model is a stratified Cox regression, not a machine-learning model. TRIPOD (2015) is therefore the primary checklist. TRIPOD+AI (2024) is mapped as a secondary check because it updates the general items. PROBAST (and PROBAST+AI for the risk-of-bias judgement) should be completed by the authors. **[TO CONFIRM with supervisor: which TRIPOD version the journal requires.]**
+**Primary checklist: TRIPOD+AI (Collins et al., BMJ 2024;385:e078378).** TRIPOD+AI supersedes TRIPOD 2015 and applies to regression models as well as machine-learning models, so it applies to the stratified Cox model. TRIPOD 2015 should no longer be used. An earlier draft of this checklist described TRIPOD+AI as machine-learning-only; that was wrong and has been corrected here.
 
-Status key: **Done** = reported in the manuscript; **Partial** = reported with a limitation; **Open** = needs action before submission.
+**Item numbers.** The 27-item TRIPOD+AI checklist and its 13-item abstract checklist were identified by search, but the item-by-item text was not accessed from this session. The mapping below is by TRIPOD+AI domain. Item numbers must be entered from the official expanded checklist before submission. **[TO CONFIRM]**
 
-## STROBE (observational cohort)
+Status key: **Done** = reported in the manuscript; **Partial** = reported with a stated limitation; **Open** = requires action before submission; **N/A** = not applicable to this model.
+
+## 1. TRIPOD+AI, main checklist (by domain)
+
+| Domain | Requirement (summary) | Where in manuscript | Status |
+|---|---|---|---|
+| Title and abstract | Identify as development and validation of a prediction model; report design, data, performance and conclusions | Title; Abstract (220 words) | Done. Confirm abstract checklist (13 items) before submission |
+| Introduction | Rationale; intended use and population; objectives | Introduction, paragraphs 1–3 | Partial: intended clinical use is described only as stratification; no decision context named (see unresolved issues) |
+| Methods: source of data | Describe data source, design and dates | Methods, Study design; Participants | Done |
+| Methods: participants | Eligibility, setting, treatment and follow-up | Methods, Participants; Figure 1 | Done. Setting counts to reconcile (63/242 vs 54/288) **[TO CONFIRM]** |
+| Methods: outcome | Define outcome, timing and ascertainment | Methods, Outcomes | Done. Death flag gap noted (Limitations 6) |
+| Methods: predictors | Define predictors, measurement and timing | Methods, Outcomes and predictors | Partial. Predictor timing for metastasis count and size **unconfirmed** **[TO CONFIRM]** |
+| Methods: sample size | Justify size | Methods, Model development | Done (4,675 development deaths; 11 candidate terms) |
+| Methods: missing data | Describe missingness and handling | Methods, Participants; Predictors | Partial. Indicators and training medians; no multiple imputation for primary model; complete-case and MI shown for CEA only |
+| Methods: statistical analysis | Model type, selection, estimation, validation approach | Methods, Model development to Performance | Done. Selection rule fixed before validation |
+| Methods: risk groups | Describe how groups were derived and applied | Methods, Prognostic groups | Done |
+| Methods: validation | Temporal split, data partition, evaluation | Methods, Model development | Done (temporal; no external validation) |
+| Results: participants | Flow and characteristics | Results; Figure 1; Table 1; Tables S1–S2 | Done |
+| Results: model | Full model specification and coefficients | Table 2 | Done (M2a, with baseline survival by stratum in S-output) |
+| Results: performance | Discrimination and calibration with uncertainty | Table 4; Results, Model and discrimination; Calibration | Done. Bootstrap intervals for C and O/E; no decision-curve analysis |
+| Results: risk groups | Group performance and separation | Table 3; Figure 2 | Done |
+| Discussion: interpretation | Context, limitations, usefulness | Discussion; Limitations | Done |
+| Discussion: usefulness | Clinical use, decision thresholds | Discussion | Partial. No clinician-defined thresholds; decision curve not produced; use is not recommended before recalibration |
+| Other: supplementary | Code, data, supplementary material | Supplementary Material S1–S9; repository link | Done. Registry data access route to be confirmed |
+| Other: funding and conflicts | Report | Declarations | Done |
+| Other: registration or protocol | Report whether a protocol exists | None | **Open**: state whether a protocol or SAP was dated before validation results were seen |
+
+## 2. TRIPOD+AI items specific to AI or machine learning
+
+| Item group | Status |
+|---|---|
+| Data partitioning for machine-learning hyperparameter tuning | N/A (no tuning; the model was fixed by a pre-stated rule) |
+| Algorithm and software details beyond regression | N/A (regression); software versions are reported |
+| Fairness and subgroup performance | Partial. Performance is reported by period, decile and benchmark subset; not by sex or age group. **Open** if required by the journal |
+| Explainability | Partial. Hazard ratios and baseline survival by stratum are reported |
+
+## 3. STROBE (observational cohort, 22 items)
 
 | Item | Where | Status |
 |---|---|---|
-| 1 Title/abstract | Title, Abstract | Done |
-| 2 Background/rationale | Introduction | Done (one citation placeholder left, see review pack) |
-| 3 Objectives | Introduction, last paragraph | Done |
+| 1 Title and abstract | Title; Abstract | Done |
+| 2 Background and rationale | Introduction | Done. One citation placeholder remains (incidence) **[CITATION NEEDED]** |
+| 3 Objectives | Introduction, final paragraph | Done |
 | 4 Study design | Methods, Study design | Done |
-| 5 Setting | Methods, Participants; registry description | Partial: country/centre counts to reconcile (63/242 vs 54/288 site codes) |
-| 6 Participants (eligibility, follow-up) | Methods, Participants; Figure 1 | Done |
-| 7 Variables (outcomes, predictors) | Methods, Outcomes and predictors | Done |
-| 8 Data sources and measurement | Methods | Partial: data dictionary not available; predictor timing unconfirmed |
+| 5 Setting | Methods, Participants | Partial (registry description to reconcile) |
+| 6 Participants | Methods; Figure 1 | Done |
+| 7 Variables | Methods, Outcomes and predictors | Done |
+| 8 Data sources and measurement | Methods | Partial (no data dictionary; predictor timing unconfirmed) |
 | 9 Bias | Methods, sensitivity analyses; Limitations | Done |
-| 10 Study size | Results, Model development; Methods | Done (4,675 deaths in development) |
+| 10 Study size | Methods, Model development | Done |
 | 11 Quantitative variables | Methods, Predictors | Done |
 | 12 Statistical methods | Methods | Done |
-| 13 Participants flow | Figure 1; Results | Done |
-| 14 Descriptive data | Table 1; Table S1 | Done |
-| 15 Outcome data | Results; Table 4 | Done |
-| 16 Main results | Results | Done |
-| 17 Other analyses | Sensitivity Table 6; benchmarks Table 7 | Done |
+| 13 Participants | Figure 1; Results | Done |
+| 14 Descriptive data | Table 1; Tables S1–S2 | Done |
+| 15 Outcome data | Results; Table 3 | Done |
+| 16 Main results | Results; Tables 2–5 | Done |
+| 17 Other analyses | Supplementary Tables S3–S8 | Done |
 | 18 Key results | Discussion | Done |
 | 19 Limitations | Limitations | Done |
 | 20 Interpretation | Discussion | Done |
-| 21 Generalisability | Limitations 5 and 11 | Done |
-| 22 Funding | Declarations | Done (none) |
+| 21 Generalisability | Limitations 5 and 12 | Done |
+| 22 Funding | Declarations | Done |
 
-## TRIPOD (2015), development and validation of a prediction model
+## 4. PROBAST+AI (risk of bias; Moons et al., BMJ 2025;388:e082505)
 
-| Item | Where | Status |
-|---|---|---|
-| 1 Title | Title | Done |
-| 2 Abstract | Abstract | Done |
-| 3 Background and objectives | Introduction | Done |
-| 4 Source of data | Methods, Study design | Done |
-| 5 Participants | Methods; Figure 1 | Done |
-| 6 Outcome | Methods, Outcomes | Done |
-| 7 Predictors | Methods, Predictors | Done (timing Partial) |
-| 8 Sample size | Methods, Model development | Done |
-| 9 Missing data | Methods, Predictors; Table S5 | Partial: indicator method, no multiple imputation for primary model |
-| 10 Statistical analysis | Methods, Model development | Done |
-| 11 Risk groups | Methods, Prognostic groups | Done |
-| 12 Development vs validation | Methods; Results | Done (temporal split) |
-| 13 Results of model | Table 3; Results | Done |
-| 14 Model performance | Table 2; Results | Done |
-| 15 Model updating | Results, calibration; Discussion | Done (recalibration sensitivity; primary not recalibrated) |
-| 16 Interpretation | Discussion | Done |
-| 17 Limitations | Limitations | Done |
-| 18 Supplementary | Supplementary Material | Done |
-| 19 Funding | Declarations | Done |
-| 20 Registration / protocol | Not registered | **Open**: state whether a protocol exists |
-
-## TRIPOD+AI (2024), general items relevant to a regression model
-
-| Item | Status |
-|---|---|
-| Machine-learning-specific items (data partition, hyperparameters, fairness) | Not applicable to the locked Cox model; state this explicitly in the submission |
-| Code and data availability | Done (repository link); data restricted, **Open**: confirm registry access route |
-| Calibration and clinical utility | Partial: no decision-curve analysis; clinician thresholds not defined (see review pack) |
-
-## PROBAST / PROBAST+AI (risk of bias)
-
-**Open.** The authors must complete the PROBAST domain judgements (participants, predictors, outcome, analysis). Expected concerns to address explicitly: temporal validation with short follow-up; 33.8% exclusion for incomplete staging; uncertain predictor timing for count and size; no external validation.
+**Open.** The authors must complete the domain judgements for model development and evaluation (participants, predictors, outcome, analysis). Expected concerns to state explicitly: temporal validation with short follow-up in validation (median 1.47 years); exclusion of 33.8% for incomplete staging; uncertain predictor timing for count and size; no external validation; proportional hazards not tested in validation.

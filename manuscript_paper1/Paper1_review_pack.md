@@ -1,61 +1,64 @@
-# Paper 1 review pack: feedback response, open questions and reference record
+# Paper 1: revision 2 review pack
 
-## 1. How the feedback is addressed
+## 1. What changed in this revision
 
-| Feedback theme (from the original review) | What the revised Paper 1 does | Evidence / location |
+| Request | Change | Where |
 |---|---|---|
-| **Weak discrimination** | Reported openly: C-index 0.622 (95% CI 0.608–0.637). Framed as the model's modest discrimination; value claimed as stratification and calibrated survival, not high accuracy. Time-dependent AUC reported at 1, 3 and 5 years. | Abstract; Table 2; Discussion, "Discrimination in context" |
-| **Benchmarks (Fong, GAME, TBS, Nordlinger)** | Fong and Nordlinger-type compared on identical patients, explicitly labelled as registry approximations. GAME and TBS not reproduced (KRAS recorded for 2.3%; TBS cut-offs differ). No superiority claimed. | Methods, Clinical comparison; Table 7 |
-| **Censoring / follow-up** | Kaplan–Meier and Cox used; reverse-KM median follow-up reported (5.89 and 1.47 years); the number evaluable at each horizon is reported (61%, 35%, 26%). 15-year cap and last-news censoring described. | Table 5; Methods, Censoring |
-| **Validation strategy** | Temporal validation: development ≤2009, validation ≥2010, with the model and cut-points fixed on training data. No external validation claimed. | Methods, Model development; Limitation 3 |
-| **Proportional hazards** | Schoenfeld tests reported. M1 failed (p = 0.031); selected M2a passed (smallest p = 0.18); M2b time-varying effect not significant (p = 0.21). Validation-cohort PH testing not done (stated as limitation). | Results, Proportional hazards; Table S-PH in F03/F04 |
-| **Calibration** | Under-prediction at 5 years (40.8% vs 46.6%; O/E 1.14). Shown by horizon, decile and period. Recalibration sensitivity reported (O/E 1.12). Primary model not recalibrated. | Table 5; Results, Calibration; Figures 4–5 |
-| **Clinical score comparisons** | Identical-patient subsets; approximations flagged; pre-operative-only and no-TNM models reported. | Table 7; Table S4 |
-| **Limitations** | Eleven numbered limitations, including selection (33.8% excluded), predictor timing, death flags, duplicates and missing covariates. | Limitations section |
-| **Treatment content** | Removed from Paper 1. Treatment-associated survival is listed as future research (Paper 2). The earlier PSM treatment findings are not reported. | Introduction (final paragraph); Future research |
-| **Earlier CART analysis** | Replaced by the stratified Cox model on 17,262 patients. CART results (14,759 patients) are not mixed with the Cox results. | Discussion, "Relation to earlier work" |
+| 1. Journal limits | Main text reduced from 4,889 to 3,274 words (Introduction to Conclusions, excluding tables, legends and declarations). Abstract 220 words. Display items reduced from 12 to 7 (2 figures, 5 tables). Method detail moved to supplementary tables S1–S9. Journal limits taken from a search result (3,500 words; 7 figures and tables combined, excluding title page, abstract and references). The live instructions page could not be opened from this session. **[TO CONFIRM against surgonc.org before submission]** | Manuscript; Supplementary |
+| 2. TRIPOD+AI primary | Checklist rebuilt on TRIPOD+AI (BMJ 2024;385:e078378), which covers regression. Earlier claim that TRIPOD+AI was machine-learning-only was an error and is corrected. TRIPOD 2015 is no longer cited. Item numbers must be entered from the expanded checklist; the 27-item text was not accessed. | Reporting checklist |
+| 3. Predictor timing | "All predictors recorded before or at operation" removed. The text now says the model assumes count and size are known at operation, that timing is unconfirmed, and that this is a limitation. Pre-operative vs resected count agreement (62%) is reported as data, not as proof of timing. | Methods, Predictor timing; Limitation 4 |
+| 4. References | Verified by search: Fong 1999; GAME as *Br J Surg* 2018;105(9):1210–1220 (DOI 10.1002/bjs.10838); Bolhuis et al., *Cancers* 2022 (nationwide validation, Fong C 0.577, GAME 0.596); the 2026 *Cancers* systematic review (18(4):625); TRIPOD+AI; PROBAST+AI (BMJ 2025;388:e082505); Harrell 1982. Not verified: STROBE, AJCC editions, Schoenfeld, Breslow, Graf, Nordlinger. Earlier draft errors corrected: GAME was wrongly cited as *Ann Surg*; the TRIPOD+AI and PROBAST+AI author lists were not fully checked. | Reference list |
+| 5. Supplementary formatting | S3b (duplicate sensitivity) reshaped: one row per metric, three columns (primary, identical-pair removal, broad rule), O/E and κ rounded. S2, S4, S5, S6 and S8 split into labelled sub-tables with plain column names. Figures S1–S3 added (RFS, decile calibration, period O/E). | Supplementary Material |
+| 6. Preserve locked results | No model, coefficient, cut-point, group, C-index or survival value changed. Every table cell is generated from the source CSVs by the build script. | Build scripts |
+| 7. Flags kept | Ethics reference, R. Adam's contribution, registry counts, predictor timing and the 2026 review author list remain flagged. | Declarations; Introduction; Reference list |
+| 8. Feedback check | See section 2 below. | — |
 
-## 2. Open questions requiring supervisor or registry confirmation
+## 2. Doctors' feedback: how each point is now handled
 
-1. **Registry description.** The original paper reports 63 countries and 242 centres; the analysis extract has 54 country codes and 288 site codes (259 sites contain patients meeting criteria). Which is correct, and what is a "centre" in the registry?
-2. **Predictor timing (gating item for Paper 2).** When were metastasis count and size recorded relative to any pre-operative treatment? No data dictionary was found in the workbook, repository or uploads.
-3. **Ethics approval reference.** No reference number is recorded. Does a UEL approval exist, or does the study fall under a governance exemption? Supply the reference or the exemption wording.
-4. **R. Adam's contribution** to the work is not recorded in the original author-contribution statement. Confirm before submission; nothing has been added on his behalf.
-5. **Horizon decision.** Is 5 years or 3 years the headline horizon? This must be declared before submission, not chosen after seeing validation results.
-6. **Option B (clinician thresholds).** Are clinically defined decision thresholds to be added? Without a named clinical decision they should not be added.
-7. **Duplicate records.** Registry confirmation of the 16 probable duplicate pairs and near-duplicate groups inside the cohort (6 second copies in the cohort; 37 later records in the broad rule).
-8. **Death-flag gap.** 3,074 patients recorded as deceased in the full extract lack an explicit death flag. Can the registry confirm their status?
-9. **Journal.** Check the journal's current author guidelines and word limits for prediction-model papers. This has not been verified.
-10. **Reporting-guideline choice.** Confirm TRIPOD (2015) as primary. TRIPOD+AI applies to ML-style models and is only a secondary check here.
-11. **Citations** flagged in the manuscript: the [CITATION NEEDED] items in the Introduction (incidence statements), and the survival figures for GAME (11% vs 73.4%).
-12. **Protocol / registration.** Was a protocol or statistical analysis plan dated before validation results were seen?
-
-## 3. Reference verification record
-
-| Ref | Item | Status |
+| Feedback | Current handling | Residual weakness |
 |---|---|---|
-| 1 | Fong 1999, *Ann Surg* | Verified in earlier search; confirm pages |
-| 2 | Margonis et al., GAME score | Verified in earlier search; **survival figures (11%, 73.4%) to be checked** |
-| 3 | 2026 *Cancers* systematic review | Likely match only; title, venue and score count not fully confirmed |
-| 4 | Nationwide Fong validation (PMC9139295) | Authors and journal not confirmed |
-| 5 | TRIPOD 2015 (Collins et al., *BMJ*) | Standard citation; confirm volume |
-| 6 | TRIPOD+AI 2024 | Author list to verify |
-| 7 | PROBAST+AI 2025 | Verified in earlier search; confirm author list |
-| 8 | STROBE, von Elm 2007 | Standard citation |
-| 9–10 | AJCC Edge 2010; Amin 2017 | Edition used by the registry to confirm |
-| 11 | Schoenfeld 1982 | Standard citation |
-| 12 | Breslow 1972 discussion | Confirm citation |
-| 13 | Harrell C-index | Confirm which Harrell paper is intended |
-| 14 | Graf et al. 1999 | Standard citation |
-| 15 | Nordlinger-type score | Citation and score definition to confirm; approximation is four items |
+| Weak discrimination | Reported honestly (C 0.622, 95% CI 0.608–0.637); framed as stratification with calibrated survival; no superiority claimed | Modest C is a real limit for individual decisions; no decision-analytic benefit has been shown |
+| Benchmarks (Fong, GAME, TBS, Nordlinger) | Fong and Nordlinger-type compared on identical patients as approximations; GAME and TBS not reproduced | The Nordlinger-type approximation is not the published score, and its original citation is not confirmed. GAME cannot be reproduced without KRAS, which is recorded for 2.3% |
+| Censoring and short validation follow-up | Reverse-KM follow-up given; evaluable proportions reported (61%, 35%, 26% at 1, 3, 5 years) | 5-year metrics rest on 26% of validation patients and on the earlier-cohort tail |
+| Validation design | Temporal split with fixed model and cut-points | No external validation; calibration in 2016+ patients cannot be assessed |
+| Proportional hazards | Tests in training only, stated in Limitation 8 | Validation-cohort PH and time-varying effects for all covariates were not tested |
+| Calibration | Under-prediction at 5 years (40.8% vs 46.6%); recalibration sensitivity reported; primary model not recalibrated | Absolute survival estimates should not be used clinically without recalibration on contemporary data |
+| Selection | 33.8% excluded for incomplete staging; excluded patients differ; directions of selection bias unknown | The most important unresolved validity threat. Missingness at random cannot be checked |
+| Predictor timing | Flagged as unconfirmed | If count and size were recorded after treatment, the model's inputs are not known at the intended time of use |
+| Clinical utility | Thresholds not defined; no decision curve | Paper does not show that the groups change decisions |
 
-Reference details marked TO VERIFY must be checked against the original articles before submission. The TARGET 2025 reference (Cashin, Hansford, Hernán) was verified in the earlier search and is used in the Paper 2 plan, not in Paper 1.
+## 3. Unresolved issues requiring supervisor or registry action
 
-## 4. Changes from the template made in this build
+1. **Journal instructions.** Confirm the current word limit, the display-item limit and the reference style on the live *Annals of Surgical Oncology* page. The figures used here came from a search result, and the live page could not be opened.
+2. **TRIPOD+AI item numbers.** Enter the item numbers from the official 27-item checklist and the 13-item abstract checklist. The mapping here is by domain, not by number.
+3. **Predictor timing (registry).** Data dictionary or case-report form stating when metastasis count and size were recorded relative to any preoperative treatment. This decides whether the model is usable at the intended time point.
+4. **Registry description.** 63 countries and 242 centres in the original text, against 54 country codes and 288 site codes (259 with eligible patients). Which is correct, and what is a centre?
+5. **Ethics approval reference or exemption wording.** None is recorded. Do not submit until resolved.
+6. **R. Adam's contribution.** Not in the original statement. No contribution added on his behalf.
+7. **Authors' names and references:** full author lists to check for refs 2–6 (see reference list notes); Nordlinger original citation not found; AJCC edition; Breslow and Graf citations to confirm.
+8. **Introduction survival figures.** The GAME figures (11% vs 73%) are confirmed only by a search snippet of the abstract; check against the article.
+9. **Horizon and thresholds.** Confirm the headline horizon and whether clinician-defined thresholds are added. Both are pre-specification decisions and cannot be chosen after the validation results.
+10. **Protocol or SAP.** State whether a protocol was dated before validation results were seen.
+11. **Duplicates.** Registry confirmation of 16 probable duplicate pairs and near-duplicate groups.
+12. **Death flags.** 3,074 patients recorded as deceased in the full extract lack an explicit flag; confirm whether the registry can resolve them.
 
-* Corrected the log-rank p-value in development to 1.4 × 10⁻⁷⁷ (was rounded to 1 × 10⁻⁷⁷).
-* Clarified that the same-day-death sensitivity changed C from 0.6216 to 0.6221 (excluding all 13 same-day deaths).
-* Clarified that 11,594 deceased and 3,074 without a death flag refer to the full extract, not the analytic cohort.
-* Changed "centres" to "sites" where the counts come from site codes (259).
-* Corrected the three-year bootstrap interval in the calibration text to 1.06–1.12 to match Table 5.
-* Marked the GAME survival figures and the nationwide Fong validation statement as TO VERIFY.
+## 4. Major scientific weaknesses that remain
+
+These are not fixed by rewording. They limit what Paper 1 can claim.
+
+1. **Selection into the analytic cohort.** One third of eligible patients are excluded, and the excluded group differs (synchrony, metastasis size, operation year). The model is valid only in the population with complete staging.
+2. **Modest discrimination and under-prediction.** The model separates groups but does not predict individual outcomes well, and its absolute survival estimates are too high for recent patients.
+3. **No external validation and short validation follow-up.** The temporal split is within one registry, and the 5-year results rest on 26% of validation patients.
+4. **Unresolved predictor timing.** The inputs may not be available at the moment the model is meant to be used.
+5. **No demonstrated clinical utility.** No decision threshold or decision-curve analysis is reported.
+6. **Benchmark comparisons are approximate.** Relative performance against published scores is not established on this registry.
+
+## 5. Files
+
+| File | Purpose |
+|---|---|
+| `Paper1_manuscript.docx` | Revised manuscript (2 figures, 5 tables) |
+| `Paper1_supplementary.docx` | Supplementary Tables S1–S9 and Figures S1–S3 |
+| `Paper1_reporting_checklists.docx` | TRIPOD+AI (primary), STROBE and PROBAST+AI status |
+| `Paper1_review_pack.docx` | This document |
+| `build_paper1.py`, `build_supplementary.py` | Regenerate all tables from source CSVs |
