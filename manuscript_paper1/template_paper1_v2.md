@@ -92,7 +92,7 @@ Of 29,565 registry records, 17,262 patients had eligible operations and complete
 
 {{FIG1}}
 
-**Figure 1.** STROBE patient flow. Counts are from the executed analysis; excluded patients are described in Supplementary Tables S1–S2.
+{{FIG1_CAPTION}}
 
 {{TABLE1}}
 

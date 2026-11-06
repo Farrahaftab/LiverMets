@@ -83,8 +83,11 @@ REFS = """1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score 
 14. Nordlinger B, et al. [Original 1996 citation for the Nordlinger-type score NOT confirmed. Searches located only validation studies. Do not submit until the original is identified and its score definition checked against the approximation used here.]
 """
 
+# Figure 1 is the v9 generator output; its caption is generated from the same verified values
+FIG1_CAPTION = (ROOT / 'results/final_v9/figure1/Figure1_caption.md').read_text(encoding='utf-8').strip()
 fill = {
- '{{FIG1}}': '![STROBE patient flow](figures/FIG1_STROBE_flow_v7.png)',
+ '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE_Cox.png)',
+ '{{FIG1_CAPTION}}': FIG1_CAPTION,
  '{{FIG2}}': '![Overall survival by prognostic group, validation cohort](figures/COX_01_OS_by_M2a_group_validation.png)',
  '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4, '{{TABLE5}}': T5,
  '{{REFERENCES}}': REFS,
