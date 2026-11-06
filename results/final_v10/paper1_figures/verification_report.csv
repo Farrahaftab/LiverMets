@@ -56,7 +56,10 @@ value,Figure3,OE_3,"O/E, operation 2013-2015 (validation)",1.23,results/final_v7
 value,FigureS1,RFSN_FAV,Favourable RFS n (validation),"2,590",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Favourable",2590
 value,FigureS1,RFSN_INT,Intermediate RFS n (validation),"2,738",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Intermediate",2738
 value,FigureS1,RFSN_ADV,Adverse RFS n (validation),"3,172",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Adverse",3172
-value,FigureS1,RFS_CI_fig,Overall median RFS shown on figure,2.03 (1.98–2.09),results/final_v7/F17_RFS_sensitivity_final.csv,median_RFS; median_95CI (PRIMARY row),2.03
+value,FigureS1,RFS_CI_fig,"Primary RFS median, whole analytic cohort, shown on figure",2.03 (1.98–2.09),results/final_v7/F17_RFS_sensitivity_final.csv,median_RFS; median_95CI (PRIMARY row),2.03
+value,FigureS1,RFS_N,"RFS-eligible n, whole analytic cohort","16,677",results/final_v7/F17_RFS_sensitivity_final.csv,n (PRIMARY row),16677
+value,FigureS1,RFS_VAL_N,"RFS-eligible n, validation (sum of groups)","8,500",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n at time 0, scenario RFS_validation, summed over groups",8500
+value,FigureS1,RFS_VAL_EXCL,Validation patients without RFS eligibility (derived: N_val minus RFS-eligible),299,derived from results/final_v7/F31_table1_baseline_characteristics.csv and results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,N_val - sum(RFS n),299
 value,FigureS2,HR_T3,"HR, T3 vs T1-2",1.124 (0.908–1.393); p 0.283,results/final_v9/paper1/P1_model_coefficients.csv,"HR, HR_CI_low, HR_CI_high, p (row T3)",1.124
 value,FigureS2,HR_T4,"HR, T4 vs T1-2",1.364 (1.093–1.701); p 0.006,results/final_v9/paper1/P1_model_coefficients.csv,"HR, HR_CI_low, HR_CI_high, p (row T4)",1.364
 value,FigureS2,HR_N1,"HR, N1 vs N0",1.282 (1.195–1.376); p <0.001,results/final_v9/paper1/P1_model_coefficients.csv,"HR, HR_CI_low, HR_CI_high, p (row N1)",1.282
@@ -137,6 +140,7 @@ check,Figure3,"operation 2005-2009 (training): O/E equals observed divided by pr
 check,Figure3,"operation 2010-2012 (validation): O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=1.088,observed=1.088
 check,Figure3,"operation 2013-2015 (validation): O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=1.234,observed=1.232
 check,FigureS1,RFS validation n (sum over groups) does not exceed validation cohort n,,PASS,,expected=True,observed=True
+check,FigureS1,Primary RFS n (F17) equals analytic cohort minus dated pre-operative recurrences (F33),,PASS,,expected=16677,observed=16677
 check,FigureS1,Favourable: at-risk at t=0 equals group n,,PASS,,expected=2590,observed=2590
 check,FigureS1,Intermediate: at-risk at t=0 equals group n,,PASS,,expected=2738,observed=2738
 check,FigureS1,Adverse: at-risk at t=0 equals group n,,PASS,,expected=3172,observed=3172

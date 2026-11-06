@@ -1,6 +1,6 @@
 # Paper 1 figure set: verification report (v11)
 
-Automated checks: 91 run; 89 passed; 2 discrepancy(ies) reported; 0 failed.
+Automated checks: 92 run; 90 passed; 2 discrepancy(ies) reported; 0 failed.
 
 ## Discrepancies between locked outputs (reported, not corrected)
 
@@ -72,7 +72,10 @@ None.
 | FigureS1 | RFSN_FAV | Favourable RFS n (validation) | 2,590 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Favourable | 2590 |
 | FigureS1 | RFSN_INT | Intermediate RFS n (validation) | 2,738 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Intermediate | 2738 |
 | FigureS1 | RFSN_ADV | Adverse RFS n (validation) | 3,172 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Adverse | 3172 |
-| FigureS1 | RFS_CI_fig | Overall median RFS shown on figure | 2.03 (1.98–2.09) | `results/final_v7/F17_RFS_sensitivity_final.csv` | median_RFS; median_95CI (PRIMARY row) | 2.03 |
+| FigureS1 | RFS_CI_fig | Primary RFS median, whole analytic cohort, shown on figure | 2.03 (1.98–2.09) | `results/final_v7/F17_RFS_sensitivity_final.csv` | median_RFS; median_95CI (PRIMARY row) | 2.03 |
+| FigureS1 | RFS_N | RFS-eligible n, whole analytic cohort | 16,677 | `results/final_v7/F17_RFS_sensitivity_final.csv` | n (PRIMARY row) | 16677 |
+| FigureS1 | RFS_VAL_N | RFS-eligible n, validation (sum of groups) | 8,500 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n at time 0, scenario RFS_validation, summed over groups | 8500 |
+| FigureS1 | RFS_VAL_EXCL | Validation patients without RFS eligibility (derived: N_val minus RFS-eligible) | 299 | `derived from results/final_v7/F31_table1_baseline_characteristics.csv and results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | N_val - sum(RFS n) | 299 |
 | FigureS2 | HR_T3 | HR, T3 vs T1-2 | 1.124 (0.908–1.393); p 0.283 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row T3) | 1.124 |
 | FigureS2 | HR_T4 | HR, T4 vs T1-2 | 1.364 (1.093–1.701); p 0.006 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row T4) | 1.364 |
 | FigureS2 | HR_N1 | HR, N1 vs N0 | 1.282 (1.195–1.376); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row N1) | 1.282 |
@@ -158,6 +161,7 @@ None.
 | Figure3 | operation 2010-2012 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.088 | 1.088 | **PASS** |
 | Figure3 | operation 2013-2015 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.234 | 1.232 | **PASS** |
 | FigureS1 | RFS validation n (sum over groups) does not exceed validation cohort n | True | True | **PASS** |
+| FigureS1 | Primary RFS n (F17) equals analytic cohort minus dated pre-operative recurrences (F33) | 16677 | 16677 | **PASS** |
 | FigureS1 | Favourable: at-risk at t=0 equals group n | 2590 | 2590 | **PASS** |
 | FigureS1 | Intermediate: at-risk at t=0 equals group n | 2738 | 2738 | **PASS** |
 | FigureS1 | Adverse: at-risk at t=0 equals group n | 3172 | 3172 | **PASS** |
