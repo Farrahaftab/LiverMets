@@ -1,0 +1,4 @@
+group,development_n,validation_n,predicted_5y_survival_range_validation,mean_predicted_5y_validation
+Favourable,2821,2662,0.476-0.711,0.532
+Intermediate,2821,2824,0.379-0.476,0.428
+Adverse,2821,3313,0.000-0.379,0.291

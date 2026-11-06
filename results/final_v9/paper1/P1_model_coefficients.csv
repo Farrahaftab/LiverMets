@@ -1,0 +1,12 @@
+term,description,coefficient,HR,HR_CI_low,HR_CI_high,p
+T3,T3 vs T1-2,0.1173,1.124,0.908,1.393,0.2834
+T4,T4 vs T1-2,0.3101,1.364,1.093,1.701,0.006
+N1,N1 vs N0,0.2486,1.282,1.195,1.376,0.0
+N2,N2 vs N0,0.4858,1.625,1.505,1.755,0.0
+AGE10_F,"Age, per 10 years",0.1234,1.131,1.098,1.166,0.0
+DFI12_F,"Interval primary to liver metastasis, per 12 months (0 if synchronous)",-0.0183,0.982,0.939,1.027,0.4205
+METS_F,"Number of liver metastases, per additional lesion",0.0623,1.064,1.054,1.075,0.0
+SIZE10_F,"Largest metastasis, per 10 mm",0.0312,1.032,1.022,1.042,0.0
+DFI_NR,Interval unavailable (indicator),-0.0707,0.932,0.827,1.05,0.2453
+METS_NR,Metastasis count unavailable (indicator),0.193,1.213,1.079,1.363,0.0012
+SIZE_NR,Metastasis size unavailable (indicator),-0.0165,0.984,0.904,1.07,0.7029
