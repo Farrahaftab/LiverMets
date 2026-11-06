@@ -89,7 +89,13 @@ S.append("## Table S8. Horizon feasibility, group events and recurrence-free sur
 
 S.append("## Table S9. Reporting checklists\n\nSee `Paper1_reporting_checklists.docx` (TRIPOD+AI primary; STROBE; PROBAST+AI status).")
 
-S.append("## Supplementary figures\n\n**Figure S1.** Recurrence-free survival by prognostic group, validation cohort (primary definition).\n\n![](figures/COX_02_RFS_by_M2a_group_validation.png)\n\n**Figure S2.** Calibration by validation decile of predicted 5-year survival. Open markers: fewer than 50 patients followed up to 5 years.\n\n![](figures/COX_03_calibration_by_decile_validation.png)\n\n**Figure S3.** Observed/expected 5-year survival by operation period. The 2016+ period is omitted because no patient had 5-year follow-up.\n\n![](figures/COX_04_O_over_E_by_period.png)")
+V10 = ROOT / 'results/final_v10/paper1_figures'
+S1_CAP = (V10 / 'FigureS1_caption.md').read_text(encoding='utf-8').strip()
+S2_CAP = (V10 / 'FigureS2_caption.md').read_text(encoding='utf-8').strip()
+S3_CAP = (V10 / 'FigureS3_caption.md').read_text(encoding='utf-8').strip()
+S.append("## Supplementary figures\n\n" + S1_CAP + "\n\n![](figures/FigureS1_RFS_by_group_validation.png)\n\n" +
+         S2_CAP + "\n\n![](figures/FigureS2_calibration_by_decile.png)\n\n" +
+         S3_CAP + "\n\n![](figures/FigureS3_OE_by_period.png)")
 
 S.append("## Coefficient outputs\n\nBaseline survival by stratum (`P1_baseline_survival_by_stratum.csv`) and group summary (`P1_group_summary.csv`) are in `results/final_v9/paper1/`.\n\n" +
          select(P1/'P1_baseline_survival_by_stratum.csv', list(rows(P1/'P1_baseline_survival_by_stratum.csv')[0]), None) +

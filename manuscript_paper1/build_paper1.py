@@ -84,12 +84,15 @@ REFS = """1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score 
 """
 
 # Figure 1 is the v9 generator output; its caption is generated from the same verified values
-FIG1_CAPTION = (ROOT / 'results/final_v9/figure1/Figure1_caption.md').read_text(encoding='utf-8').strip()
+V10 = ROOT / 'results/final_v10/paper1_figures'
+FIG1_CAPTION = (V10 / 'Figure1_caption.md').read_text(encoding='utf-8').strip()
+FIG2_CAPTION = (V10 / 'Figure2_caption.md').read_text(encoding='utf-8').strip()
 fill = {
- '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE_Cox.png)',
+ '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png)',
+ '{{FIG2}}': '![Overall survival by prognostic group, validation cohort](figures/Figure2_OS_by_group_validation.png)',
+ '{{FIG2_CAPTION}}': FIG2_CAPTION,
  '{{FIG1_CAPTION}}': FIG1_CAPTION,
- '{{FIG2}}': '![Overall survival by prognostic group, validation cohort](figures/COX_01_OS_by_M2a_group_validation.png)',
- '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4, '{{TABLE5}}': T5,
+  '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4, '{{TABLE5}}': T5,
  '{{REFERENCES}}': REFS,
 }
 text = (HERE / 'template_paper1_v2.md').read_text(encoding='utf-8')

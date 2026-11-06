@@ -124,7 +124,7 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 {{FIG2}}
 
-**Figure 2.** Overall survival by prognostic group in the validation cohort (operated ≥2010). Cut-points were derived in the development cohort.
+{{FIG2_CAPTION}}
 
 ## Calibration
 

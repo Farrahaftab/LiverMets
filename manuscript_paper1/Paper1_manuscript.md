@@ -90,9 +90,9 @@ Analyses used pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.
 
 Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and more patients with four or more metastases, and shorter follow-up (Table 1).
 
-![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE_Cox.png)
+![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png)
 
-**Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all eligibility criteria and had complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Three prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756). In validation, the C-index was 0.622 (95% CI 0.608–0.636; see verification report for an F02 discrepancy), predicted 5-year survival was 40.8% against 46.6% observed, and the groups separated overall survival (log-rank p = 2.0 × 10⁻⁵²). Recurrence-free survival (secondary) had a median of 2.03 years. Counts are generated from the locked v8 outputs; excluded counts are differences between consecutive steps.
+**Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all criteria with complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756).
 
 | Characteristic | Total (n = 17,262) | Development (≤2009; n = 8,463) | Validation (≥2010; n = 8,799) |
 |---|---|---|---|
@@ -171,9 +171,9 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 **Table 3.** Prognostic groups (M2a) with training-only cut-points and validation outcomes. Source: `F06_phenotypes_counts_survival_calibration.csv`.
 
-![Overall survival by prognostic group, validation cohort](figures/COX_01_OS_by_M2a_group_validation.png)
+![Overall survival by prognostic group, validation cohort](figures/Figure2_OS_by_group_validation.png)
 
-**Figure 2.** Overall survival by prognostic group in the validation cohort (operated ≥2010). Cut-points were derived in the development cohort.
+**Figure 2.** Overall survival by prognostic group in the temporal validation cohort (operated 2010 or later; n = 8,799). Kaplan–Meier curves with 95% confidence bands (shaded). Groups were defined by training-only cut-points (0.3793 and 0.4756). Numbers at risk are shown below the axis. Log-rank p = 2.0 × 10⁻⁵². Median follow-up in validation was 1.47 years, so few patients were followed beyond 5 years.
 
 ## Calibration
 

@@ -315,17 +315,17 @@ See `Paper1_reporting_checklists.docx` (TRIPOD+AI primary; STROBE; PROBAST+AI st
 
 ## Supplementary figures
 
-**Figure S1.** Recurrence-free survival by prognostic group, validation cohort (primary definition).
+**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (primary definition: dated recurrence or death as events; undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; numbers at risk below the axis. Overall median RFS 2.03 years (95% CI 1.98–2.09).
 
-![](figures/COX_02_RFS_by_M2a_group_validation.png)
+![](figures/FigureS1_RFS_by_group_validation.png)
 
-**Figure S2.** Calibration by validation decile of predicted 5-year survival. Open markers: fewer than 50 patients followed up to 5 years.
+**Figure S2.** Calibration by validation decile of predicted 5-year survival (validation cohort, n = 8,799). Each point is one decile; the dashed line is perfect calibration. Open markers mark deciles with fewer than 50 patients followed up to 5 years, whose observed values are imprecise.
 
-![](figures/COX_03_calibration_by_decile_validation.png)
+![](figures/FigureS2_calibration_by_decile.png)
 
-**Figure S3.** Observed/expected 5-year survival by operation period. The 2016+ period is omitted because no patient had 5-year follow-up.
+**Figure S3.** Observed/predicted 5-year survival by operation period. Bars above 1.0 indicate survival under-predicted by the model. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted because no patient operated in that period had 5-year follow-up.
 
-![](figures/COX_04_O_over_E_by_period.png)
+![](figures/FigureS3_OE_by_period.png)
 
 ## Coefficient outputs
 
