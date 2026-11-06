@@ -1,0 +1,95 @@
+section,id,label,displayed_on_figure,source_file,source_field,raw_value
+statistic,N_registry,Step count: 1 registry,"29,565",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '1 registry',29565
+statistic,N_eligible,Step count: 2 CINCLUSION=Yes,"28,979",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '2 CINCLUSION=Yes',28979
+statistic,N_hepatectomy,Step count: 3 hepatectomy,"26,677",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '3 hepatectomy',26677
+statistic,N_opdate,Step count: 4 operation date (year+month),"26,592",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '4 operation date (year+month)',26592
+statistic,N_status,Step count: 5 status and last-news,"26,271",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '5 status and last-news',26271
+statistic,N_chronology,Step count: 6 chronology,"26,186",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '6 chronology',26186
+statistic,N_followup,Step count: 7 positive follow-up or death,"26,094",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '7 positive follow-up or death',26094
+statistic,N_analytic,Step count: 8 complete TNM (analytic cohort),"17,262",results/final_v7/F30_flow_counts_for_figure1.csv,n where step = '8 complete TNM (analytic cohort)',17262
+statistic,X_eligible,Exclusion at step 'eligible' (difference of consecutive counts),586,results/final_v7/F30_flow_counts_for_figure1.csv,difference 1 registry - 2 CINCLUSION=Yes,586
+statistic,X_hepatectomy,Exclusion at step 'hepatectomy' (difference of consecutive counts),"2,302",results/final_v7/F30_flow_counts_for_figure1.csv,difference 2 CINCLUSION=Yes - 3 hepatectomy,2302
+statistic,X_opdate,Exclusion at step 'opdate' (difference of consecutive counts),85,results/final_v7/F30_flow_counts_for_figure1.csv,difference 3 hepatectomy - 4 operation date (year+month),85
+statistic,X_status,Exclusion at step 'status' (difference of consecutive counts),321,results/final_v7/F30_flow_counts_for_figure1.csv,difference 4 operation date (year+month) - 5 status and last-news,321
+statistic,X_chronology,Exclusion at step 'chronology' (difference of consecutive counts),85,results/final_v7/F30_flow_counts_for_figure1.csv,difference 5 status and last-news - 6 chronology,85
+statistic,X_followup,Exclusion at step 'followup' (difference of consecutive counts),92,results/final_v7/F30_flow_counts_for_figure1.csv,difference 6 chronology - 7 positive follow-up or death,92
+statistic,X_analytic,Exclusion at step 'analytic' (difference of consecutive counts),"8,832",results/final_v7/F30_flow_counts_for_figure1.csv,difference 7 positive follow-up or death - 8 complete TNM (analytic cohort),8832
+statistic,P_incomplete,Percent excluded for incomplete TNM of those meeting criteria,33.8%,results/final_v7/F30_flow_counts_for_figure1.csv,computed: excluded / step 7 count,33.847
+statistic,N_dev,Development cohort n,"8,463",results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Patients', column Development",8463
+statistic,N_val,Validation cohort n,"8,799",results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Patients', column Validation",8799
+statistic,EV_dev,Development events inside 15-year window,"4,675",results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Deaths inside the 15-year analysis window (events)', column Development",4675
+statistic,EV_val,Validation events inside 15-year window,"1,916",results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Deaths inside the 15-year analysis window (events)', column Validation",1916
+statistic,REC_dev,Development deaths recorded (PATSTATC) - reported in notes only,"4,685",results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Deaths recorded (PATSTATC = Deceased)', column Development",4685
+statistic,BEYOND_dev,"Development deaths beyond 15 years (recorded minus window events), footnote",10,results/final_v7/F31_table1_baseline_characteristics.csv,"Deaths recorded minus Deaths inside window, Development",10
+statistic,N_terms,Number of terms in M2a,11,results/final_v9/paper1/P1_model_coefficients.csv,number of data rows,11
+statistic,N_strata,Number of strata (sex x synchrony x M-stage),8,results/final_v9/paper1/P1_baseline_survival_by_stratum.csv,number of data rows,8
+statistic,CUT_lo,"Cut-point, lower tertile of predicted 5-y survival",0.3793,results/final_v7/F00_headline.csv,phenotype_cut_S5_q33,0.3793
+statistic,CUT_hi,"Cut-point, upper tertile of predicted 5-y survival",0.4756,results/final_v7/F00_headline.csv,phenotype_cut_S5_q67,0.4756
+statistic,C_dev,"C-index, development (apparent)",0.595,results/final_v7/F02b_selected_model_performance.csv,train_C,0.5952
+statistic,C_val,"C-index, validation",0.622,results/final_v7/F02b_selected_model_performance.csv,valid_C,0.6216
+statistic,C_ci,C-index validation 95% CI,0.608–0.636,results/final_v7/F02b_selected_model_performance.csv,valid_C_95CI,0.608-0.636
+statistic,OE5,"Observed/expected 5-y survival, validation",1.14,results/final_v7/F02b_selected_model_performance.csv,valid_OE_5y,1.142
+statistic,OBS5,"Observed 5-y survival (KM), validation",46.6%,results/final_v7/F02b_selected_model_performance.csv,valid_observed_S5,0.466
+statistic,PRED5,"Mean predicted 5-y survival, validation",40.8%,results/final_v7/F02b_selected_model_performance.csv,valid_mean_predicted_S5,0.408
+statistic,IBS,"Integrated Brier score 1-7 y, validation",0.075,results/final_v7/F02b_selected_model_performance.csv,IBS_1_7y,0.0752
+statistic,EVAL5,Validation patients evaluable at 5 years (%),26%,results/final_v7/feasibility/G01_horizon_feasibility_validation.csv,"pct_evaluable, horizon 5",26.0
+statistic,ORD_C,"Ordinal C-index of the three groups, validation",0.603,results/final_v7/F08_phenotype_separation.csv,valid_C_ordinal,0.6032
+statistic,P_val,"Log-rank p, validation (group separation)",2.0e-52,results/final_v7/F08_phenotype_separation.csv,valid_logrank_p,1.960688139201623e-52
+statistic,P_dev,"Log-rank p, development (group separation)",1.4e-77,results/final_v7/F08_phenotype_separation.csv,train_logrank_p,1.3516744662754814e-77
+statistic,RFS_med,"Median RFS, years (primary, secondary outcome)",2.03,results/final_v7/F17_RFS_sensitivity_final.csv,median_RFS (PRIMARY row),2.03
+statistic,RFS_ci,Median RFS 95% CI,1.98–2.09,results/final_v7/F17_RFS_sensitivity_final.csv,median_95CI (PRIMARY row),1.98-2.09
+statistic,FU_dev,"Median follow-up, development (reverse KM), years",5.89,results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Median follow-up', column Development",5.89
+statistic,FU_val,"Median follow-up, validation (reverse KM), years",1.47,results/final_v7/F31_table1_baseline_characteristics.csv,"row 'Median follow-up', column Validation",1.47
+statistic,C_ci_F02,C-index validation 95% CI in F02 (reported in text),0.608–0.637,results/final_v7/F02_M_stage_candidates_identical_patients.csv,"valid_C_95CI, row M2a",0.608-0.637
+statistic,FAV_dev_n,Favourable: development n,"2,821",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column dev_n",2821
+statistic,FAV_val_n,Favourable: validation n,"2,662",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column val_n",2662
+statistic,FAV_val_deaths,Favourable: validation deaths,383,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column val_deaths",383
+statistic,FAV_val_med,Favourable: validation median OS (years),7.38,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column val_med",7.38
+statistic,FAV_val_s5,Favourable: validation 5-y KM survival,62.9%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column val_s5",0.629
+statistic,FAV_dev_s5,Favourable: development 5-y KM survival,54.1%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column dev_s5",0.541
+statistic,FAV_med_ci,Favourable: validation median OS 95% CI,6.14–NE,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column valid_median_95CI",6.14-NE
+statistic,FAV_pred5,Favourable: validation mean predicted 5-y (for reference),53.2%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable', column valid_mean_predicted_S5",0.532
+statistic,INT_dev_n,Intermediate: development n,"2,821",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column dev_n",2821
+statistic,INT_val_n,Intermediate: validation n,"2,824",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column val_n",2824
+statistic,INT_val_deaths,Intermediate: validation deaths,598,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column val_deaths",598
+statistic,INT_val_med,Intermediate: validation median OS (years),4.44,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column val_med",4.44
+statistic,INT_val_s5,Intermediate: validation 5-y KM survival,45.4%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column val_s5",0.454
+statistic,INT_dev_s5,Intermediate: development 5-y KM survival,41.9%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column dev_s5",0.419
+statistic,INT_med_ci,Intermediate: validation median OS 95% CI,4.14–4.88,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column valid_median_95CI",4.14-4.88
+statistic,INT_pred5,Intermediate: validation mean predicted 5-y (for reference),42.8%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate', column valid_mean_predicted_S5",0.428
+statistic,ADV_dev_n,Adverse: development n,"2,821",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column dev_n",2821
+statistic,ADV_val_n,Adverse: validation n,"3,313",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column val_n",3313
+statistic,ADV_val_deaths,Adverse: validation deaths,935,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column val_deaths",935
+statistic,ADV_val_med,Adverse: validation median OS (years),3.18,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column val_med",3.18
+statistic,ADV_val_s5,Adverse: validation 5-y KM survival,34.3%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column val_s5",0.343
+statistic,ADV_dev_s5,Adverse: development 5-y KM survival,30.7%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column dev_s5",0.307
+statistic,ADV_med_ci,Adverse: validation median OS 95% CI,2.97–3.38,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column valid_median_95CI",2.97-3.38
+statistic,ADV_pred5,Adverse: validation mean predicted 5-y (for reference),29.1%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse', column valid_mean_predicted_S5",0.291
+check,F01 mid-month equals F30 at step '1 registry',PASS,expected=29565,observed=29565,,
+check,F01 mid-month equals F30 at step '2 CINCLUSION=Yes',PASS,expected=28979,observed=28979,,
+check,F01 mid-month equals F30 at step '3 hepatectomy',PASS,expected=26677,observed=26677,,
+check,F01 mid-month equals F30 at step '4 operation date (year+month)',PASS,expected=26592,observed=26592,,
+check,F01 mid-month equals F30 at step '5 status and last-news',PASS,expected=26271,observed=26271,,
+check,F01 mid-month equals F30 at step '6 chronology',PASS,expected=26186,observed=26186,,
+check,F01 mid-month equals F30 at step '7 positive follow-up or death',PASS,expected=26094,observed=26094,,
+check,Excluded count: F30 difference equals F32 'Excluded' n,PASS,expected=8832,observed=8832,,
+check,Analytic count: F30 equals F32 'Analytic cohort' n,PASS,expected=17262,observed=17262,,
+check,Development + validation equals analytic cohort (F30 step 8),PASS,expected=17262,observed=17262,,
+check,Development + validation equals F31 total,PASS,expected=17262,observed=17262,,
+check,Window events (dev + val) equal F12 modelling cohort window events,PASS,expected=6591,observed=6591,,
+check,Recorded deaths (dev + val) equal F12 modelling-cohort recorded deaths,PASS,expected=6601,observed=6601,,
+check,Recorded minus window events (dev + val) equal F12 deaths beyond 15 years,PASS,expected=10,observed=10,,
+check,Strata count equals 2 x 2 x 2 = 8,PASS,expected=8,observed=8,,
+check,5-y observed KM survival: F02b equals G01,PASS,expected=0.466,observed=0.466,,
+check,5-y predicted survival: F02b equals G01,PASS,expected=0.408,observed=0.408,,
+check,5-y O/E: F02b equals G01,PASS,expected=1.142,observed=1.142,,
+check,Validation C-index 95% CI: F02 (candidate table) equals F02b (selected model),DISCREPANCY,expected=0.608-0.637,observed=0.608-0.636,,
+check,Group development n sum equals development cohort n,PASS,expected=8463,observed=8463,,
+check,Group validation n sum equals validation cohort n,PASS,expected=8799,observed=8799,,
+check,Group validation deaths sum equals validation window events,PASS,expected=1916,observed=1916,,
+check,Development groups are equal thirds (each = dev n / 3),PASS,expected=2821.0,observed=2821,,
+check,Development group sizes are identical across the three groups,PASS,expected=True,observed=True,,
+check,Validation 5-y KM ordering: Favourable > Intermediate > Adverse,PASS,expected=True,observed=True,,
+check,Validation 5-y KM (overall) equals G01 observed survival,PASS,expected=0.466,observed=0.466,,
+check,F07 definition for Favourable references the upper cut-point (from F00),PASS,expected=True,observed=True,,
+check,F07 definition for Adverse references the lower cut-point (from F00),PASS,expected=True,observed=True,,
