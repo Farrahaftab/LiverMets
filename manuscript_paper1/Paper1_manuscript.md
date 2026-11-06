@@ -16,7 +16,7 @@ author:
 
 **Methods:** Retrospective analysis of the LiverMetSurvey registry. The analytic cohort comprised 17,262 patients undergoing hepatectomy with complete TNM staging, divided by operation year into a development cohort (≤2009; n = 8,463) and a temporal validation cohort (≥2010; n = 8,799). A stratified Cox model (strata: sex, synchronous presentation and M-stage) used TNM stage, age, interval to liver metastasis, and number and size of metastases. Three prognostic groups were defined by training-era tertiles of predicted 5-year survival and applied unchanged to validation patients.
 
-**Results:** Validation median overall survival was 7.38, 4.44 and 3.18 years in the Favourable (n = 2,662), Intermediate (n = 2,824) and Adverse (n = 3,313) groups (log-rank p = 2 × 10⁻⁵²). The C-index was 0.622 (95% CI 0.608–0.637). Predicted 5-year survival was 40.8% against 46.6% observed. Without TNM stage the C-index was 0.599 in the same patients.
+**Results:** Validation median overall survival was 7.38, 4.44 and 3.18 years in the Favourable (n = 2,662), Intermediate (n = 2,824) and Adverse (n = 3,313) groups (log-rank p = 2 × 10⁻⁵²). The C-index was 0.622 (95% CI 0.608–0.636). Predicted 5-year survival was 40.8% against 46.6% observed. Without TNM stage the C-index was 0.599 in the same patients.
 
 **Conclusions:** A stratified Cox model using routinely recorded variables separated three prognostic groups that remained distinct in temporal validation. Discrimination was modest and survival was under-predicted in recent patients, so absolute predictions need recalibration before clinical use.
 
@@ -90,9 +90,9 @@ Analyses used pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.
 
 Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and more patients with four or more metastases, and shorter follow-up (Table 1).
 
-![STROBE patient flow](figures/FIG1_STROBE_flow_v7.png)
+![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE_Cox.png)
 
-**Figure 1.** STROBE patient flow. Counts are from the executed analysis; excluded patients are described in Supplementary Tables S1–S2.
+**Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all eligibility criteria and had complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Three prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756). In validation, the C-index was 0.622 (95% CI 0.608–0.636; see verification report for an F02 discrepancy), predicted 5-year survival was 40.8% against 46.6% observed, and the groups separated overall survival (log-rank p = 2.0 × 10⁻⁵²). Recurrence-free survival (secondary) had a median of 2.03 years. Counts are generated from the locked v8 outputs; excluded counts are differences between consecutive steps.
 
 | Characteristic | Total (n = 17,262) | Development (≤2009; n = 8,463) | Validation (≥2010; n = 8,799) |
 |---|---|---|---|
@@ -137,7 +137,7 @@ Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to
 
 ## Model and discrimination
 
-The selected model's coefficients are in Table 2. In validation the C-index was 0.622 (95% CI 0.608–0.637), against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in stratification and calibrated survival estimates.
+The selected model's coefficients are in Table 2. In validation the C-index was 0.622 (95% CI 0.608–0.636), against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in stratification and calibrated survival estimates.
 
 | Term | β | HR | 95% CI | p |
 |---|---|---|---|---|

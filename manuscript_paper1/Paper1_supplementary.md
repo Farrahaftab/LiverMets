@@ -114,7 +114,7 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 
 ## Table S4. Candidate models and proportional-hazards tests
 
-**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%.
+**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Each row's bootstrap CI comes from its own 300 resamples drawn at a different point in the random stream, so the M2a upper bound here (0.637) can differ by 0.001 from the selected-model value (0.636, `F02b`, used in the text and Figure 1). See `results/final_v9/figure1/CI_discrepancy_investigation.md`.
 
 | Model | Training C | Validation C | 95% CI | 5-y AUC | 5-y Brier | Mean predicted 5-y | O/E 5 y | Calibration slope |
 |---|---|---|---|---|---|---|---|---|

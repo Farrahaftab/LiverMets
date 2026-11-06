@@ -60,7 +60,7 @@ metrics = [
 ]
 S[-1] = S[-1] + transpose_table(['Metric', 'Primary (locked)', 'Identical-pair second copies removed (6 in cohort)', 'Broad rule: later copies removed (37)'], metrics)
 
-S.append("## Table S4. Candidate models and proportional-hazards tests\n\n**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%.\n\n" +
+S.append("## Table S4. Candidate models and proportional-hazards tests\n\n**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Each row's bootstrap CI comes from its own 300 resamples drawn at a different point in the random stream, so the M2a upper bound here (0.637) can differ by 0.001 from the selected-model value (0.636, `F02b`, used in the text and Figure 1). See `results/final_v9/figure1/CI_discrepancy_investigation.md`.\n\n" +
          select(F7/'F02_M_stage_candidates_identical_patients.csv', ['model','train_C','valid_C','valid_C_95CI','tAUC_5y','Brier_5y','valid_mean_predicted_S5','valid_OE_5y','valid_calib_slope_5y'],
                 ['Model','Training C','Validation C','95% CI','5-y AUC','5-y Brier','Mean predicted 5-y','O/E 5 y','Calibration slope']) +
          "\n\n**S4b. Schoenfeld tests, training cohort, constant terms** (`F03`); M-stage is the term of interest.\n\n" +
