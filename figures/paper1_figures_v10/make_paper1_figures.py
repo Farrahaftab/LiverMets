@@ -159,6 +159,7 @@ SRC = {
     "strata": P1 / "P1_baseline_survival_by_stratum.csv",
     "km": P1 / "F80_km_curve_points_by_group.csv",
     "risk": P1 / "F81_numbers_at_risk_by_group.csv",
+    "bench": F7 / "F16_identical_subset_comparison_calibration.csv",
 }
 for k, p in SRC.items():
     if not p.exists():
@@ -220,7 +221,7 @@ for name in GROUPS:
     G[name] = dict(dev_n=as_int(r["train_n"]), val_n=as_int(r["valid_n"]), val_deaths=as_int(r["valid_deaths"]),
                    val_med=as_float(r["valid_median_OS"]), val_med_ci=r["valid_median_95CI"],
                    val_s5=as_float(r["valid_S5_KM"]), dev_s5=as_float(r["train_S5_KM"]),
-                   val_pred5=as_float(r["valid_mean_predicted_S5"]))
+                   val_pred5=as_float(r["valid_mean_predicted_S5"]), dev_med=as_float(r["train_median_OS"]))
 
 rfs = pick(read_csv(SRC["rfs"]), "RFS_analysis", "PRIMARY", startswith=True)
 RFS_MED, RFS_CI = as_float(rfs["median_RFS"]), rfs["median_95CI"]
@@ -464,7 +465,8 @@ def build_figure1():
     return fig
 
 
-# ============================================================================= KM helpers
+
+# ============================================================================= Kaplan-Meier helpers (derived from F80 / F81)
 def km_series(scenario, group):
     pts = KM[scenario][group]
     return ([p[0] for p in pts], [p[1] for p in pts], [p[2] for p in pts], [p[3] for p in pts])
@@ -489,67 +491,163 @@ def km_median(scenario, group):
     return None
 
 
-def draw_km(scenario, xmax, risk_scenario, n_map, colour_map):
-    fig = plt.figure(figsize=(6.6, 5.6))
-    ax = fig.add_axes([0.11, 0.33, 0.86, 0.62])
+def km_panel(fig, box, scenario, xmax, n_map, title, label=None, show_legend=True, show_ylabel=True):
+    """One Kaplan-Meier panel with a numbers-at-risk strip underneath. box = (x, y, w, h) in figure fractions."""
+    x0, y0, w, h = box
+    ax = fig.add_axes([x0, y0 + h * 0.30, w, h * 0.70])
+    axr = fig.add_axes([x0, y0, w, h * 0.20])
     for g in GROUPS:
         ts, s, lo, hi = km_series(scenario, g)
-        ax.fill_between(ts, lo, hi, step="post", color=colour_map[g], alpha=0.18, lw=0, zorder=1)
-        ax.step(ts, s, where="post", color=colour_map[g], lw=1.6, zorder=2,
-                label=f"{g} (n = {fmt_n(n_map[g])})")
+        ax.fill_between(ts, lo, hi, step="post", color=GRP_COL[g], alpha=0.18, lw=0, zorder=1)
+        ax.step(ts, s, where="post", color=GRP_COL[g], lw=1.6, zorder=2, label=f"{g} (n = {fmt_n(n_map[g])})")
     ax.set_xlim(0, xmax)
     ax.set_ylim(0, 1.0)
     ax.set_xticks(range(0, xmax + 1, 2))
     ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_yticklabels([f"{v:.0%}" for v in [0, 0.2, 0.4, 0.6, 0.8, 1.0]])
-    ax.set_xlabel("Years from hepatectomy")
-    ax.set_ylabel("Survival probability")
+    ax.set_xlabel("")
+    ax.set_ylabel("Survival probability" if show_ylabel else "")
+    ax.set_title(title, fontsize=7.0, loc="left", color=INK, pad=6)
     ax.grid(alpha=0.22, lw=0.5)
     for sp in ["top", "right"]:
         ax.spines[sp].set_visible(False)
-    ax.legend(frameon=False, fontsize=7.4, loc="upper right")
-    # numbers at risk
-    axr = fig.add_axes([0.11, 0.08, 0.86, 0.17])
-    axr.set_xlim(-0.9, xmax)
+    if show_legend:
+        ax.legend(frameon=False, fontsize=6.6, loc="upper right")
+    if label:
+        ax.text(-0.20, 1.10, label, transform=ax.transAxes, fontsize=10, weight="bold", color=INK)
+    axr.set_xlim(-0.9, xmax + 0.5)
     axr.set_ylim(-0.5, len(GROUPS) - 0.5)
     axr.set_yticks(range(len(GROUPS)))
-    axr.set_yticklabels(list(reversed(GROUPS)), fontsize=7.2)
+    axr.set_yticklabels(list(reversed(GROUPS)), fontsize=6.4)
     axr.set_xticks(range(0, xmax + 1, 2))
-    axr.tick_params(axis="x", labelsize=7)
-    axr.set_xlabel("Number at risk", fontsize=7.4)
+    axr.tick_params(axis="x", labelsize=6.4, length=2)
+    axr.tick_params(axis="y", length=0)
+    axr.set_xlabel("Years from hepatectomy", fontsize=6.6)
     for sp in ["top", "right", "left"]:
         axr.spines[sp].set_visible(False)
-    axr.tick_params(axis="y", length=0)
     for i, g in enumerate(reversed(GROUPS)):
         for t in range(0, xmax + 1, 2):
-            axr.text(t, i, fmt_n(RISK[risk_scenario][g][t][0]) if t in RISK[risk_scenario][g] else "",
-                     ha="center", va="center", fontsize=7, color=colour_map[g])
-    return fig, ax
+            if t in RISK[scenario][g]:
+                axr.text(t, i, fmt_n(RISK[scenario][g][t][0]), ha="center", va="center", fontsize=6.4, color=GRP_COL[g])
+    return ax
 
 
+def check_km(fig_id, scenario, groups_expect, label):
+    """Checks that the curves reproduce the reported group n, 5-year survival and median."""
+    n_map = {g: RISK[scenario][g][0][1] for g in GROUPS}
+    for g in GROUPS:
+        check(fig_id, f"{label} {g}: at-risk at t=0 equals group n", n_map[g], RISK[scenario][g][0][0])
+        check(fig_id, f"{label} {g}: group n (F81) equals F06", groups_expect[g]["n"], n_map[g])
+        s5 = step_value_at(scenario, g, 5.0)
+        check(fig_id, f"{label} {g}: KM 5-y survival (curve) equals F06", groups_expect[g]["s5"], s5, tol=0.0015)
+        med = km_median(scenario, g)
+        check(fig_id, f"{label} {g}: KM median (curve) equals F06", groups_expect[g]["med"], med, tol=0.01)
+    return n_map
+
+
+# ============================================================================= FIGURE 2: OS by group, development and validation
 def build_figure2():
     fig_id = "Figure2"
-    scen = "OS_validation"
-    n_map = {g: RISK[scen][g][0][1] for g in GROUPS}
-    check(fig_id, "KM group n (F81) equals F06 validation n", {g: G[g]["val_n"] for g in GROUPS},
-          {g: n_map[g] for g in GROUPS})
+    dev_exp = {g: dict(n=G[g]["dev_n"], s5=G[g]["dev_s5"], med=G[g]["dev_med"]) for g in GROUPS}
+    val_exp = {g: dict(n=G[g]["val_n"], s5=G[g]["val_s5"], med=G[g]["val_med"]) for g in GROUPS}
+    dev_map = check_km(fig_id, "OS_development", dev_exp, "development")
+    val_map = check_km(fig_id, "OS_validation", val_exp, "validation")
+    fig = plt.figure(figsize=(7.2, 4.6))
+    km_panel(fig, (0.12, 0.13, 0.36, 0.80), "OS_development", 10, dev_map,
+             f"Development (operated ≤2009; n = {fmt_n(N_DEV)})", label="A", show_legend=True)
+    km_panel(fig, (0.60, 0.13, 0.36, 0.80), "OS_validation", 10, val_map,
+             f"Temporal validation (operated ≥2010; n = {fmt_n(N_VAL)})", label="B", show_legend=True,
+             show_ylabel=False)
+    fig.text(0.02, 0.01, f"Log-rank p = {sci(P_DEV)} (development); {sci(P_VAL)} (validation). "
+             "Curves truncated at 10 years; the risk strip below each panel gives the numbers at risk.",
+             fontsize=6.2, color=GREY)
+    record(fig_id, "P_dev_fig", "Log-rank p shown, development", sci(P_DEV), rel(SRC["sep"]), "train_logrank_p", P_DEV)
+    record(fig_id, "P_val_fig", "Log-rank p shown, validation", sci(P_VAL), rel(SRC["sep"]), "valid_logrank_p", P_VAL)
     for g in GROUPS:
-        check(fig_id, f"{g}: at-risk at t=0 equals group n", n_map[g], RISK[scen][g][0][0])
-        s5 = step_value_at(scen, g, 5.0)
-        check(fig_id, f"{g}: KM survival at 5 y (curve) equals F06 valid_S5_KM", G[g]["val_s5"], s5, tol=0.0015)
-        med = km_median(scen, g)
-        check(fig_id, f"{g}: KM median (curve) equals F06 valid_median_OS", G[g]["val_med"], med, tol=0.01)
-        record(fig_id, f"KM5_{g[:3].upper()}", f"{g} 5-y KM survival (validation)", pct(G[g]["val_s5"]),
+        record(fig_id, f"KMDEV_{g[:3].upper()}", f"{g} 5-y KM, development", pct(G[g]["dev_s5"]),
+               rel(SRC["groups"]), "train_S5_KM", G[g]["dev_s5"])
+        record(fig_id, f"KMVAL_{g[:3].upper()}", f"{g} 5-y KM, validation", pct(G[g]["val_s5"]),
                rel(SRC["groups"]), "valid_S5_KM", G[g]["val_s5"])
-        record(fig_id, f"MED_{g[:3].upper()}", f"{g} median OS (validation), years", f"{G[g]['val_med']:.2f} ({G[g]['val_med_ci'].replace('-', '–')})",
-               rel(SRC["groups"]), "valid_median_OS; valid_median_95CI", G[g]["val_med"])
-    fig, ax = draw_km(scen, 10, scen, n_map, GRP_COL)
-    ax.text(0.98, 0.06, f"log-rank p = {sci(P_VAL)}\nC-index {C_VAL:.3f}", transform=ax.transAxes,
-            ha="right", va="bottom", fontsize=7.2, color=INK)
-    record(fig_id, "P_val_fig", "Log-rank p shown on figure", sci(P_VAL), rel(SRC["sep"]), "valid_logrank_p", P_VAL)
     return fig
 
 
+# ============================================================================= FIGURE 3: calibration by decile and O/E by period
+def build_figure3():
+    fig_id = "Figure3"
+    check(fig_id, "Decile sizes sum to validation n", N_VAL, sum(as_int(d["n"]) for d in dec))
+    check(fig_id, "Decile deaths sum to validation window events", EV_VAL, sum(as_int(d["deaths"]) for d in dec))
+    for d in dec:
+        pred, obs = as_float(d["mean_predicted_5y"]), as_float(d["observed_5y_KM"])
+        check(fig_id, f"decile {d['validation_decile']}: observed minus predicted equals F20",
+              as_float(d["observed_minus_predicted"]), round(obs - pred, 3), tol=0.0015)
+    per_ok = [p for p in per if p["O_over_E"]]
+    check(fig_id, "Operation periods with O/E equal periods with 5-year follow-up present in F21",
+          sum(as_int(p["patients_with_5y_follow_up"]) > 0 for p in per), len(per_ok))
+    for p in per_ok:
+        obs, pred = as_float(p["observed_5y_KM"]), as_float(p["mean_predicted_5y"])
+        tol = (obs / pred) * (0.0005 / obs + 0.0005 / pred) + 0.0005
+        check(fig_id, f"{p['period']}: O/E equals observed divided by predicted (F21), within rounding",
+              as_float(p["O_over_E"]), round(obs / pred, 3), tol=tol)
+
+    fig = plt.figure(figsize=(7.2, 3.5))
+    # A: calibration
+    ax = fig.add_axes([0.09, 0.17, 0.37, 0.72])
+    ax.plot([0.1, 0.9], [0.1, 0.9], color="#555555", lw=0.8, ls="--", label="Perfect calibration")
+    rel_ = [d for d in dec if d["reliable_5y_estimate"] == "True"]
+    spa = [d for d in dec if d["reliable_5y_estimate"] != "True"]
+    ax.scatter([as_float(d["mean_predicted_5y"]) for d in rel_], [as_float(d["observed_5y_KM"]) for d in rel_],
+               s=24, color="#2166AC", zorder=3, label="50 or more with 5-year follow-up")
+    ax.scatter([as_float(d["mean_predicted_5y"]) for d in spa], [as_float(d["observed_5y_KM"]) for d in spa],
+               s=24, facecolors="white", edgecolors="#2166AC", zorder=3, label="Fewer than 50 with 5-year follow-up")
+    dd = dec[-1]
+    ax.annotate(f"Decile {dd['validation_decile']} (most favourable)\n{pct(dd['observed_5y_KM'])} observed; "
+                f"{pct(dd['mean_predicted_5y'])} predicted",
+                xy=(as_float(dd["mean_predicted_5y"]), as_float(dd["observed_5y_KM"])),
+                xytext=(0.20, 0.80), fontsize=6.0, color=INK, arrowprops=dict(arrowstyle="-", color=GREY, lw=0.6))
+    record(fig_id, "DEC10", "Decile 10 observed and predicted 5-y survival",
+           f"{pct(dd['observed_5y_KM'])} vs {pct(dd['mean_predicted_5y'])}", rel(SRC["dec"]),
+           "observed_5y_KM; mean_predicted_5y (validation_decile = 10)", dd["observed_5y_KM"])
+    ax.set_xlim(0.1, 0.9)
+    ax.set_ylim(0.1, 0.9)
+    ax.set_xlabel("Mean predicted 5-year survival", fontsize=7.4)
+    ax.set_ylabel("Observed 5-year survival (Kaplan–Meier)", fontsize=7.4)
+    ax.set_title("Calibration by validation decile", fontsize=7.6, loc="left")
+    ax.grid(alpha=0.22, lw=0.5)
+    for sp in ["top", "right"]:
+        ax.spines[sp].set_visible(False)
+    ax.legend(frameon=False, fontsize=6.0, loc="lower right")
+    ax.text(-0.17, 1.03, "A", transform=ax.transAxes, fontsize=10, weight="bold", color=INK)
+    # B: O/E by period
+    axb = fig.add_axes([0.60, 0.17, 0.37, 0.72])
+    xs = range(len(per_ok))
+    cols = ["#2166AC" if p["reliable_5y_estimate"] == "True" else "#9AA5B1" for p in per_ok]
+    axb.bar(xs, [as_float(p["O_over_E"]) for p in per_ok], color=cols, width=0.62, zorder=2)
+    axb.axhline(1.0, color="#333333", lw=0.8, ls="--", zorder=3)
+    for i, p in enumerate(per_ok):
+        axb.text(i, as_float(p["O_over_E"]) + 0.03, half_up(p["O_over_E"]), ha="center", fontsize=6.6, color=INK,
+                 bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none"), zorder=4)
+        axb.text(i, 0.04, f"n(5y) = {fmt_n(as_int(p['patients_with_5y_follow_up']))}", ha="center", fontsize=5.4,
+                 color="white" if cols[i] != "#9AA5B1" else INK, rotation=90, va="bottom")
+        record(fig_id, f"OE_{i}", f"O/E, {p['period']}", half_up(p["O_over_E"]), rel(SRC["per"]),
+               "O_over_E", as_float(p["O_over_E"]))
+    axb.set_xticks(list(xs))
+    import re as _re
+    def _plabel(pp):
+        yrs = _re.findall(r"\d{4}", pp["period"])
+        tag = "training" if "training" in pp["period"] else ("validation" if "validation" in pp["period"] else "")
+        return f"{yrs[0]}–{yrs[1]}" + (f"\n({tag})" if tag else "")
+    axb.set_xticklabels([_plabel(pp) for pp in per_ok], fontsize=6.0)
+    axb.set_ylabel("Observed / predicted 5-year survival", fontsize=7.4)
+    axb.set_ylim(0, 1.45)
+    axb.set_title("Observed / expected by operation period", fontsize=7.6, loc="left")
+    axb.grid(alpha=0.22, lw=0.5, axis="y", zorder=0)
+    for sp in ["top", "right"]:
+        axb.spines[sp].set_visible(False)
+    axb.text(-0.17, 1.03, "B", transform=axb.transAxes, fontsize=10, weight="bold", color=INK)
+    return fig
+
+
+# ============================================================================= FIGURE S1: RFS by group (validation)
 def build_figureS1():
     fig_id = "FigureS1"
     scen = "RFS_validation"
@@ -560,85 +658,151 @@ def build_figureS1():
         check(fig_id, f"{g}: at-risk at t=0 equals group n", n_map[g], RISK[scen][g][0][0])
         record(fig_id, f"RFSN_{g[:3].upper()}", f"{g} RFS n (validation)", fmt_n(n_map[g]), rel(SRC["risk"]),
                f"n, scenario RFS_validation, group {g}", n_map[g])
-    fig, ax = draw_km(scen, 10, scen, n_map, GRP_COL)
-    ax.text(0.98, 0.06, f"Overall median RFS {RFS_MED:.2f} y (95% CI {RFS_CI.replace('-', '–')})\n(primary definition, all validation patients)",
-            transform=ax.transAxes, ha="right", va="bottom", fontsize=6.8, color=INK)
+    fig = plt.figure(figsize=(6.4, 4.4))
+    km_panel(fig, (0.12, 0.12, 0.84, 0.84), scen, 10, n_map,
+             f"Recurrence-free survival, temporal validation cohort (n = {fmt_n(N_VAL)})", show_legend=True)
+    fig.text(0.12, 0.02, f"Overall median RFS {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}). "
+             "Primary definition: dated recurrence or death as events; undated recurrences censored.",
+             fontsize=6.2, color=GREY)
     record(fig_id, "RFS_CI_fig", "Overall median RFS shown on figure", f"{RFS_MED:.2f} ({RFS_CI.replace('-', '–')})",
            rel(SRC["rfs"]), "median_RFS; median_95CI (PRIMARY row)", RFS_MED)
     return fig
 
 
+# ============================================================================= FIGURE S2: M2a forest plot
 def build_figureS2():
     fig_id = "FigureS2"
-    fig, ax = plt.subplots(figsize=(4.6, 4.6))
-    fig.subplots_adjust(left=0.15, right=0.97, bottom=0.14, top=0.95)
-    check(fig_id, "Decile sizes sum to validation n", N_VAL, sum(as_int(d["n"]) for d in dec))
-    check(fig_id, "Decile deaths sum to validation window events", EV_VAL, sum(as_int(d["deaths"]) for d in dec))
-    for d in dec:
-        pred, obs = as_float(d["mean_predicted_5y"]), as_float(d["observed_5y_KM"])
-        check(fig_id, f"decile {d['validation_decile']}: observed minus predicted equals F20",
-              as_float(d["observed_minus_predicted"]), round(obs - pred, 3), tol=0.0015)
-    ax.plot([0.1, 0.9], [0.1, 0.9], color="#555555", lw=0.8, ls="--", label="Perfect calibration")
-    rel_ = [d for d in dec if d["reliable_5y_estimate"] == "True"]
-    spa = [d for d in dec if d["reliable_5y_estimate"] != "True"]
-    ax.scatter([as_float(d["mean_predicted_5y"]) for d in rel_], [as_float(d["observed_5y_KM"]) for d in rel_],
-               s=26, color="#2166AC", zorder=3, label="50 or more with 5-year follow-up")
-    ax.scatter([as_float(d["mean_predicted_5y"]) for d in spa], [as_float(d["observed_5y_KM"]) for d in spa],
-               s=26, facecolors="white", edgecolors="#2166AC", zorder=3, label="Fewer than 50 with 5-year follow-up")
-    dd = dec[-1]
-    ax.annotate(f"Decile {dd['validation_decile']}\n{pct(dd['observed_5y_KM'])} observed\n{pct(dd['mean_predicted_5y'])} predicted",
-                xy=(as_float(dd["mean_predicted_5y"]), as_float(dd["observed_5y_KM"])),
-                xytext=(0.38, 0.86), fontsize=6.6, color=INK,
-                arrowprops=dict(arrowstyle="-", color=GREY, lw=0.6))
-    record(fig_id, "DEC10", "Decile 10 observed and predicted 5-y survival", f"{pct(dd['observed_5y_KM'])} vs {pct(dd['mean_predicted_5y'])}",
-           rel(SRC["dec"]), "observed_5y_KM; mean_predicted_5y (validation_decile = 10)", dd["observed_5y_KM"])
-    ax.set_xlim(0.1, 0.9)
-    ax.set_ylim(0.1, 0.9)
-    ax.set_xlabel("Mean predicted 5-year survival")
-    ax.set_ylabel("Observed 5-year survival (Kaplan–Meier)")
-    ax.grid(alpha=0.22, lw=0.5)
-    for sp in ["top", "right"]:
+    rows = coef[1:]
+    check(fig_id, "Forest plot rows equal M2a terms", N_TERMS, len(rows))
+    hdr = coef[0]
+    fig = plt.figure(figsize=(7.6, 4.8))
+    ax = fig.add_axes([0.45, 0.13, 0.26, 0.80])
+    from matplotlib.transforms import blended_transform_factory
+    col_tx = blended_transform_factory(fig.transFigure, ax.transData)
+    labels, y = [], []
+    for i, r in enumerate(rows):
+        d = dict(zip(hdr, r))
+        hr, lo, hi, beta = as_float(d["HR"]), as_float(d["HR_CI_low"]), as_float(d["HR_CI_high"]), as_float(d["coefficient"])
+        check(fig_id, f"{d['term']}: HR equals exp(coefficient) (P1 table)", hr, round(math.exp(beta), 3), tol=0.0015)
+        check(fig_id, f"{d['term']}: CI brackets HR", True, lo <= hr <= hi)
+        yy = len(rows) - 1 - i
+        col = INK if d["p"] and as_float(d["p"]) < 0.05 else GREY
+        ax.plot([lo, hi], [yy, yy], color=col, lw=1.2, zorder=2)
+        ax.scatter([hr], [yy], s=22, color=col, zorder=3)
+        pv = as_float(d["p"])
+        ptxt = "<0.001" if pv < 0.0005 else f"{pv:.3f}"
+        fig.text(0.735, yy, f"{hr:.3f} ({lo:.3f}–{hi:.3f})", fontsize=6.0, va="center", ha="left", color=INK,
+                 transform=col_tx)
+        fig.text(0.975, yy, ptxt, fontsize=6.0, va="center", ha="right", color=INK, transform=col_tx)
+        labels.append(d["description"])
+        y.append(yy)
+        record(fig_id, f"HR_{d['term']}", f"HR, {d['description']}", f"{hr:.3f} ({lo:.3f}–{hi:.3f}); p {ptxt}",
+               rel(SRC["coef"]), "HR, HR_CI_low, HR_CI_high, p (row " + d["term"] + ")", hr)
+    ax.axvline(1.0, color="#555555", lw=0.8, ls="--", zorder=1)
+    ax.set_xscale("log")
+    ax.set_xlim(0.7, 2.2)
+    ax.set_xticks([0.8, 1.0, 1.25, 1.5, 2.0])
+    ax.set_xticklabels(["0.8", "1.0", "1.25", "1.5", "2.0"], fontsize=6.6)
+    ax.minorticks_off()
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels, fontsize=6.2)
+    ax.set_ylim(-0.7, len(rows) - 0.3)
+    ax.set_xlabel("Hazard ratio (log scale), 95% CI", fontsize=7.0)
+    for sp in ["top", "right", "left"]:
         ax.spines[sp].set_visible(False)
-    ax.legend(frameon=False, fontsize=6.6, loc="lower right")
+    ax.tick_params(axis="y", length=0)
+    fig.text(0.735, 0.955, "HR (95% CI)", fontsize=6.4, weight="bold", va="bottom", ha="left")
+    fig.text(0.975, 0.955, "p", fontsize=6.4, weight="bold", va="bottom", ha="right")
+    fig.text(0.02, 0.02, "Stratified Cox model M2a (strata: sex x synchronous presentation x M-stage). Hazard ratios are within strata.\n"
+             "Dark ink: p < 0.05; grey: p ≥ 0.05. Reference categories: T1–2 (T terms), N0 (N terms); continuous terms per unit; "
+             "'unavailable' terms are indicators for missing data.",
+             fontsize=5.8, color=GREY)
     return fig
 
 
+# ============================================================================= FIGURE S3: discrimination comparison
 def build_figureS3():
     fig_id = "FigureS3"
-    fig, ax = plt.subplots(figsize=(5.8, 4.2))
-    fig.subplots_adjust(left=0.12, right=0.98, bottom=0.25, top=0.95)
-    rows = [p for p in per if p["O_over_E"]]
-    check(fig_id, "Operation periods with O/E equal periods with 5-year follow-up present in F21",
-          sum(as_int(p["patients_with_5y_follow_up"]) > 0 for p in per), len(rows))
-    for p in rows:
-        obs, pred = as_float(p["observed_5y_KM"]), as_float(p["mean_predicted_5y"])
-        # tolerance = propagated rounding of the three-decimal inputs plus output rounding
-        tol = (obs / pred) * (0.0005 / obs + 0.0005 / pred) + 0.0005
-        check(fig_id, f"{p['period']}: O/E equals observed divided by predicted (F21), within rounding",
-              as_float(p["O_over_E"]), round(obs / pred, 3), tol=tol)
-    xs = range(len(rows))
-    cols = ["#2166AC" if p["reliable_5y_estimate"] == "True" else "#9AA5B1" for p in rows]
-    ax.bar(xs, [as_float(p["O_over_E"]) for p in rows], color=cols, width=0.62, zorder=2)
-    ax.axhline(1.0, color="#333333", lw=0.8, ls="--", zorder=3)
-    for i, p in enumerate(rows):
-        ax.text(i, as_float(p["O_over_E"]) + 0.03, half_up(p["O_over_E"]), ha="center", fontsize=7.2, color=INK,
-                bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none"), zorder=4)
-        ax.text(i, 0.04, f"n(5y) = {fmt_n(as_int(p['patients_with_5y_follow_up']))}", ha="center", fontsize=5.8,
-                color="white" if cols[i] != "#9AA5B1" else INK, rotation=90, va="bottom")
-        record(fig_id, f"OE_{i}", f"O/E, {p['period']}", half_up(p["O_over_E"]), rel(SRC["per"]),
-               "O_over_E", as_float(p["O_over_E"]))
-    labels = [p["period"].replace(" (", "\n(") for p in rows]
-    ax.set_xticks(list(xs))
-    ax.set_xticklabels(labels, fontsize=6.6)
-    ax.set_ylabel("Observed / predicted 5-year survival")
-    ax.set_ylim(0, 1.45)
-    ax.grid(alpha=0.22, lw=0.5, axis="y", zorder=0)
+    cand_rows = [r for r in read_csv(SRC["cand"])[1:]]
+    cand_hdr = read_csv(SRC["cand"])[0]
+    cand = []
+    for r in cand_rows:
+        d = dict(zip(cand_hdr, r))
+        lo, hi = d["valid_C_95CI"].split("-")
+        cand.append((d["model"].split(" ")[0], as_float(d["valid_C"]), as_float(lo), as_float(hi)))
+    m2a = [c for c in cand if c[0] == "M2a"][0]
+    check(fig_id, "M2a validation C in candidate table (F02) equals F02b", as_float(perf["valid_C"]), m2a[1])
+    check(fig_id, "M2a validation C-index 95% CI: F02 candidate table equals F02b selected model", "{}-{}".format(m2a[2], m2a[3]),
+          C_CI, severity="DISCREPANCY")
+
+    bench = read_csv(SRC["bench"])
+    bh = bench[0]
+    brows = [dict(zip(bh, r)) for r in bench[1:]]
+    sel_all = as_float(brows[0]["selected_model_C"])
+    global BENCH_FONG_N, BENCH_NORD_N
+    BENCH_FONG_N = as_int([b for b in brows if b["Fong_CRS_C"]][0]["valid_n"])
+    BENCH_NORD_N = as_int([b for b in brows if b["Nordlinger_C"]][0]["valid_n"])
+    check(fig_id, "Selected-model C on all TNM-complete validation (F16) equals F02b", C_VAL, sel_all)
+
+    fig = plt.figure(figsize=(7.2, 3.6))
+    ax = fig.add_axes([0.08, 0.17, 0.40, 0.70])
+    for i, (name, c, lo, hi) in enumerate(cand):
+        col = "#1F7A6E" if name == "M2a" else "#7F8C99"
+        ax.errorbar([i], [c], yerr=[[c - lo], [hi - c]], fmt="o", color=col, ms=5, capsize=3, lw=1.1)
+        ax.text(i + 0.12, c, f"{c:.3f}\n({lo:.3f}–{hi:.3f})", fontsize=5.8, va="center", color=INK)
+        record(fig_id, f"CAND_{name}", f"Validation C-index, {name} (candidate table)",
+               f"{c:.3f} ({lo:.3f}–{hi:.3f})", rel(SRC["cand"]), f"valid_C; valid_C_95CI, row {name}", c)
+    ax.set_xticks(range(len(cand)))
+    ax.set_xticklabels([c[0] for c in cand], fontsize=7)
+    ax.set_xlim(-0.5, len(cand) - 0.4)
+    ax.set_ylim(0.55, 0.65)
+    ax.set_ylabel("Harrell's C-index (validation)", fontsize=7.2)
+    ax.set_title("A. Candidate models, identical patients", fontsize=7.6, loc="left")
+    ax.grid(alpha=0.22, lw=0.5, axis="y")
     for sp in ["top", "right"]:
         ax.spines[sp].set_visible(False)
+    ax.text(0.0, 0.565, "M2a: F02 CI 0.608–0.637 vs F02b CI 0.608–0.636 (discrepancy; see caption)",
+            fontsize=5.6, color=RED_EDGE)
+
+    axb = fig.add_axes([0.60, 0.17, 0.37, 0.70])
+    sub = [b for b in brows if b["Fong_CRS_C"] or b["Nordlinger_C"]]
+    xs = range(len(sub))
+    for i, b in enumerate(sub):
+        sel = as_float(b["selected_model_C"])
+        score_col = "Fong_CRS_C" if b["Fong_CRS_C"] else "Nordlinger_C"
+        sc = as_float(b[score_col])
+        name = "Fong" if score_col == "Fong_CRS_C" else "Nordlinger-type"
+        axb.plot([i, i], [sc, sel], color="#B0B7BF", lw=2.0, zorder=1)
+        axb.scatter([i], [sel], s=46, color="#1F7A6E", zorder=3)
+        axb.scatter([i], [sc], s=46, color="#7F8C99", zorder=3)
+        axb.text(i + 0.10, sel, f"{sel:.3f}", fontsize=6.4, va="center", color=INK)
+        axb.text(i + 0.10, sc, f"{sc:.3f}", fontsize=6.4, va="center", color=INK)
+        record(fig_id, f"BENCH_SEL_{i}", f"Selected model C, {b['subset']}",
+               f"{sel:.3f}", rel(SRC["bench"]), "selected_model_C", sel)
+        record(fig_id, f"BENCH_{name[:4].upper()}_{i}", f"{name} score C, same patients", f"{sc:.3f}", rel(SRC["bench"]),
+               score_col, sc)
+    axb.set_xticks(list(xs))
+    axb.set_xticklabels([f"{'Fong' if b['Fong_CRS_C'] else 'Nordlinger-type'} subset\n(n = {as_int(b['valid_n'])})"
+                         for b in sub], fontsize=6.2)
+    axb.set_xlim(-0.5, len(sub) - 0.2)
+    axb.set_ylim(0.55, 0.66)
+    axb.set_ylabel("Harrell's C-index (validation)", fontsize=7.2)
+    axb.set_title("B. Identical patients: model vs score", fontsize=7.6, loc="left")
+    axb.grid(alpha=0.22, lw=0.5, axis="y", zorder=0)
+    for sp in ["top", "right"]:
+        axb.spines[sp].set_visible(False)
+    from matplotlib.lines import Line2D
+    axb.legend(handles=[Line2D([0], [0], marker="o", ls="", color="#1F7A6E", label="Selected model (M2a)"),
+                        Line2D([0], [0], marker="o", ls="", color="#7F8C99", label="Published-score approximation")],
+               frameon=False, fontsize=6.0, loc="upper right")
+    fig.text(0.08, 0.02, "Point estimates only: no bootstrap intervals for the benchmark scores in the locked outputs. "
+             "Benchmarks are registry approximations (Methods).", fontsize=5.8, color=GREY)
+    ax.text(-0.30, 1.03, "A", transform=ax.transAxes, fontsize=10, weight="bold", color=INK)
+    axb.text(-0.25, 1.03, "B", transform=axb.transAxes, fontsize=10, weight="bold", color=INK)
     return fig
 
 
-# ============================================================================= gate, draw, write
+# ============================================================================= captions, report, main
 def write_captions():
     cap = {}
     cap["Figure1"] = (
@@ -651,23 +815,30 @@ def write_captions():
         f"The stratified Cox model (M2a; {N_TERMS} terms; {N_STRATA} strata) was fitted in development only and applied unchanged to validation. "
         f"Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points {CUT_LO:.4f} and {CUT_HI:.4f}).")
     cap["Figure2"] = (
-        f"**Figure 2.** Overall survival by prognostic group in the temporal validation cohort (operated 2010 or later; n = {fmt_n(N_VAL)}). "
-        f"Kaplan–Meier curves with 95% confidence bands (shaded). Groups were defined by training-only cut-points "
-        f"({CUT_LO:.4f} and {CUT_HI:.4f}). Numbers at risk are shown below the axis. "
-        f"Log-rank p = {sci(P_VAL)}. Median follow-up in validation was {FU_VAL:.2f} years, so few patients were followed beyond 5 years.")
+        f"**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = {fmt_n(N_DEV)}) and the temporal "
+        f"validation cohort (B, n = {fmt_n(N_VAL)}). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. "
+        f"Cut-points {CUT_LO:.4f} and {CUT_HI:.4f} were set in development. Log-rank p = {sci(P_DEV)} (A) and {sci(P_VAL)} (B).")
+    cap["Figure3"] = (
+        "**Figure 3.** Calibration of the M2a model in the temporal validation cohort. (A) Mean predicted against observed "
+        "5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted "
+        "5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with "
+        "5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).")
     cap["FigureS1"] = (
-        "**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (primary definition: "
-        "dated recurrence or death as events; undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; "
-        "numbers at risk below the axis. Overall median RFS "
-        f"{RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}).")
+        f"**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (n = {fmt_n(N_VAL)}; "
+        "primary definition: dated recurrence or death as events, undated recurrences censored). Kaplan–Meier curves with 95% "
+        f"confidence bands; numbers at risk beneath. Overall median RFS {RFS_MED:.2f} years (95% CI {RFS_CI.replace('-', '–')}).")
     cap["FigureS2"] = (
-        "**Figure S2.** Calibration by validation decile of predicted 5-year survival (validation cohort, n = "
-        f"{fmt_n(N_VAL)}). Each point is one decile; the dashed line is perfect calibration. Open markers mark deciles with fewer "
-        "than 50 patients followed up to 5 years, whose observed values are imprecise.")
+        "**Figure S2.** Forest plot of the selected stratified Cox model (M2a) for overall survival. Points are hazard ratios and bars "
+        "95% confidence intervals (log scale). Hazard ratios are within strata defined by sex, synchronous presentation and M-stage. "
+        "Dark ink: p < 0.05. Coefficients are in Table 2; the reference category for each term is shown in its label.")
     cap["FigureS3"] = (
-        "**Figure S3.** Observed/predicted 5-year survival by operation period. Bars above 1.0 indicate survival under-predicted "
-        "by the model. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted because no "
-        "patient operated in that period had 5-year follow-up.")
+        "**Figure S3.** Discrimination. (A) Harrell's C-index in the validation cohort for the three candidate M-stage structures "
+        "fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score "
+        "approximations on identical validation patients (Fong subset, n = {}; Nordlinger-type subset, n = {}); point estimates only. "
+        "**[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected "
+        "model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; "
+        "CI_discrepancy_investigation.md). The manuscript reports the F02b value; the supervisor must confirm this choice."
+        ).format(fmt_n(BENCH_FONG_N), fmt_n(BENCH_NORD_N))
     for k, v in cap.items():
         (OUT / f"{k}_caption.md").write_text(v + "\n", encoding="utf-8")
     return cap
@@ -688,7 +859,7 @@ def write_report():
     n_fail = sum(c["status"] == "FAIL" for c in CHECKS)
     n_disc = sum(c["status"] == "DISCREPANCY" for c in CHECKS)
     n_pass = sum(c["status"] == "PASS" for c in CHECKS)
-    L = ["# Paper 1 figure set: verification report (v10)", "",
+    L = ["# Paper 1 figure set: verification report (v11)", "",
          f"Automated checks: {len(CHECKS)} run; {n_pass} passed; {n_disc} discrepancy(ies) reported; {n_fail} failed.", ""]
     L += ["## Discrepancies between locked outputs (reported, not corrected)", ""]
     disc = [c for c in CHECKS if c["status"] == "DISCREPANCY"]
@@ -707,21 +878,30 @@ def write_report():
 
 
 def main():
-    builders = {"Figure1": (build_figure1, "Figure1_STROBE"), "Figure2": (build_figure2, "Figure2_OS_by_group_validation"),
-                "FigureS1": (build_figureS1, "FigureS1_RFS_by_group_validation"),
-                "FigureS2": (build_figureS2, "FigureS2_calibration_by_decile"),
-                "FigureS3": (build_figureS3, "FigureS3_OE_by_period")}
-    figs = {}
-    for key, (fn, stem) in builders.items():
-        fig = fn()
-        figs[key] = (fig, stem)
+    for old in ["Figure2_OS_by_group_validation", "FigureS2_calibration_by_decile", "FigureS3_OE_by_period"]:
+        for ext in [".png", ".pdf", ".svg"]:
+            q = OUT / (old + ext)
+            if q.exists():
+                q.unlink()
+    builders = [
+        (build_figure1, "Figure1_STROBE"),
+        (build_figure2, "Figure2_OS_by_group_development_validation"),
+        (build_figure3, "Figure3_calibration_and_OE"),
+        (build_figureS1, "FigureS1_RFS_by_group_validation"),
+        (build_figureS2, "FigureS2_M2a_forest_plot"),
+        (build_figureS3, "FigureS3_discrimination_comparison"),
+    ]
+    figs = []
+    for fn, stem in builders:
+        figs.append((fn(), stem, fn.__name__))
+    write_captions_placeholder = None
     n_fail, n_disc, n_pass = write_report()
     write_captions()
     written = []
-    for key, (fig, stem) in figs.items():
-        if key in FAILED_FIGS:
+    for fig, stem, key in figs:
+        if fig_key_of(key) in FAILED_FIGS:
             plt.close(fig)
-            print(f"NOT WRITTEN (failed checks): {key}")
+            print(f"NOT WRITTEN (failed checks): {stem}")
             continue
         save_figure(fig, stem)
         plt.close(fig)
@@ -729,6 +909,11 @@ def main():
     print(f"checks: {n_pass} passed, {n_disc} discrepancy(ies), {n_fail} failed")
     print("written:", ", ".join(written))
     return 1 if n_fail else 0
+
+
+def fig_key_of(fn_name):
+    return {"build_figure1": "Figure1", "build_figure2": "Figure2", "build_figure3": "Figure3",
+            "build_figureS1": "FigureS1", "build_figureS2": "FigureS2", "build_figureS3": "FigureS3"}[fn_name]
 
 
 if __name__ == "__main__":
