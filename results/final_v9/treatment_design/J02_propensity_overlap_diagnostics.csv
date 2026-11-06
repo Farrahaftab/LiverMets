@@ -1,0 +1,2 @@
+population,treated_n,untreated_n,C_statistic_for_treatment,PS_median_treated,PS_median_untreated,PS_min,PS_max,pct_PS_below_0.05,pct_PS_above_0.95,treated_outside_untreated_range_pct,untreated_outside_treated_range_pct,ESS_ATE_treated,ESS_ATE_untreated,max_ATE_weight,pct_weights_above_10
+all with known pre-operative status,7485,8886,0.711,0.521,0.371,0.0997,0.9993,0.0,0.8,0.08,0.03,6393.0,1646.0,310.9,0.21

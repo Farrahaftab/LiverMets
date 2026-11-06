@@ -1,0 +1,9 @@
+step,n
+"analytic cohort (v8, TNM complete, hepatectomy)",17262
+pre-operative liver chemotherapy recorded Yes,7485
+pre-operative liver chemotherapy recorded No,8886
+pre-operative status ND,759
+pre-operative status NA,0
+pre-operative status blank,132
+analysis population for the proposed primary comparison (Yes or No),16371
+pre-operative Yes with a start date,4320

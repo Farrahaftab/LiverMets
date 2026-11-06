@@ -109,6 +109,7 @@ for s in np.unique(COH.STRAT_M.values):
 q33, q67 = np.quantile(S5[TRN], [1 / 3, 2 / 3])
 assert round(float(q33), 4) == 0.3793 and round(float(q67), 4) == 0.4756, (q33, q67)
 COH['GROUP'] = np.where(S5 >= q67, 'Favourable', np.where(S5 >= q33, 'Intermediate', 'Adverse'))
+COH[['SRC', 'GROUP']].to_csv(WORK / 'groups_v8.csv', index=False)   # locked groups, for the design checks
 print('locked cut-points reproduced:', round(float(q33), 4), round(float(q67), 4))
 print(COH.GROUP.value_counts().to_string())
 

@@ -1,0 +1,4 @@
+group,n,treated,untreated,PS_min_treated,PS_max_untreated,C_statistic_within_group
+Favourable,5193,1969,3224,0.118,0.804,0.692
+Intermediate,5359,2328,3031,0.141,0.858,0.699
+Adverse,5819,3188,2631,0.134,0.997,0.7
