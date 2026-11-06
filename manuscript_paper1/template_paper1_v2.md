@@ -24,7 +24,7 @@ author:
 
 # Introduction
 
-Hepatic resection is the main opportunity for long-term survival in patients with colorectal liver metastases, yet outcomes vary widely and are hard to predict for an individual patient [CITATION NEEDED: incidence of liver metastases].
+Hepatic resection offers the main chance of long-term survival in colorectal liver metastases, but outcomes vary widely and are hard to predict for individual patients [CITATION NEEDED: incidence of liver metastases].
 
 The Fong Clinical Risk Score, derived from 1,001 consecutive resections at a single centre, is the most widely used benchmark [1]. It counts five preoperative criteria and predates contemporary systemic therapy. The GAME score adds KRAS status to clinicopathological variables and separated patients with 5-year overall survival of 11% from 73% in its derivation cohort [2] [TO VERIFY: survival figures against the original article]. A 2026 systematic review and meta-analysis of liver-resection prognostic scores reported limited performance and heterogeneous reporting [3]. In a nationwide Dutch cohort, the Fong score had a C-index of 0.577 and GAME 0.596 [4].
 
@@ -104,7 +104,7 @@ Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to
 
 ## Model and discrimination
 
-The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in risk stratification. Its survival estimates are not yet adequately calibrated: they under-predict 5-year survival in the validation cohort (Figure 3), so absolute predictions should be treated as provisional until recalibrated.
+The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in risk stratification. Its survival estimates under-predict 5-year survival in validation (Figure 3) and should be treated as provisional until recalibrated.
 
 {{TABLE2}}
 
