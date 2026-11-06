@@ -1,10 +1,11 @@
-# Paper 1 figure set: verification report (v10)
+# Paper 1 figure set: verification report (v11)
 
-Automated checks: 51 run; 50 passed; 1 discrepancy(ies) reported; 0 failed.
+Automated checks: 91 run; 89 passed; 2 discrepancy(ies) reported; 0 failed.
 
 ## Discrepancies between locked outputs (reported, not corrected)
 
 - [common] Validation C-index 95% CI: F02 (candidate table, M2a row) equals F02b (selected model): expected 0.608-0.637, observed 0.608-0.636
+- [FigureS3] M2a validation C-index 95% CI: F02 candidate table equals F02b selected model: expected 0.608-0.637, observed 0.608-0.636
 
 ## Failed checks (figure not drawn)
 
@@ -55,22 +56,41 @@ None.
 | Figure1 | G_FAV | Favourable group counts and outcomes | dev n 2,821; val n 2,662 (383); median 7.38; 5-y 62.9% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | row 'Favourable': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM | Favourable |
 | Figure1 | G_INT | Intermediate group counts and outcomes | dev n 2,821; val n 2,824 (598); median 4.44; 5-y 45.4% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | row 'Intermediate': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM | Intermediate |
 | Figure1 | G_ADV | Adverse group counts and outcomes | dev n 2,821; val n 3,313 (935); median 3.18; 5-y 34.3% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | row 'Adverse': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM | Adverse |
-| Figure2 | KM5_FAV | Favourable 5-y KM survival (validation) | 62.9% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.629 |
-| Figure2 | MED_FAV | Favourable median OS (validation), years | 7.38 (6.14–NE) | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_median_OS; valid_median_95CI | 7.38 |
-| Figure2 | KM5_INT | Intermediate 5-y KM survival (validation) | 45.4% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.454 |
-| Figure2 | MED_INT | Intermediate median OS (validation), years | 4.44 (4.14–4.88) | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_median_OS; valid_median_95CI | 4.44 |
-| Figure2 | KM5_ADV | Adverse 5-y KM survival (validation) | 34.3% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.343 |
-| Figure2 | MED_ADV | Adverse median OS (validation), years | 3.18 (2.97–3.38) | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_median_OS; valid_median_95CI | 3.18 |
-| Figure2 | P_val_fig | Log-rank p shown on figure | 2.0 × 10⁻⁵² | `results/final_v7/F08_phenotype_separation.csv` | valid_logrank_p | 1.960688139201623e-52 |
+| Figure2 | P_dev_fig | Log-rank p shown, development | 1.4 × 10⁻⁷⁷ | `results/final_v7/F08_phenotype_separation.csv` | train_logrank_p | 1.3516744662754814e-77 |
+| Figure2 | P_val_fig | Log-rank p shown, validation | 2.0 × 10⁻⁵² | `results/final_v7/F08_phenotype_separation.csv` | valid_logrank_p | 1.960688139201623e-52 |
+| Figure2 | KMDEV_FAV | Favourable 5-y KM, development | 54.1% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | train_S5_KM | 0.541 |
+| Figure2 | KMVAL_FAV | Favourable 5-y KM, validation | 62.9% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.629 |
+| Figure2 | KMDEV_INT | Intermediate 5-y KM, development | 41.9% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | train_S5_KM | 0.419 |
+| Figure2 | KMVAL_INT | Intermediate 5-y KM, validation | 45.4% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.454 |
+| Figure2 | KMDEV_ADV | Adverse 5-y KM, development | 30.7% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | train_S5_KM | 0.307 |
+| Figure2 | KMVAL_ADV | Adverse 5-y KM, validation | 34.3% | `results/final_v7/F06_phenotypes_counts_survival_calibration.csv` | valid_S5_KM | 0.343 |
+| Figure3 | DEC10 | Decile 10 observed and predicted 5-y survival | 75.8% vs 58.0% | `results/final_v7/F20_calibration_by_validation_decile.csv` | observed_5y_KM; mean_predicted_5y (validation_decile = 10) | 0.758 |
+| Figure3 | OE_0 | O/E, operation 1990-2004 | 0.96 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 0.955 |
+| Figure3 | OE_1 | O/E, operation 2005-2009 (training) | 1.03 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.025 |
+| Figure3 | OE_2 | O/E, operation 2010-2012 (validation) | 1.09 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.088 |
+| Figure3 | OE_3 | O/E, operation 2013-2015 (validation) | 1.23 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.234 |
 | FigureS1 | RFSN_FAV | Favourable RFS n (validation) | 2,590 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Favourable | 2590 |
 | FigureS1 | RFSN_INT | Intermediate RFS n (validation) | 2,738 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Intermediate | 2738 |
 | FigureS1 | RFSN_ADV | Adverse RFS n (validation) | 3,172 | `results/final_v9/paper1/F81_numbers_at_risk_by_group.csv` | n, scenario RFS_validation, group Adverse | 3172 |
 | FigureS1 | RFS_CI_fig | Overall median RFS shown on figure | 2.03 (1.98–2.09) | `results/final_v7/F17_RFS_sensitivity_final.csv` | median_RFS; median_95CI (PRIMARY row) | 2.03 |
-| FigureS2 | DEC10 | Decile 10 observed and predicted 5-y survival | 75.8% vs 58.0% | `results/final_v7/F20_calibration_by_validation_decile.csv` | observed_5y_KM; mean_predicted_5y (validation_decile = 10) | 0.758 |
-| FigureS3 | OE_0 | O/E, operation 1990-2004 | 0.96 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 0.955 |
-| FigureS3 | OE_1 | O/E, operation 2005-2009 (training) | 1.03 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.025 |
-| FigureS3 | OE_2 | O/E, operation 2010-2012 (validation) | 1.09 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.088 |
-| FigureS3 | OE_3 | O/E, operation 2013-2015 (validation) | 1.23 | `results/final_v7/F21_calibration_by_operation_period.csv` | O_over_E | 1.234 |
+| FigureS2 | HR_T3 | HR, T3 vs T1-2 | 1.124 (0.908–1.393); p 0.283 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row T3) | 1.124 |
+| FigureS2 | HR_T4 | HR, T4 vs T1-2 | 1.364 (1.093–1.701); p 0.006 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row T4) | 1.364 |
+| FigureS2 | HR_N1 | HR, N1 vs N0 | 1.282 (1.195–1.376); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row N1) | 1.282 |
+| FigureS2 | HR_N2 | HR, N2 vs N0 | 1.625 (1.505–1.755); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row N2) | 1.625 |
+| FigureS2 | HR_AGE10_F | HR, Age, per 10 years | 1.131 (1.098–1.166); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row AGE10_F) | 1.131 |
+| FigureS2 | HR_DFI12_F | HR, Interval primary to liver metastasis, per 12 months (0 if synchronous) | 0.982 (0.939–1.027); p 0.420 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row DFI12_F) | 0.982 |
+| FigureS2 | HR_METS_F | HR, Number of liver metastases, per additional lesion | 1.064 (1.054–1.075); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row METS_F) | 1.064 |
+| FigureS2 | HR_SIZE10_F | HR, Largest metastasis, per 10 mm | 1.032 (1.022–1.042); p <0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row SIZE10_F) | 1.032 |
+| FigureS2 | HR_DFI_NR | HR, Interval unavailable (indicator) | 0.932 (0.827–1.050); p 0.245 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row DFI_NR) | 0.932 |
+| FigureS2 | HR_METS_NR | HR, Metastasis count unavailable (indicator) | 1.213 (1.079–1.363); p 0.001 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row METS_NR) | 1.213 |
+| FigureS2 | HR_SIZE_NR | HR, Metastasis size unavailable (indicator) | 0.984 (0.904–1.070); p 0.703 | `results/final_v9/paper1/P1_model_coefficients.csv` | HR, HR_CI_low, HR_CI_high, p (row SIZE_NR) | 0.984 |
+| FigureS3 | CAND_M1 | Validation C-index, M1 (candidate table) | 0.622 (0.606–0.636) | `results/final_v7/F02_M_stage_candidates_identical_patients.csv` | valid_C; valid_C_95CI, row M1 | 0.6218 |
+| FigureS3 | CAND_M2a | Validation C-index, M2a (candidate table) | 0.622 (0.608–0.637) | `results/final_v7/F02_M_stage_candidates_identical_patients.csv` | valid_C; valid_C_95CI, row M2a | 0.6216 |
+| FigureS3 | CAND_M2b | Validation C-index, M2b (candidate table) | 0.622 (0.609–0.637) | `results/final_v7/F02_M_stage_candidates_identical_patients.csv` | valid_C; valid_C_95CI, row M2b | 0.6219 |
+| FigureS3 | BENCH_SEL_0 | Selected model C, Fong CRS subset (CEA recorded) | 0.639 | `results/final_v7/F16_identical_subset_comparison_calibration.csv` | selected_model_C | 0.6394 |
+| FigureS3 | BENCH_FONG_0 | Fong score C, same patients | 0.591 | `results/final_v7/F16_identical_subset_comparison_calibration.csv` | Fong_CRS_C | 0.5912 |
+| FigureS3 | BENCH_SEL_1 | Selected model C, Nordlinger-type subset | 0.630 | `results/final_v7/F16_identical_subset_comparison_calibration.csv` | selected_model_C | 0.6303 |
+| FigureS3 | BENCH_NORD_1 | Nordlinger-type score C, same patients | 0.583 | `results/final_v7/F16_identical_subset_comparison_calibration.csv` | Nordlinger_C | 0.583 |
 
 ## All automated checks
 
@@ -96,34 +116,74 @@ None.
 | common | Validation 5-y predicted survival: F02b equals G01 | 0.408 | 0.408 | **PASS** |
 | common | Validation 5-y O/E: F02b equals G01 | 1.142 | 1.142 | **PASS** |
 | common | M2a strata count equals 2 x 2 x 2 | 8 | 8 | **PASS** |
-| Figure2 | KM group n (F81) equals F06 validation n | {'Favourable': 2662, 'Intermediate': 2824, 'Adverse': 3313} | {'Favourable': 2662, 'Intermediate': 2824, 'Adverse': 3313} | **PASS** |
-| Figure2 | Favourable: at-risk at t=0 equals group n | 2662 | 2662 | **PASS** |
-| Figure2 | Favourable: KM survival at 5 y (curve) equals F06 valid_S5_KM | 0.629 | 0.628974 | **PASS** |
-| Figure2 | Favourable: KM median (curve) equals F06 valid_median_OS | 7.38 | 7.3785 | **PASS** |
-| Figure2 | Intermediate: at-risk at t=0 equals group n | 2824 | 2824 | **PASS** |
-| Figure2 | Intermediate: KM survival at 5 y (curve) equals F06 valid_S5_KM | 0.454 | 0.45403 | **PASS** |
-| Figure2 | Intermediate: KM median (curve) equals F06 valid_median_OS | 4.44 | 4.4353 | **PASS** |
-| Figure2 | Adverse: at-risk at t=0 equals group n | 3313 | 3313 | **PASS** |
-| Figure2 | Adverse: KM survival at 5 y (curve) equals F06 valid_S5_KM | 0.343 | 0.342834 | **PASS** |
-| Figure2 | Adverse: KM median (curve) equals F06 valid_median_OS | 3.18 | 3.1841 | **PASS** |
+| Figure2 | development Favourable: at-risk at t=0 equals group n | 2821 | 2821 | **PASS** |
+| Figure2 | development Favourable: group n (F81) equals F06 | 2821 | 2821 | **PASS** |
+| Figure2 | development Favourable: KM 5-y survival (curve) equals F06 | 0.541 | 0.541045 | **PASS** |
+| Figure2 | development Favourable: KM median (curve) equals F06 | 5.5 | 5.4976 | **PASS** |
+| Figure2 | development Intermediate: at-risk at t=0 equals group n | 2821 | 2821 | **PASS** |
+| Figure2 | development Intermediate: group n (F81) equals F06 | 2821 | 2821 | **PASS** |
+| Figure2 | development Intermediate: KM 5-y survival (curve) equals F06 | 0.419 | 0.419261 | **PASS** |
+| Figure2 | development Intermediate: KM median (curve) equals F06 | 3.89 | 3.885 | **PASS** |
+| Figure2 | development Adverse: at-risk at t=0 equals group n | 2821 | 2821 | **PASS** |
+| Figure2 | development Adverse: group n (F81) equals F06 | 2821 | 2821 | **PASS** |
+| Figure2 | development Adverse: KM 5-y survival (curve) equals F06 | 0.307 | 0.306703 | **PASS** |
+| Figure2 | development Adverse: KM median (curve) equals F06 | 2.97 | 2.9678 | **PASS** |
+| Figure2 | validation Favourable: at-risk at t=0 equals group n | 2662 | 2662 | **PASS** |
+| Figure2 | validation Favourable: group n (F81) equals F06 | 2662 | 2662 | **PASS** |
+| Figure2 | validation Favourable: KM 5-y survival (curve) equals F06 | 0.629 | 0.628974 | **PASS** |
+| Figure2 | validation Favourable: KM median (curve) equals F06 | 7.38 | 7.3785 | **PASS** |
+| Figure2 | validation Intermediate: at-risk at t=0 equals group n | 2824 | 2824 | **PASS** |
+| Figure2 | validation Intermediate: group n (F81) equals F06 | 2824 | 2824 | **PASS** |
+| Figure2 | validation Intermediate: KM 5-y survival (curve) equals F06 | 0.454 | 0.45403 | **PASS** |
+| Figure2 | validation Intermediate: KM median (curve) equals F06 | 4.44 | 4.4353 | **PASS** |
+| Figure2 | validation Adverse: at-risk at t=0 equals group n | 3313 | 3313 | **PASS** |
+| Figure2 | validation Adverse: group n (F81) equals F06 | 3313 | 3313 | **PASS** |
+| Figure2 | validation Adverse: KM 5-y survival (curve) equals F06 | 0.343 | 0.342834 | **PASS** |
+| Figure2 | validation Adverse: KM median (curve) equals F06 | 3.18 | 3.1841 | **PASS** |
+| Figure3 | Decile sizes sum to validation n | 8799 | 8799 | **PASS** |
+| Figure3 | Decile deaths sum to validation window events | 1916 | 1916 | **PASS** |
+| Figure3 | decile 1: observed minus predicted equals F20 | 0.032 | 0.031 | **PASS** |
+| Figure3 | decile 2: observed minus predicted equals F20 | 0.053 | 0.054 | **PASS** |
+| Figure3 | decile 3: observed minus predicted equals F20 | 0.035 | 0.035 | **PASS** |
+| Figure3 | decile 4: observed minus predicted equals F20 | 0.074 | 0.074 | **PASS** |
+| Figure3 | decile 5: observed minus predicted equals F20 | -0.016 | -0.016 | **PASS** |
+| Figure3 | decile 6: observed minus predicted equals F20 | 0.021 | 0.021 | **PASS** |
+| Figure3 | decile 7: observed minus predicted equals F20 | 0.067 | 0.067 | **PASS** |
+| Figure3 | decile 8: observed minus predicted equals F20 | 0.071 | 0.071 | **PASS** |
+| Figure3 | decile 9: observed minus predicted equals F20 | 0.025 | 0.025 | **PASS** |
+| Figure3 | decile 10: observed minus predicted equals F20 | 0.178 | 0.178 | **PASS** |
+| Figure3 | Operation periods with O/E equal periods with 5-year follow-up present in F21 | 4 | 4 | **PASS** |
+| Figure3 | operation 1990-2004: O/E equals observed divided by predicted (F21), within rounding | 0.955 | 0.956 | **PASS** |
+| Figure3 | operation 2005-2009 (training): O/E equals observed divided by predicted (F21), within rounding | 1.025 | 1.026 | **PASS** |
+| Figure3 | operation 2010-2012 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.088 | 1.088 | **PASS** |
+| Figure3 | operation 2013-2015 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.234 | 1.232 | **PASS** |
 | FigureS1 | RFS validation n (sum over groups) does not exceed validation cohort n | True | True | **PASS** |
 | FigureS1 | Favourable: at-risk at t=0 equals group n | 2590 | 2590 | **PASS** |
 | FigureS1 | Intermediate: at-risk at t=0 equals group n | 2738 | 2738 | **PASS** |
 | FigureS1 | Adverse: at-risk at t=0 equals group n | 3172 | 3172 | **PASS** |
-| FigureS2 | Decile sizes sum to validation n | 8799 | 8799 | **PASS** |
-| FigureS2 | Decile deaths sum to validation window events | 1916 | 1916 | **PASS** |
-| FigureS2 | decile 1: observed minus predicted equals F20 | 0.032 | 0.031 | **PASS** |
-| FigureS2 | decile 2: observed minus predicted equals F20 | 0.053 | 0.054 | **PASS** |
-| FigureS2 | decile 3: observed minus predicted equals F20 | 0.035 | 0.035 | **PASS** |
-| FigureS2 | decile 4: observed minus predicted equals F20 | 0.074 | 0.074 | **PASS** |
-| FigureS2 | decile 5: observed minus predicted equals F20 | -0.016 | -0.016 | **PASS** |
-| FigureS2 | decile 6: observed minus predicted equals F20 | 0.021 | 0.021 | **PASS** |
-| FigureS2 | decile 7: observed minus predicted equals F20 | 0.067 | 0.067 | **PASS** |
-| FigureS2 | decile 8: observed minus predicted equals F20 | 0.071 | 0.071 | **PASS** |
-| FigureS2 | decile 9: observed minus predicted equals F20 | 0.025 | 0.025 | **PASS** |
-| FigureS2 | decile 10: observed minus predicted equals F20 | 0.178 | 0.178 | **PASS** |
-| FigureS3 | Operation periods with O/E equal periods with 5-year follow-up present in F21 | 4 | 4 | **PASS** |
-| FigureS3 | operation 1990-2004: O/E equals observed divided by predicted (F21), within rounding | 0.955 | 0.956 | **PASS** |
-| FigureS3 | operation 2005-2009 (training): O/E equals observed divided by predicted (F21), within rounding | 1.025 | 1.026 | **PASS** |
-| FigureS3 | operation 2010-2012 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.088 | 1.088 | **PASS** |
-| FigureS3 | operation 2013-2015 (validation): O/E equals observed divided by predicted (F21), within rounding | 1.234 | 1.232 | **PASS** |
+| FigureS2 | Forest plot rows equal M2a terms | 11 | 11 | **PASS** |
+| FigureS2 | T3: HR equals exp(coefficient) (P1 table) | 1.124 | 1.124 | **PASS** |
+| FigureS2 | T3: CI brackets HR | True | True | **PASS** |
+| FigureS2 | T4: HR equals exp(coefficient) (P1 table) | 1.364 | 1.364 | **PASS** |
+| FigureS2 | T4: CI brackets HR | True | True | **PASS** |
+| FigureS2 | N1: HR equals exp(coefficient) (P1 table) | 1.282 | 1.282 | **PASS** |
+| FigureS2 | N1: CI brackets HR | True | True | **PASS** |
+| FigureS2 | N2: HR equals exp(coefficient) (P1 table) | 1.625 | 1.625 | **PASS** |
+| FigureS2 | N2: CI brackets HR | True | True | **PASS** |
+| FigureS2 | AGE10_F: HR equals exp(coefficient) (P1 table) | 1.131 | 1.131 | **PASS** |
+| FigureS2 | AGE10_F: CI brackets HR | True | True | **PASS** |
+| FigureS2 | DFI12_F: HR equals exp(coefficient) (P1 table) | 0.982 | 0.982 | **PASS** |
+| FigureS2 | DFI12_F: CI brackets HR | True | True | **PASS** |
+| FigureS2 | METS_F: HR equals exp(coefficient) (P1 table) | 1.064 | 1.064 | **PASS** |
+| FigureS2 | METS_F: CI brackets HR | True | True | **PASS** |
+| FigureS2 | SIZE10_F: HR equals exp(coefficient) (P1 table) | 1.032 | 1.032 | **PASS** |
+| FigureS2 | SIZE10_F: CI brackets HR | True | True | **PASS** |
+| FigureS2 | DFI_NR: HR equals exp(coefficient) (P1 table) | 0.932 | 0.932 | **PASS** |
+| FigureS2 | DFI_NR: CI brackets HR | True | True | **PASS** |
+| FigureS2 | METS_NR: HR equals exp(coefficient) (P1 table) | 1.213 | 1.213 | **PASS** |
+| FigureS2 | METS_NR: CI brackets HR | True | True | **PASS** |
+| FigureS2 | SIZE_NR: HR equals exp(coefficient) (P1 table) | 0.984 | 0.984 | **PASS** |
+| FigureS2 | SIZE_NR: CI brackets HR | True | True | **PASS** |
+| FigureS3 | M2a validation C in candidate table (F02) equals F02b | 0.6216 | 0.6216 | **PASS** |
+| FigureS3 | M2a validation C-index 95% CI: F02 candidate table equals F02b selected model | 0.608-0.637 | 0.608-0.636 | **DISCREPANCY** |
+| FigureS3 | Selected-model C on all TNM-complete validation (F16) equals F02b | 0.6216 | 0.6216 | **PASS** |
