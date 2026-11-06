@@ -313,19 +313,29 @@ Source: `F25`. Each quantity was reproduced from the notebook against the previo
 
 See `Paper1_reporting_checklists.docx` (TRIPOD+AI primary; STROBE; PROBAST+AI status).
 
+## Table S10. Benchmark comparison on identical validation patients
+
+Source: `F16_identical_subset_comparison_calibration.csv`. Point estimates only; the benchmark scores are registry approximations (see Methods). Subset sizes are identical for the selected model and the score.
+
+| Validation subset | n | Deaths | Selected model C-index | Observed/expected 5-y | Fong score C-index | Nordlinger-type C-index |
+|---|---|---|---|---|---|---|
+| All TNM-complete validation | 8799 | 1916 | 0.6216 | 1.142 | — | — |
+| Fong CRS subset (CEA recorded) | 3642 | 914 | 0.6394 | 1.188 | 0.5912 | — |
+| Nordlinger-type subset | 6137 | 1396 | 0.6303 | 1.155 | — | 0.583 |
+
 ## Supplementary figures
 
-**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (primary definition: dated recurrence or death as events; undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; numbers at risk below the axis. Overall median RFS 2.03 years (95% CI 1.98–2.09).
+**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (n = 8,799; primary definition: dated recurrence or death as events, undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; numbers at risk beneath. Overall median RFS 2.03 years (95% CI 1.98–2.09).
 
 ![](figures/FigureS1_RFS_by_group_validation.png)
 
-**Figure S2.** Calibration by validation decile of predicted 5-year survival (validation cohort, n = 8,799). Each point is one decile; the dashed line is perfect calibration. Open markers mark deciles with fewer than 50 patients followed up to 5 years, whose observed values are imprecise.
+**Figure S2.** Forest plot of the selected stratified Cox model (M2a) for overall survival. Points are hazard ratios and bars 95% confidence intervals (log scale). Hazard ratios are within strata defined by sex, synchronous presentation and M-stage. Dark ink: p < 0.05. Coefficients are in Table 2; the reference category for each term is shown in its label.
 
-![](figures/FigureS2_calibration_by_decile.png)
+![](figures/FigureS2_M2a_forest_plot.png)
 
-**Figure S3.** Observed/predicted 5-year survival by operation period. Bars above 1.0 indicate survival under-predicted by the model. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted because no patient operated in that period had 5-year follow-up.
+**Figure S3.** Discrimination. (A) Harrell's C-index in the validation cohort for the three candidate M-stage structures fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score approximations on identical validation patients (Fong subset, n = 3,642; Nordlinger-type subset, n = 6,137); point estimates only. **[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; CI_discrepancy_investigation.md). The manuscript reports the F02b value; the supervisor must confirm this choice.
 
-![](figures/FigureS3_OE_by_period.png)
+![](figures/FigureS3_discrimination_comparison.png)
 
 ## Coefficient outputs
 

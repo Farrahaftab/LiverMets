@@ -90,12 +90,16 @@ S.append("## Table S8. Horizon feasibility, group events and recurrence-free sur
 S.append("## Table S9. Reporting checklists\n\nSee `Paper1_reporting_checklists.docx` (TRIPOD+AI primary; STROBE; PROBAST+AI status).")
 
 V10 = ROOT / 'results/final_v10/paper1_figures'
+bench_rows = rows(F7 / 'F16_identical_subset_comparison_calibration.csv')
+S.append("## Table S10. Benchmark comparison on identical validation patients\n\nSource: `F16_identical_subset_comparison_calibration.csv`. Point estimates only; the benchmark scores are registry approximations (see Methods). Subset sizes are identical for the selected model and the score.\n\n" +
+         md(['Validation subset', 'n', 'Deaths', 'Selected model C-index', 'Observed/expected 5-y', 'Fong score C-index', 'Nordlinger-type C-index'],
+            [[r[0], r[1], r[2], r[3], r[6], r[7] or '—', r[8] or '—'] for r in bench_rows[1:]]))
 S1_CAP = (V10 / 'FigureS1_caption.md').read_text(encoding='utf-8').strip()
 S2_CAP = (V10 / 'FigureS2_caption.md').read_text(encoding='utf-8').strip()
 S3_CAP = (V10 / 'FigureS3_caption.md').read_text(encoding='utf-8').strip()
 S.append("## Supplementary figures\n\n" + S1_CAP + "\n\n![](figures/FigureS1_RFS_by_group_validation.png)\n\n" +
-         S2_CAP + "\n\n![](figures/FigureS2_calibration_by_decile.png)\n\n" +
-         S3_CAP + "\n\n![](figures/FigureS3_OE_by_period.png)")
+         S2_CAP + "\n\n![](figures/FigureS2_M2a_forest_plot.png)\n\n" +
+         S3_CAP + "\n\n![](figures/FigureS3_discrimination_comparison.png)")
 
 S.append("## Coefficient outputs\n\nBaseline survival by stratum (`P1_baseline_survival_by_stratum.csv`) and group summary (`P1_group_summary.csv`) are in `results/final_v9/paper1/`.\n\n" +
          select(P1/'P1_baseline_survival_by_stratum.csv', list(rows(P1/'P1_baseline_survival_by_stratum.csv')[0]), None) +

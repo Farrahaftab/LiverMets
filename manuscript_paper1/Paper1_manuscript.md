@@ -24,17 +24,17 @@ author:
 
 # Introduction
 
-Hepatic resection is the main opportunity for long-term survival in patients with colorectal liver metastases, yet outcomes vary widely and are hard to predict for an individual patient [CITATION NEEDED: incidence of liver metastases]. Prognostic information informs patient selection, follow-up and trial design.
+Hepatic resection is the main opportunity for long-term survival in patients with colorectal liver metastases, yet outcomes vary widely and are hard to predict for an individual patient [CITATION NEEDED: incidence of liver metastases].
 
 The Fong Clinical Risk Score, derived from 1,001 consecutive resections at a single centre, is the most widely used benchmark [1]. It counts five preoperative criteria and predates contemporary systemic therapy. The GAME score adds KRAS status to clinicopathological variables and separated patients with 5-year overall survival of 11% from 73% in its derivation cohort [2] [TO VERIFY: survival figures against the original article]. A 2026 systematic review and meta-analysis of liver-resection prognostic scores reported limited performance and heterogeneous reporting [3]. In a nationwide Dutch cohort, the Fong score had a C-index of 0.577 and GAME 0.596 [4].
 
-Two gaps remain. Many models report discrimination without calibration, so absolute predictions cannot be checked. Few have been validated in a later cohort using a model fixed before validation. We therefore aimed to (1) develop a stratified Cox survival model from routinely recorded variables; (2) derive three prognostic groups from training-era predicted 5-year survival and apply them unchanged to later patients; (3) assess discrimination, calibration and separation in temporal validation; and (4) test the findings against date conventions, duplicate records, the omission of metastasis count and size, and a model without TNM stage. We report the model under the TRIPOD+AI statement [5], which applies to regression as well as machine-learning models, and assess risk of bias with PROBAST+AI [6]. Treatment-associated survival is not analysed here.
+Two gaps remain. Many models report discrimination without calibration, so absolute predictions cannot be checked. Few have been validated in a later cohort using a model fixed before validation. We therefore aimed to (1) develop a stratified Cox survival model from routinely recorded variables; (2) derive three prognostic groups from training-era predicted 5-year survival and apply them unchanged to later patients; (3) assess discrimination, calibration and separation in temporal validation; and (4) test the findings against date conventions, duplicate records, the omission of metastasis count and size, and a model without TNM stage. We follow the TRIPOD+AI statement [5] and assess risk of bias with PROBAST+AI [6]. Treatment-associated survival is not analysed here.
 
 # Methods
 
 ## Study design and reporting
 
-This was a retrospective cohort study of the LiverMetSurvey registry, a prospectively maintained web-based database of patients with colorectal liver metastases. The study followed STROBE [7] and TRIPOD+AI [5]. The completed checklist is provided in Supplementary Material S9. Source workbooks were checksummed (SHA-256) before analysis, and the analysis was run end to end from a single scripted notebook.
+This was a retrospective cohort study of the LiverMetSurvey registry, a prospectively maintained web-based database of patients with colorectal liver metastases. The study followed STROBE [7] and TRIPOD+AI [5]. The completed checklist is provided in Supplementary Material S9. Source workbooks were checksummed (SHA-256); the analysis ran from a single scripted notebook.
 
 ## Participants
 
@@ -137,7 +137,7 @@ Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to
 
 ## Model and discrimination
 
-The selected model's coefficients are in Table 2. In validation the C-index was 0.622 (95% CI 0.608–0.636), against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in stratification and calibrated survival estimates.
+The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in stratification and calibrated survival estimates.
 
 | Term | β | HR | 95% CI | p |
 |---|---|---|---|---|
@@ -171,13 +171,17 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 **Table 3.** Prognostic groups (M2a) with training-only cut-points and validation outcomes. Source: `F06_phenotypes_counts_survival_calibration.csv`.
 
-![Overall survival by prognostic group, validation cohort](figures/Figure2_OS_by_group_validation.png)
+![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png)
 
-**Figure 2.** Overall survival by prognostic group in the temporal validation cohort (operated 2010 or later; n = 8,799). Kaplan–Meier curves with 95% confidence bands (shaded). Groups were defined by training-only cut-points (0.3793 and 0.4756). Numbers at risk are shown below the axis. Log-rank p = 2.0 × 10⁻⁵². Median follow-up in validation was 1.47 years, so few patients were followed beyond 5 years.
+**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = 8,463) and the temporal validation cohort (B, n = 8,799). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. Cut-points 0.3793 and 0.4756 were set in development. Log-rank p = 1.4 × 10⁻⁷⁷ (A) and 2.0 × 10⁻⁵² (B).
 
 ## Calibration
 
-Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.14, bootstrap interval 1.09–1.20; calibration slope 1.07). Under-prediction was small at 1 year (O/E 1.01) and grew at 3 years (1.09, interval 1.06–1.12) and 5 years (Table 4). Under-prediction was present in nine of ten validation deciles, most markedly in the most favourable decile, the highest predicted survival (observed 75.8% against 58.0% predicted; Supplementary Figure S2). By operation period, O/E was 0.96 for 1990–2004, 1.03 for 2005–2009 (training), 1.09 for 2010–2012 and 1.23 for 2013–2015 (Supplementary Figure S3). The 2013–2015 estimate rests on 109 patients with 5 years of follow-up; calibration cannot be assessed for patients operated in 2016 or later.
+Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.14, bootstrap interval 1.09–1.20; calibration slope 1.07). Under-prediction was small at 1 year (O/E 1.01) and grew at 3 years (1.09, interval 1.06–1.12) and 5 years (Table 4). Under-prediction was present in nine of ten validation deciles, most markedly in the most favourable decile, the highest predicted survival (observed 75.8% against 58.0% predicted; Figure 3A). By operation period, O/E was 0.96 for 1990–2004, 1.03 for 2005–2009 (training), 1.09 for 2010–2012 and 1.23 for 2013–2015 (Figure 3B). The 2013–2015 estimate rests on 109 patients with 5 years of follow-up; calibration cannot be assessed for patients operated in 2016 or later.
+
+![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png)
+
+**Figure 3.** Calibration of the M2a model in the temporal validation cohort. (A) Mean predicted against observed 5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted 5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).
 
 Re-estimating the baseline hazard from 2005–2009 patients, with coefficients fixed, reduced the 5-year O/E to 1.12 and kept 92% of patients in their primary group (κ 0.88). The gap was reduced but not removed, so the primary model was not recalibrated.
 
@@ -199,15 +203,7 @@ Across all sensitivity analyses (Supplementary Table S5), the validation C-index
 
 ## Comparison with established scores and a model without TNM
 
-On identical validation patients, the selected model had a C-index of 0.639 in the Fong subset (n = 3,642; 914 deaths), against 0.591 for the Fong score, and 0.630 in the Nordlinger-type subset (n = 6,137; 1,396 deaths), against 0.583 for the Nordlinger-type approximation (Table 5). These approximations indicate relative performance on this registry; they do not establish the published models' performance.
-
-| Validation subset | n | Deaths | Selected model C-index | Observed/expected 5-y | Fong score C-index | Nordlinger-type C-index |
-|---|---|---|---|---|---|---|
-| All TNM-complete validation | 8799 | 1916 | 0.6216 | 1.142 | — | — |
-| Fong CRS subset (CEA recorded) | 3642 | 914 | 0.6394 | 1.188 | 0.5912 | — |
-| Nordlinger-type subset | 6137 | 1396 | 0.6303 | 1.155 | — | 0.583 |
-
-**Table 5.** Validation C-index on identical patients in benchmark subsets. Source: `F16_identical_subset_comparison_calibration.csv`.
+On identical validation patients, the selected model had a C-index of 0.639 in the Fong subset (n = 3,642; 914 deaths), against 0.591 for the Fong score, and 0.630 in the Nordlinger-type subset (n = 6,137; 1,396 deaths), against 0.583 for the Nordlinger-type approximation (Supplementary Table S10; Supplementary Figure S3). These approximations indicate relative performance on this registry; they do not establish the published models' performance.
 
 Without metastasis count and size (pre-operative-only model), the C-index fell to 0.591 (95% CI 0.573–0.606) in the M1 structure and 0.591 (0.575–0.604) in M2a (Supplementary Table S5). A model without TNM stage, using age, sex, synchrony, interval, count and size, gave 0.599 on the same 8,799 validation patients, a difference of 0.022 (95% CI 0.009–0.034) from the TNM model.
 

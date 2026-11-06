@@ -87,12 +87,15 @@ REFS = """1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score 
 V10 = ROOT / 'results/final_v10/paper1_figures'
 FIG1_CAPTION = (V10 / 'Figure1_caption.md').read_text(encoding='utf-8').strip()
 FIG2_CAPTION = (V10 / 'Figure2_caption.md').read_text(encoding='utf-8').strip()
+FIG3_CAPTION = (V10 / 'Figure3_caption.md').read_text(encoding='utf-8').strip()
 fill = {
  '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png)',
- '{{FIG2}}': '![Overall survival by prognostic group, validation cohort](figures/Figure2_OS_by_group_validation.png)',
+ '{{FIG2}}': '![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png)',
  '{{FIG2_CAPTION}}': FIG2_CAPTION,
+ '{{FIG3}}': '![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png)',
+ '{{FIG3_CAPTION}}': FIG3_CAPTION,
  '{{FIG1_CAPTION}}': FIG1_CAPTION,
-  '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4, '{{TABLE5}}': T5,
+  '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4,
  '{{REFERENCES}}': REFS,
 }
 text = (HERE / 'template_paper1_v2.md').read_text(encoding='utf-8')
@@ -111,4 +114,4 @@ abstract = text.split('# Abstract')[1].split('# Introduction')[0]
 print('abstract words:', len(re.findall(r'\S+', abstract)))
 print('main text words (Introduction to Conclusions, excl. tables/legends/Declarations):',
       len(re.findall(r'\S+', re.sub(r'\|.*\|', '', main))))
-print('display items: 2 figures, 5 tables')
+print('display items: 3 figures, 4 tables')
