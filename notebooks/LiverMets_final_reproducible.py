@@ -1246,4 +1246,32 @@ ax.grid(alpha=0.25, axis='y')
 fig.savefig(FIG_DIR / 'COX_04_O_over_E_by_period.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 print('figures written to', FIG_DIR, sorted(p.name for p in FIG_DIR.glob('COX_*.png')))
 
+# ---- figure-data export (added for the Paper 1 figure rebuild): derived Kaplan-Meier curve points and
+# numbers at risk only. No model, cohort or result above is changed by this block.
+def km_export(T, E, groups, scenario):
+    rows, risk = [], []
+    for g in ORDER:
+        m = groups == g
+        k = KaplanMeierFitter().fit(T[m], E[m])
+        sf = k.survival_function_.reset_index()
+        ci = k.confidence_interval_.reset_index()
+        cols = list(sf.columns)
+        for (tt, sv), (_, lo, hi) in zip(sf.values, ci.values):
+            if tt <= 15.0:
+                rows.append({'scenario': scenario, 'group': g, 'time_years': round(float(tt), 4),
+                             'survival': round(float(sv), 6), 'ci_lower': round(float(lo), 6),
+                             'ci_upper': round(float(hi), 6)})
+        for t in range(0, 11, 2):
+            risk.append({'scenario': scenario, 'group': g, 'time_years': t,
+                         'at_risk': int(((T[m] >= t)).sum()), 'n': int(m.sum())})
+    return pd.DataFrame(rows), pd.DataFrame(risk)
+
+
+km_os_val, risk_os_val = km_export(PRIMARY.OS_Y.values[vam], PRIMARY.OS_E.values[vam], GRP[vam], 'OS_validation')
+km_os_dev, risk_os_dev = km_export(PRIMARY.OS_Y.values[trm], PRIMARY.OS_E.values[trm], GRP[trm], 'OS_development')
+km_rfs_val, risk_rfs_val = km_export(rT_p[rfs_mask], rE_p[rfs_mask], GRP[rfs_mask], 'RFS_validation')
+save(pd.concat([km_os_val, km_os_dev, km_rfs_val], ignore_index=True), 'F80_km_curve_points_by_group')
+save(pd.concat([risk_os_val, risk_os_dev, risk_rfs_val], ignore_index=True), 'F81_numbers_at_risk_by_group')
+print('figure-data exports written: F80, F81')
+
 log(f'done -> {OUT_DIR}')
