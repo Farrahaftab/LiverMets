@@ -56,7 +56,7 @@ for r in g1[1:]:
     h = r[0]; g = g3[h]
     lo, hi = r[8].split('-')
     body.append([h, f"{r[2]} ({r[3]}%)", r[4], pct(r[6]), f"{pct(r[7])} ({float(lo)*100:.1f}–{float(hi)*100:.1f})",
-                 f"{float(r[9]):.2f} ({float(g[1]):.2f}–{float(g[2]):.2f})", tauc[h], brier[h]])
+                 f"{float(r[9]):.2f} ({float(g[1]):.2f}–{float(g[2]):.2f})", tauc[h], f"{float(brier[h]):.3f}"])
 T4 = md(['Horizon (years)', 'Evaluable n (%)', 'Deaths before horizon', 'Mean predicted survival',
          'Observed KM survival (95% CI)', 'O/E (95% CI)', 'Time-dependent AUC', 'Brier score'], body)
 
