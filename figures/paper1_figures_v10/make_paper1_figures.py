@@ -614,7 +614,7 @@ def build_figure3():
     ax.set_ylim(0.1, 0.9)
     ax.set_xlabel("Mean predicted 5-year survival", fontsize=7.4)
     ax.set_ylabel("Observed 5-year survival (Kaplan–Meier)", fontsize=7.4)
-    ax.set_title("A. Validation cohort: calibration by decile", fontsize=7.6, loc="left")
+    ax.set_title("Validation cohort: calibration by decile", fontsize=7.6, loc="left")
     ax.grid(alpha=0.22, lw=0.5)
     for sp in ["top", "right"]:
         ax.spines[sp].set_visible(False)
@@ -642,7 +642,7 @@ def build_figure3():
     axb.set_xticklabels([_plabel(pp) for pp in per_ok], fontsize=6.0)
     axb.set_ylabel("Observed / predicted 5-year survival", fontsize=7.4)
     axb.set_ylim(0, 1.45)
-    axb.set_title("B. Operation period (development and validation)", fontsize=7.6, loc="left")
+    axb.set_title("Operation period (development and validation)", fontsize=7.6, loc="left")
     axb.grid(alpha=0.22, lw=0.5, axis="y", zorder=0)
     for sp in ["top", "right"]:
         axb.spines[sp].set_visible(False)
