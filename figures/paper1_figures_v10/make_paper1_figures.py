@@ -114,6 +114,13 @@ def sci(p):
     return f"{mant:.1f} × 10" + "".join(sup[c] for c in str(exp))
 
 
+def half_up(x, places=2):
+    """Round a source value half-up using its decimal string (0.955 -> 0.96), as the manuscript text does."""
+    from decimal import Decimal, ROUND_HALF_UP
+    q = Decimal(1).scaleb(-places)
+    return str(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+
+
 def fmt_n(n):
     return f"{n:,}"
 
@@ -496,7 +503,7 @@ def draw_km(scenario, xmax, risk_scenario, n_map, colour_map):
     ax.legend(frameon=False, fontsize=7.4, loc="upper right")
     # numbers at risk
     axr = fig.add_axes([0.11, 0.08, 0.86, 0.17])
-    axr.set_xlim(0, xmax)
+    axr.set_xlim(-0.9, xmax)
     axr.set_ylim(-0.5, len(GROUPS) - 0.5)
     axr.set_yticks(range(len(GROUPS)))
     axr.set_yticklabels(list(reversed(GROUPS)), fontsize=7.2)
@@ -564,7 +571,7 @@ def build_figureS2():
         pred, obs = as_float(d["mean_predicted_5y"]), as_float(d["observed_5y_KM"])
         check(fig_id, f"decile {d['validation_decile']}: observed minus predicted equals F20",
               as_float(d["observed_minus_predicted"]), round(obs - pred, 3), tol=0.0015)
-    ax.plot([0, 1], [0, 1], color="#555555", lw=0.8, ls="--", label="Perfect calibration")
+    ax.plot([0.1, 0.9], [0.1, 0.9], color="#555555", lw=0.8, ls="--", label="Perfect calibration")
     rel_ = [d for d in dec if d["reliable_5y_estimate"] == "True"]
     spa = [d for d in dec if d["reliable_5y_estimate"] != "True"]
     ax.scatter([as_float(d["mean_predicted_5y"]) for d in rel_], [as_float(d["observed_5y_KM"]) for d in rel_],
@@ -578,8 +585,8 @@ def build_figureS2():
                 arrowprops=dict(arrowstyle="-", color=GREY, lw=0.6))
     record(fig_id, "DEC10", "Decile 10 observed and predicted 5-y survival", f"{pct(dd['observed_5y_KM'])} vs {pct(dd['mean_predicted_5y'])}",
            rel(SRC["dec"]), "observed_5y_KM; mean_predicted_5y (validation_decile = 10)", dd["observed_5y_KM"])
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
+    ax.set_xlim(0.1, 0.9)
+    ax.set_ylim(0.1, 0.9)
     ax.set_xlabel("Mean predicted 5-year survival")
     ax.set_ylabel("Observed 5-year survival (Kaplan–Meier)")
     ax.grid(alpha=0.22, lw=0.5)
@@ -597,17 +604,21 @@ def build_figureS3():
     check(fig_id, "Operation periods with O/E equal periods with 5-year follow-up present in F21",
           sum(as_int(p["patients_with_5y_follow_up"]) > 0 for p in per), len(rows))
     for p in rows:
-        check(fig_id, f"{p['period']}: O/E equals observed divided by predicted (F21)",
-              as_float(p["O_over_E"]), round(as_float(p["observed_5y_KM"]) / as_float(p["mean_predicted_5y"]), 3), tol=0.0015)
+        obs, pred = as_float(p["observed_5y_KM"]), as_float(p["mean_predicted_5y"])
+        # tolerance = propagated rounding of the three-decimal inputs plus output rounding
+        tol = (obs / pred) * (0.0005 / obs + 0.0005 / pred) + 0.0005
+        check(fig_id, f"{p['period']}: O/E equals observed divided by predicted (F21), within rounding",
+              as_float(p["O_over_E"]), round(obs / pred, 3), tol=tol)
     xs = range(len(rows))
     cols = ["#2166AC" if p["reliable_5y_estimate"] == "True" else "#9AA5B1" for p in rows]
     ax.bar(xs, [as_float(p["O_over_E"]) for p in rows], color=cols, width=0.62, zorder=2)
     ax.axhline(1.0, color="#333333", lw=0.8, ls="--", zorder=3)
     for i, p in enumerate(rows):
-        ax.text(i, as_float(p["O_over_E"]) + 0.03, f"{as_float(p['O_over_E']):.2f}", ha="center", fontsize=7.2, color=INK)
+        ax.text(i, as_float(p["O_over_E"]) + 0.03, half_up(p["O_over_E"]), ha="center", fontsize=7.2, color=INK,
+                bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none"), zorder=4)
         ax.text(i, 0.04, f"n(5y) = {fmt_n(as_int(p['patients_with_5y_follow_up']))}", ha="center", fontsize=5.8,
                 color="white" if cols[i] != "#9AA5B1" else INK, rotation=90, va="bottom")
-        record(fig_id, f"OE_{i}", f"O/E, {p['period']}", f"{as_float(p['O_over_E']):.2f}", rel(SRC["per"]),
+        record(fig_id, f"OE_{i}", f"O/E, {p['period']}", half_up(p["O_over_E"]), rel(SRC["per"]),
                "O_over_E", as_float(p["O_over_E"]))
     labels = [p["period"].replace(" (", "\n(") for p in rows]
     ax.set_xticks(list(xs))
