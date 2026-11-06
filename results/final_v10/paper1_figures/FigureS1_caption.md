@@ -1,0 +1,1 @@
+**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (primary definition: dated recurrence or death as events; undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; numbers at risk below the axis. Overall median RFS 2.03 years (95% CI 1.98–2.09).

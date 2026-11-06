@@ -1,0 +1,1 @@
+**Figure S2.** Calibration by validation decile of predicted 5-year survival (validation cohort, n = 8,799). Each point is one decile; the dashed line is perfect calibration. Open markers mark deciles with fewer than 50 patients followed up to 5 years, whose observed values are imprecise.

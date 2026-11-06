@@ -1,0 +1,1 @@
+**Figure S3.** Observed/predicted 5-year survival by operation period. Bars above 1.0 indicate survival under-predicted by the model. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted because no patient operated in that period had 5-year follow-up.

@@ -1,0 +1,107 @@
+section,figure,id,label,displayed,source_file,source_field,raw
+value,common,N_registry,Registry records,"29,565",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '1 registry'",29565
+value,common,N_analytic,Analytic cohort,"17,262",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '8 complete TNM'",17262
+value,common,N_dev,Development n,"8,463",results/final_v7/F31_table1_baseline_characteristics.csv,Patients / Development,8463
+value,common,N_val,Validation n,"8,799",results/final_v7/F31_table1_baseline_characteristics.csv,Patients / Validation,8799
+value,common,EV_dev,Development events in window,"4,675",results/final_v7/F31_table1_baseline_characteristics.csv,Deaths inside the 15-year window / Development,4675
+value,common,EV_val,Validation events in window,"1,916",results/final_v7/F31_table1_baseline_characteristics.csv,Deaths inside the 15-year window / Validation,1916
+value,common,CUT_lo,"Cut-point, lower tertile",0.3793,results/final_v7/F00_headline.csv,phenotype_cut_S5_q33,0.3793
+value,common,CUT_hi,"Cut-point, upper tertile",0.4756,results/final_v7/F00_headline.csv,phenotype_cut_S5_q67,0.4756
+value,common,C_val,Validation C-index,0.622,results/final_v7/F02b_selected_model_performance.csv,valid_C,0.6216
+value,common,C_ci,"Validation C-index 95% CI (F02b, selected model)",0.608–0.636,results/final_v7/F02b_selected_model_performance.csv,valid_C_95CI,0.608-0.636
+value,common,OE5,Observed/expected 5-y,1.14,results/final_v7/F02b_selected_model_performance.csv,valid_OE_5y,1.142
+value,common,OBS5,Observed 5-y survival (KM),46.6%,results/final_v7/F02b_selected_model_performance.csv,valid_observed_S5,0.466
+value,common,PRED5,Predicted 5-y survival (mean),40.8%,results/final_v7/F02b_selected_model_performance.csv,valid_mean_predicted_S5,0.408
+value,common,P_val,"Log-rank p, validation",2.0 × 10⁻⁵²,results/final_v7/F08_phenotype_separation.csv,valid_logrank_p,1.960688139201623e-52
+value,common,P_dev,"Log-rank p, development",1.4 × 10⁻⁷⁷,results/final_v7/F08_phenotype_separation.csv,train_logrank_p,1.3516744662754814e-77
+value,common,RFS_med,"Median RFS, years (primary)",2.03,results/final_v7/F17_RFS_sensitivity_final.csv,median_RFS (PRIMARY row),2.03
+value,common,EVAL5,Validation evaluable at 5 years,26%,results/final_v7/feasibility/G01_horizon_feasibility_validation.csv,"pct_evaluable, horizon 5",26.0
+value,common,FU_dev,"Median follow-up, development (years)",5.89,results/final_v7/F31_table1_baseline_characteristics.csv,Median follow-up / Development,5.89
+value,common,FU_val,"Median follow-up, validation (years)",1.47,results/final_v7/F31_table1_baseline_characteristics.csv,Median follow-up / Validation,1.47
+value,common,N_terms,M2a terms,11,results/final_v9/paper1/P1_model_coefficients.csv,number of rows,11
+value,common,N_strata,M2a strata,8,results/final_v9/paper1/P1_baseline_survival_by_stratum.csv,number of rows,8
+value,Figure1,N_registry,Step count: LiverMetSurvey registry,"29,565",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '1 registry'",29565
+value,Figure1,N_eligible,Step count: Recorded as eligible (CINCLUSION = Yes),"28,979",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '2 CINCLUSION=Yes'",28979
+value,Figure1,X_eligible,Excluded: not recorded as eligible,586,results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '2 CINCLUSION=Yes',586
+value,Figure1,N_hepatectomy,Step count: Hepatectomy recorded,"26,677",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '3 hepatectomy'",26677
+value,Figure1,X_hepatectomy,Excluded: no hepatectomy recorded,"2,302",results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '3 hepatectomy',2302
+value,Figure1,N_opdate,Step count: Operation date recorded (year and month),"26,592",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '4 operation date (year+month)'",26592
+value,Figure1,X_opdate,Excluded: no operation date,85,results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '4 operation date (year+month)',85
+value,Figure1,N_status,Step count: Vital status and last-news date recorded,"26,271",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '5 status and last-news'",26271
+value,Figure1,X_status,Excluded: missing status or last-news,321,results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '5 status and last-news',321
+value,Figure1,N_chronology,Step count: Chronology consistent,"26,186",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '6 chronology'",26186
+value,Figure1,X_chronology,Excluded: inconsistent dates,85,results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '6 chronology',85
+value,Figure1,N_followup,Step count: Positive follow-up or death,"26,094",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '7 positive follow-up or death'",26094
+value,Figure1,X_followup,Excluded: no follow-up and not dead,92,results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '7 positive follow-up or death',92
+value,Figure1,N_analytic,Step count: Complete TNM staging: analytic cohort,"17,262",results/final_v7/F30_flow_counts_for_figure1.csv,"n, step '8 complete TNM (analytic cohort)'",17262
+value,Figure1,X_analytic,Excluded: incomplete TNM staging,"8,832",results/final_v7/F30_flow_counts_for_figure1.csv,difference of consecutive steps into '8 complete TNM (analytic cohort)',8832
+value,Figure1,P_incomplete,Percent excluded for incomplete TNM,33.8%,results/final_v7/F30_flow_counts_for_figure1.csv,computed: excluded / step 7,33.847
+value,Figure1,G_FAV,Favourable group counts and outcomes,"dev n 2,821; val n 2,662 (383); median 7.38; 5-y 62.9%",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Favourable': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM",Favourable
+value,Figure1,G_INT,Intermediate group counts and outcomes,"dev n 2,821; val n 2,824 (598); median 4.44; 5-y 45.4%",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Intermediate': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM",Intermediate
+value,Figure1,G_ADV,Adverse group counts and outcomes,"dev n 2,821; val n 3,313 (935); median 3.18; 5-y 34.3%",results/final_v7/F06_phenotypes_counts_survival_calibration.csv,"row 'Adverse': train_n, valid_n, valid_deaths, valid_median_OS, valid_S5_KM",Adverse
+value,Figure2,KM5_FAV,Favourable 5-y KM survival (validation),62.9%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_S5_KM,0.629
+value,Figure2,MED_FAV,"Favourable median OS (validation), years",7.38 (6.14–NE),results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_median_OS; valid_median_95CI,7.38
+value,Figure2,KM5_INT,Intermediate 5-y KM survival (validation),45.4%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_S5_KM,0.454
+value,Figure2,MED_INT,"Intermediate median OS (validation), years",4.44 (4.14–4.88),results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_median_OS; valid_median_95CI,4.44
+value,Figure2,KM5_ADV,Adverse 5-y KM survival (validation),34.3%,results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_S5_KM,0.343
+value,Figure2,MED_ADV,"Adverse median OS (validation), years",3.18 (2.97–3.38),results/final_v7/F06_phenotypes_counts_survival_calibration.csv,valid_median_OS; valid_median_95CI,3.18
+value,Figure2,P_val_fig,Log-rank p shown on figure,2.0 × 10⁻⁵²,results/final_v7/F08_phenotype_separation.csv,valid_logrank_p,1.960688139201623e-52
+value,FigureS1,RFSN_FAV,Favourable RFS n (validation),"2,590",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Favourable",2590
+value,FigureS1,RFSN_INT,Intermediate RFS n (validation),"2,738",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Intermediate",2738
+value,FigureS1,RFSN_ADV,Adverse RFS n (validation),"3,172",results/final_v9/paper1/F81_numbers_at_risk_by_group.csv,"n, scenario RFS_validation, group Adverse",3172
+value,FigureS1,RFS_CI_fig,Overall median RFS shown on figure,2.03 (1.98–2.09),results/final_v7/F17_RFS_sensitivity_final.csv,median_RFS; median_95CI (PRIMARY row),2.03
+value,FigureS2,DEC10,Decile 10 observed and predicted 5-y survival,75.8% vs 58.0%,results/final_v7/F20_calibration_by_validation_decile.csv,observed_5y_KM; mean_predicted_5y (validation_decile = 10),0.758
+value,FigureS3,OE_0,"O/E, operation 1990-2004",0.96,results/final_v7/F21_calibration_by_operation_period.csv,O_over_E,0.955
+value,FigureS3,OE_1,"O/E, operation 2005-2009 (training)",1.03,results/final_v7/F21_calibration_by_operation_period.csv,O_over_E,1.025
+value,FigureS3,OE_2,"O/E, operation 2010-2012 (validation)",1.09,results/final_v7/F21_calibration_by_operation_period.csv,O_over_E,1.088
+value,FigureS3,OE_3,"O/E, operation 2013-2015 (validation)",1.23,results/final_v7/F21_calibration_by_operation_period.csv,O_over_E,1.234
+check,common,F01 mid-month equals F30 at '1 registry',,PASS,,expected=29565,observed=29565
+check,common,F01 mid-month equals F30 at '2 CINCLUSION=Yes',,PASS,,expected=28979,observed=28979
+check,common,F01 mid-month equals F30 at '3 hepatectomy',,PASS,,expected=26677,observed=26677
+check,common,F01 mid-month equals F30 at '4 operation date (year+month)',,PASS,,expected=26592,observed=26592
+check,common,F01 mid-month equals F30 at '5 status and last-news',,PASS,,expected=26271,observed=26271
+check,common,F01 mid-month equals F30 at '6 chronology',,PASS,,expected=26186,observed=26186
+check,common,F01 mid-month equals F30 at '7 positive follow-up or death',,PASS,,expected=26094,observed=26094
+check,common,Excluded n: F30 difference equals F32 'Excluded' n,,PASS,,expected=8832,observed=8832
+check,common,Analytic n: F30 equals F32 'Analytic cohort' n,,PASS,,expected=17262,observed=17262
+check,common,Development + validation equals analytic cohort,,PASS,,expected=17262,observed=17262
+check,common,Window events (dev + val) equal F12,,PASS,,expected=6591,observed=6591
+check,common,Recorded minus window events equal F12 deaths beyond 15 years,,PASS,,expected=10,observed=10
+check,common,Group development n sum equals development cohort,,PASS,,expected=8463,observed=8463
+check,common,Group validation n sum equals validation cohort,,PASS,,expected=8799,observed=8799
+check,common,Group validation deaths sum equals validation window events,,PASS,,expected=1916,observed=1916
+check,common,Validation 5-y observed survival: F02b equals G01,,PASS,,expected=0.466,observed=0.466
+check,common,Validation 5-y predicted survival: F02b equals G01,,PASS,,expected=0.408,observed=0.408
+check,common,Validation 5-y O/E: F02b equals G01,,PASS,,expected=1.142,observed=1.142
+check,common,M2a strata count equals 2 x 2 x 2,,PASS,,expected=8,observed=8
+check,Figure2,KM group n (F81) equals F06 validation n,,PASS,,"expected={'Favourable': 2662, 'Intermediate': 2824, 'Adverse': 3313}","observed={'Favourable': 2662, 'Intermediate': 2824, 'Adverse': 3313}"
+check,Figure2,Favourable: at-risk at t=0 equals group n,,PASS,,expected=2662,observed=2662
+check,Figure2,Favourable: KM survival at 5 y (curve) equals F06 valid_S5_KM,,PASS,,expected=0.629,observed=0.628974
+check,Figure2,Favourable: KM median (curve) equals F06 valid_median_OS,,PASS,,expected=7.38,observed=7.3785
+check,Figure2,Intermediate: at-risk at t=0 equals group n,,PASS,,expected=2824,observed=2824
+check,Figure2,Intermediate: KM survival at 5 y (curve) equals F06 valid_S5_KM,,PASS,,expected=0.454,observed=0.45403
+check,Figure2,Intermediate: KM median (curve) equals F06 valid_median_OS,,PASS,,expected=4.44,observed=4.4353
+check,Figure2,Adverse: at-risk at t=0 equals group n,,PASS,,expected=3313,observed=3313
+check,Figure2,Adverse: KM survival at 5 y (curve) equals F06 valid_S5_KM,,PASS,,expected=0.343,observed=0.342834
+check,Figure2,Adverse: KM median (curve) equals F06 valid_median_OS,,PASS,,expected=3.18,observed=3.1841
+check,FigureS1,RFS validation n (sum over groups) does not exceed validation cohort n,,PASS,,expected=True,observed=True
+check,FigureS1,Favourable: at-risk at t=0 equals group n,,PASS,,expected=2590,observed=2590
+check,FigureS1,Intermediate: at-risk at t=0 equals group n,,PASS,,expected=2738,observed=2738
+check,FigureS1,Adverse: at-risk at t=0 equals group n,,PASS,,expected=3172,observed=3172
+check,FigureS2,Decile sizes sum to validation n,,PASS,,expected=8799,observed=8799
+check,FigureS2,Decile deaths sum to validation window events,,PASS,,expected=1916,observed=1916
+check,FigureS2,decile 1: observed minus predicted equals F20,,PASS,,expected=0.032,observed=0.031
+check,FigureS2,decile 2: observed minus predicted equals F20,,PASS,,expected=0.053,observed=0.054
+check,FigureS2,decile 3: observed minus predicted equals F20,,PASS,,expected=0.035,observed=0.035
+check,FigureS2,decile 4: observed minus predicted equals F20,,PASS,,expected=0.074,observed=0.074
+check,FigureS2,decile 5: observed minus predicted equals F20,,PASS,,expected=-0.016,observed=-0.016
+check,FigureS2,decile 6: observed minus predicted equals F20,,PASS,,expected=0.021,observed=0.021
+check,FigureS2,decile 7: observed minus predicted equals F20,,PASS,,expected=0.067,observed=0.067
+check,FigureS2,decile 8: observed minus predicted equals F20,,PASS,,expected=0.071,observed=0.071
+check,FigureS2,decile 9: observed minus predicted equals F20,,PASS,,expected=0.025,observed=0.025
+check,FigureS2,decile 10: observed minus predicted equals F20,,PASS,,expected=0.178,observed=0.178
+check,FigureS3,Operation periods with O/E equal periods with 5-year follow-up present in F21,,PASS,,expected=4,observed=4
+check,FigureS3,"operation 1990-2004: O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=0.955,observed=0.956
+check,FigureS3,"operation 2005-2009 (training): O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=1.025,observed=1.026
+check,FigureS3,"operation 2010-2012 (validation): O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=1.088,observed=1.088
+check,FigureS3,"operation 2013-2015 (validation): O/E equals observed divided by predicted (F21), within rounding",,PASS,,expected=1.234,observed=1.232
