@@ -10,7 +10,17 @@ def rows(p):
         return list(csv.reader(f))
 
 def md(header, body):
-    out = ['| ' + ' | '.join(header) + ' |', '|' + '|'.join(['---'] * len(header)) + '|']
+    """Pipe table whose separator dashes are proportional to content width, so Word (via pandoc) gives
+    wide text columns room and keeps narrow numeric columns narrow. Cell text is unchanged."""
+    ncol = len(header)
+    weights = []
+    for j in range(ncol):
+        longest_cell = max([len(str(r[j])) for r in body] + [1])
+        longest_word = max(len(w) for w in str(header[j]).split()) if str(header[j]).split() else 1
+        weights.append(max(8, min(60, max(longest_cell, longest_word) + 2)))
+    total = sum(weights)
+    dashes = ['-' * max(3, round(60 * w / total)) for w in weights]
+    out = ['| ' + ' | '.join(header) + ' |', '|' + '|'.join(dashes) + '|']
     out += ['| ' + ' | '.join(str(c) for c in r) + ' |' for r in body]
     return '\n'.join(out)
 

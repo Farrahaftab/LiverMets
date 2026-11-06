@@ -95,7 +95,7 @@ Of 29,565 registry records, 17,262 patients had eligible operations and complete
 **Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all criteria with complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756). Median follow-up was 5.89 years in development and 1.47 years in validation.
 
 | Characteristic | Total (n = 17,262) | Development (≤2009; n = 8,463) | Validation (≥2010; n = 8,799) |
-|---|---|---|---|
+|--------------------------------|---------|---------|---------|
 | Patients | 17,262 | 8,463 | 8,799 |
 | Age at operation, years, median (IQR) | 63.4 (55.7-70.6) | 62.9 (55.2-69.9) | 64.0 (56.2-71.4) |
 | Male sex, n (%) | 10,676 (61.8) | 5,204 (61.5) | 5,472 (62.2) |
@@ -140,7 +140,7 @@ Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to
 The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in risk stratification. Its survival estimates under-predict 5-year survival in validation (Figure 3) and should be treated as provisional until recalibrated.
 
 | Term | β | HR | 95% CI | p |
-|---|---|---|---|---|
+|-------------------------------------|------|-----|--------|-----|
 | T3 vs T1-2 | 0.1173 | 1.124 | 0.908–1.393 | 0.283 |
 | T4 vs T1-2 | 0.3101 | 1.364 | 1.093–1.701 | 0.006 |
 | N1 vs N0 | 0.2486 | 1.282 | 1.195–1.376 | <0.001 |
@@ -164,7 +164,7 @@ In M1 the M-stage term violated proportional hazards (p = 0.031). In M2a, which 
 The groups separated overall survival clearly in both cohorts (Table 3; Figure 2). In validation, median overall survival was 7.38 years (95% CI 6.14 to not estimable) in the Favourable group, 4.44 years (4.14–4.88) in the Intermediate group and 3.18 years (2.97–3.38) in the Adverse group. Five-year Kaplan–Meier survival was 62.9%, 45.4% and 34.3%. The log-rank p-value was 2 × 10⁻⁵² in validation and 1.4 × 10⁻⁷⁷ in development. The ordinal C-index in validation was 0.603, and bootstrap κ for assignment stability was 0.83 (95% range 0.78–0.89).
 
 | Group | Development n | Validation n | Validation deaths | Validation median OS, years (95% CI) | Validation 5-y KM survival | Development 5-y KM survival | Validation mean predicted 5-y survival |
-|---|---|---|---|---|---|---|---|
+|--------|-------|-------|-------|----------|-------|-------|-------|
 | Favourable | 2821 | 2662 | 383 | 7.38 (6.14-NE) | 62.9% | 54.1% | 53.2% |
 | Intermediate | 2821 | 2824 | 598 | 4.44 (4.14-4.88) | 45.4% | 41.9% | 42.8% |
 | Adverse | 2821 | 3313 | 935 | 3.18 (2.97-3.38) | 34.3% | 30.7% | 29.1% |
@@ -186,7 +186,7 @@ Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.
 Re-estimating the baseline hazard from 2005–2009 patients, with coefficients fixed, reduced the 5-year O/E to 1.12 and kept 92% of patients in their primary group (κ 0.88). The gap was reduced but not removed, so the primary model was not recalibrated.
 
 | Horizon (years) | Evaluable n (%) | Deaths before horizon | Mean predicted survival | Observed KM survival (95% CI) | O/E (95% CI) | Time-dependent AUC | Brier score |
-|---|---|---|---|---|---|---|---|
+|-----|--------|-----|------|-----------|----------|---------|-----|
 | 1 | 5335 (60.6%) | 581 | 89.7% | 91.0% (90.3–91.7) | 1.01 (1.01–1.02) | 0.639 | 0.060 |
 | 3 | 3118 (35.4%) | 1544 | 59.2% | 64.5% (63.0–66.1) | 1.09 (1.06–1.12) | 0.653 | 0.101 |
 | 5 | 2289 (26.0%) | 1848 | 40.8% | 46.6% (44.4–48.7) | 1.14 (1.09–1.20) | 0.675 | 0.065 |
