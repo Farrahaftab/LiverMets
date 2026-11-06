@@ -614,7 +614,7 @@ def build_figure3():
     ax.set_ylim(0.1, 0.9)
     ax.set_xlabel("Mean predicted 5-year survival", fontsize=7.4)
     ax.set_ylabel("Observed 5-year survival (Kaplan–Meier)", fontsize=7.4)
-    ax.set_title("Calibration by validation decile", fontsize=7.6, loc="left")
+    ax.set_title("A. Validation cohort: calibration by decile", fontsize=7.6, loc="left")
     ax.grid(alpha=0.22, lw=0.5)
     for sp in ["top", "right"]:
         ax.spines[sp].set_visible(False)
@@ -642,7 +642,7 @@ def build_figure3():
     axb.set_xticklabels([_plabel(pp) for pp in per_ok], fontsize=6.0)
     axb.set_ylabel("Observed / predicted 5-year survival", fontsize=7.4)
     axb.set_ylim(0, 1.45)
-    axb.set_title("Observed / expected by operation period", fontsize=7.6, loc="left")
+    axb.set_title("B. Operation period (development and validation)", fontsize=7.6, loc="left")
     axb.grid(alpha=0.22, lw=0.5, axis="y", zorder=0)
     for sp in ["top", "right"]:
         axb.spines[sp].set_visible(False)
@@ -665,10 +665,10 @@ def build_figureS1():
                f"n, scenario RFS_validation, group {g}", n_map[g])
     fig = plt.figure(figsize=(6.4, 4.6))
     n_rfs_val = sum(n_map.values())
-    km_panel(fig, (0.12, 0.14, 0.84, 0.82), scen, 10, n_map,
+    km_panel(fig, (0.12, 0.22, 0.84, 0.70), scen, 10, n_map,
              f"Recurrence-free survival, temporal validation (RFS-eligible n = {fmt_n(n_rfs_val)} of {fmt_n(N_VAL)})",
              show_legend=True)
-    fig.text(0.12, 0.02, f"Primary RFS median, whole analytic cohort (n = {fmt_n(RFS_N)}): {RFS_MED:.2f} years "
+    fig.text(0.07, 0.015, f"Primary RFS median, whole analytic cohort (n = {fmt_n(RFS_N)}): {RFS_MED:.2f} years\n"
              f"(95% CI {RFS_CI.replace('-', '–')}). No validation-only median is in the locked outputs.\n"
              f"{fmt_n(N_VAL - n_rfs_val)} validation patients lack RFS eligibility (dated recurrence before operation; derived).",
              fontsize=5.9, color=GREY, linespacing=1.3)
@@ -826,18 +826,24 @@ def write_captions():
         f"and those operated in 2010 or later the temporal validation cohort (n = {fmt_n(N_VAL)}; {fmt_n(EV_VAL)} events). "
         f"The stratified Cox model (M2a; {N_TERMS} terms; {N_STRATA} strata) was fitted in development only and applied unchanged to validation. "
         f"Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points {CUT_LO:.4f} and {CUT_HI:.4f}). "
-        f"Median follow-up was {FU_DEV:.2f} years in development and {FU_VAL:.2f} years in validation (reverse Kaplan–Meier).")
+        f"Median follow-up was {FU_DEV:.2f} years in development and {FU_VAL:.2f} years in validation.")
     cap["Figure2"] = (
         f"**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = {fmt_n(N_DEV)}) and the temporal "
         f"validation cohort (B, n = {fmt_n(N_VAL)}). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. "
         f"Cut-points {CUT_LO:.4f} and {CUT_HI:.4f} were set in development. Log-rank p = {sci(P_DEV)} (A) and {sci(P_VAL)} (B). "
         f"Follow-up is short in validation (median {FU_VAL:.2f} years, reverse Kaplan–Meier; development {FU_DEV:.2f} years), so "
         f"validation curves beyond about 5 years rest on few patients.")
+    _sparse = [p["period"] for p in per if p["O_over_E"] and p["reliable_5y_estimate"] != "True"]
+    _plotted = [p["period"] for p in per if p["O_over_E"]]
+    _colour_sentence = (
+        f"Grey bars: fewer than 50 patients with 5-year follow-up ({'; '.join(_sparse)})." if _sparse else
+        f"All {len(_plotted)} plotted periods have at least 50 patients with 5-year follow-up; no grey bars.")
     cap["Figure3"] = (
-        f"**Figure 3.** Calibration of the M2a model in the temporal validation cohort (median follow-up {FU_VAL:.2f} years). (A) Mean predicted against observed "
-        "5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted "
-        "5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with "
-        "5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).")
+        "**Figure 3.** Calibration of the M2a model. "
+        "(A) Validation cohort only (operated 2010 or later): mean predicted against observed 5-year survival by decile; open markers "
+        "mark deciles with fewer than 50 patients followed up to 5 years. (B) Observed/predicted 5-year survival by operation period, "
+        "comparing development (1990–2009) and validation (2010 onward) periods; values above 1.0 indicate "
+        f"under-prediction. {_colour_sentence} The 2016 onward period is omitted (no patient had 5-year follow-up).")
     _n_rfs_val = sum(RISK["RFS_validation"][g][0][1] for g in GROUPS)
     cap["FigureS1"] = (
         f"**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (RFS-eligible n = "
