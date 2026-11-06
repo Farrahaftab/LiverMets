@@ -28,7 +28,7 @@ Hepatic resection is the main opportunity for long-term survival in patients wit
 
 The Fong Clinical Risk Score, derived from 1,001 consecutive resections at a single centre, is the most widely used benchmark [1]. It counts five preoperative criteria and predates contemporary systemic therapy. The GAME score adds KRAS status to clinicopathological variables and separated patients with 5-year overall survival of 11% from 73% in its derivation cohort [2] [TO VERIFY: survival figures against the original article]. A 2026 systematic review and meta-analysis of liver-resection prognostic scores reported limited performance and heterogeneous reporting [3]. In a nationwide Dutch cohort, the Fong score had a C-index of 0.577 and GAME 0.596 [4].
 
-Two gaps remain. Many models report discrimination without calibration, so absolute predictions cannot be checked. Few have been validated in a later cohort using a model fixed before validation. We therefore aimed to (1) develop a stratified Cox survival model from routinely recorded variables; (2) derive three prognostic groups from training-era predicted 5-year survival and apply them unchanged to later patients; (3) assess discrimination, calibration and separation in temporal validation; and (4) test the findings against date conventions, duplicate records, the omission of metastasis count and size, and a model without TNM stage. We follow the TRIPOD+AI statement [5] and assess risk of bias with PROBAST+AI [6]. Treatment-associated survival is not analysed here.
+Two gaps remain. Many models report discrimination without calibration, so absolute predictions cannot be checked. Few have been validated in a later cohort using a model fixed before validation. We therefore aimed to (1) develop a stratified Cox survival model from routinely recorded variables; (2) derive three prognostic groups from training-era predicted 5-year survival and apply them unchanged to later patients; (3) assess discrimination, calibration and separation in temporal validation; and (4) test the findings against date conventions, duplicate records, the omission of metastasis count and size, and a model without TNM stage. We follow the TRIPOD+AI statement [5] and assess risk of bias with PROBAST+AI [6].
 
 # Methods
 
@@ -56,7 +56,7 @@ Candidate predictors were TNM stage (T1–2, T3, T4; N0, N1, N2; M0, M1; AJCC ca
 
 The registry has no patient-level identifier. Records were screened for duplicates on all analysis columns together with country, site and patient number. Twenty-three identical-content pairs (46 records) were found, of which 16 met a probable-duplicate rule (shared birth and operation dates, at least 20 non-blank fields). All records were retained in the primary analysis. Probable duplicates and a broader rule (later records sharing birth date, operation date and sex) were removed only in sensitivity analyses (Supplementary Table S3). Nothing was permanently removed, pending registry confirmation.
 
-Other sensitivity analyses are listed in Table S5: date conventions; same-day deaths assigned half a day, one day or a quarter day, or excluded, with and without the death flag; a pre-operative-only model without count and size; complete-case and multiple-imputation analyses of carcinoembryonic antigen (CEA); RFS handling rules; and a baseline hazard re-estimated from 2005–2009 patients with coefficients fixed.
+Other sensitivity analyses (Supplementary Table S5) covered date conventions, same-day deaths, pre-operative-only and no-TNM models, CEA, RFS handling rules and recalibration from 2005–2009 patients.
 
 ## Model development
 
@@ -88,11 +88,11 @@ Analyses used pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.
 
 ## Study population
 
-Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and more patients with four or more metastases, and shorter follow-up (Table 1).
+Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and shorter follow-up (Table 1).
 
-![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png)
+![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png){width=6.2in}
 
-**Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all criteria with complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756).
+**Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all criteria with complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756). Median follow-up was 5.89 years in development and 1.47 years in validation (reverse Kaplan–Meier).
 
 | Characteristic | Total (n = 17,262) | Development (≤2009; n = 8,463) | Validation (≥2010; n = 8,799) |
 |---|---|---|---|
@@ -137,7 +137,7 @@ Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to
 
 ## Model and discrimination
 
-The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in stratification and calibrated survival estimates.
+The selected model's coefficients are in Table 2 and as a forest plot in Supplementary Figure S2. In validation the C-index was 0.622 (95% CI 0.608–0.636) **[TO CONFIRM: the candidate-model table reports 0.608–0.637 for the same model; see Supplementary Figure S3 and Supplementary Table S4]**, against 0.622 for M1 and 0.622 for M2b. Time-dependent AUC was 0.639, 0.653 and 0.675 at 1, 3 and 5 years (Table 4). Discrimination is therefore modest. The model's contribution lies mainly in risk stratification. Its survival estimates are not yet adequately calibrated: they under-predict 5-year survival in the validation cohort (Figure 3), so absolute predictions should be treated as provisional until recalibrated.
 
 | Term | β | HR | 95% CI | p |
 |---|---|---|---|---|
@@ -171,17 +171,17 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 **Table 3.** Prognostic groups (M2a) with training-only cut-points and validation outcomes. Source: `F06_phenotypes_counts_survival_calibration.csv`.
 
-![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png)
+![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png){width=6.5in}
 
-**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = 8,463) and the temporal validation cohort (B, n = 8,799). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. Cut-points 0.3793 and 0.4756 were set in development. Log-rank p = 1.4 × 10⁻⁷⁷ (A) and 2.0 × 10⁻⁵² (B).
+**Figure 2.** Overall survival by prognostic group in the development cohort (A, n = 8,463) and the temporal validation cohort (B, n = 8,799). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. Cut-points 0.3793 and 0.4756 were set in development. Log-rank p = 1.4 × 10⁻⁷⁷ (A) and 2.0 × 10⁻⁵² (B). Follow-up is short in validation (median 1.47 years, reverse Kaplan–Meier; development 5.89 years), so validation curves beyond about 5 years rest on few patients.
 
 ## Calibration
 
-Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.14, bootstrap interval 1.09–1.20; calibration slope 1.07). Under-prediction was small at 1 year (O/E 1.01) and grew at 3 years (1.09, interval 1.06–1.12) and 5 years (Table 4). Under-prediction was present in nine of ten validation deciles, most markedly in the most favourable decile, the highest predicted survival (observed 75.8% against 58.0% predicted; Figure 3A). By operation period, O/E was 0.96 for 1990–2004, 1.03 for 2005–2009 (training), 1.09 for 2010–2012 and 1.23 for 2013–2015 (Figure 3B). The 2013–2015 estimate rests on 109 patients with 5 years of follow-up; calibration cannot be assessed for patients operated in 2016 or later.
+Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.14, bootstrap interval 1.09–1.20; calibration slope 1.07). Under-prediction was small at 1 year (O/E 1.01) and grew at 3 years (1.09, interval 1.06–1.12) and 5 years (Table 4). Under-prediction was present in nine of ten validation deciles, most markedly in the most favourable decile (75.8% observed against 58.0% predicted; Figure 3A). By operation period, O/E was 0.96 for 1990–2004, 1.03 for 2005–2009 (training), 1.09 for 2010–2012 and 1.23 for 2013–2015 (Figure 3B). The 2013–2015 estimate rests on 109 patients with 5 years of follow-up; calibration cannot be assessed for patients operated in 2016 or later.
 
-![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png)
+![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png){width=6.5in}
 
-**Figure 3.** Calibration of the M2a model in the temporal validation cohort. (A) Mean predicted against observed 5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted 5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).
+**Figure 3.** Calibration of the M2a model in the temporal validation cohort (median follow-up 1.47 years). (A) Mean predicted against observed 5-year survival by validation decile; open markers mark fewer than 50 patients followed up to 5 years. (B) Observed/predicted 5-year survival by operation period; values above 1.0 indicate under-prediction. Grey bars: fewer than 50 patients with 5-year follow-up. The 2016 onward period is omitted (no patient had 5-year follow-up).
 
 Re-estimating the baseline hazard from 2005–2009 patients, with coefficients fixed, reduced the 5-year O/E to 1.12 and kept 92% of patients in their primary group (κ 0.88). The gap was reduced but not removed, so the primary model was not recalibrated.
 
@@ -195,11 +195,11 @@ Re-estimating the baseline hazard from 2005–2009 patients, with coefficients f
 
 ## Recurrence-free survival
 
-Median RFS was 2.03 years (95% CI 1.98–2.09) in the primary analysis, with 39.3% and 27.6% recurrence-free at 3 and 5 years (Supplementary Figure S1). Alternative handling of undated recurrences gave medians of 1.93 years (undated recurrences treated as events at last contact), 1.69 years (mid-interval) and 1.84 years (undated recurrences excluded). In the cohort, 5,324 patients had a dated recurrence after operation, 585 had a recurrence dated before operation (excluded), and 1,676 had a recurrence recorded without a usable date; 41 recurrences dated after last contact were treated as undated.
+The primary median RFS was 2.03 years (95% CI 1.98–2.09) for the whole analytic cohort (n = 16,677; the validation-only median is not reported in the locked outputs), with 39.3% and 27.6% recurrence-free at 3 and 5 years (Supplementary Figure S1). Alternative handling of undated recurrences gave medians of 1.93 years (undated recurrences treated as events at last contact), 1.69 years (mid-interval) and 1.84 years (undated recurrences excluded). In the cohort, 5,324 patients had a dated recurrence after operation, 585 had a recurrence dated before operation (excluded), and 1,676 had a recurrence recorded without a usable date; 41 recurrences dated after last contact were treated as undated.
 
 ## Sensitivity analyses
 
-Across all sensitivity analyses (Supplementary Table S5), the validation C-index remained between 0.621 and 0.623 for the date-convention, same-day-death and duplicate analyses. The first-day convention changed 0.3% of group assignments, and assigning same-day deaths half a day, one day or a quarter day gave identical groups. Of the 13 same-day deaths in the cohort, seven lacked an explicit death flag; excluding or censoring them changed group assignment for about 0.4% of patients. Removing probable duplicates left the C-index at 0.622 and reassigned 33 patients (0.2%); the broader removal reassigned 138 (0.8%) and gave 5-year survival of 46.7% (Supplementary Table S3). Recalibration from 2005–2009 is reported in Results, Calibration.
+Across all sensitivity analyses (Supplementary Table S5), the validation C-index remained between 0.621 and 0.623 for the date-convention, same-day-death and duplicate analyses. The first-day convention changed 0.3% of group assignments, and assigning same-day deaths half a day, one day or a quarter day gave identical groups. Of the 13 same-day deaths in the cohort, seven lacked an explicit death flag; excluding or censoring them changed group assignment for about 0.4% of patients. Removing probable duplicates left the C-index at 0.622 and reassigned 33 patients (0.2%); the broader removal reassigned 138 (0.8%) and gave 5-year survival of 46.7% (Supplementary Table S3).
 
 ## Comparison with established scores and a model without TNM
 
@@ -235,7 +235,7 @@ An earlier analysis of this registry used binary classification and classificati
 8. **Proportional hazards.** The tests were applied in the training cohort only. Validation-cohort tests and tests of time-varying effects for all covariates were not performed.
 9. **Benchmarks.** The Fong and Nordlinger-type comparisons use registry approximations. GAME and the Tumour Burden Score could not be reproduced from registry variables.
 10. **Missing covariates.** Performance status, comorbidity, liver function and KRAS status are not available for most patients, so the model cannot adjust for them.
-11. **Registry description [TO CONFIRM].** The country and centre counts in the original manuscript must be reconciled with the extract.
+11. **Registry description [TO CONFIRM].** Country and centre counts must be reconciled.
 12. **Generalisability.** The analytic cohort over-represents recent and synchronous operations (Supplementary Table S1).
 
 # Conclusions

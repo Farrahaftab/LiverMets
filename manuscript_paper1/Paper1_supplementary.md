@@ -325,17 +325,17 @@ Source: `F16_identical_subset_comparison_calibration.csv`. Point estimates only;
 
 ## Supplementary figures
 
-**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (n = 8,799; primary definition: dated recurrence or death as events, undated recurrences censored). Kaplan–Meier curves with 95% confidence bands; numbers at risk beneath. Overall median RFS 2.03 years (95% CI 1.98–2.09).
+**Figure S1.** Recurrence-free survival by prognostic group in the temporal validation cohort (RFS-eligible n = 8,500 of 8,799; the remaining 299 had a dated recurrence before operation and are excluded from RFS; this difference is derived by subtraction). Primary definition: dated recurrence or death as events; undated recurrences censored. Kaplan–Meier curves with 95% confidence bands; numbers at risk beneath. The primary RFS median of 2.03 years (95% CI 1.98–2.09) is for the whole analytic cohort (n = 16,677); the locked outputs contain no validation-only RFS median. Median follow-up in validation was 1.47 years, so late RFS estimates rest on few patients.
 
-![](figures/FigureS1_RFS_by_group_validation.png)
+![](figures/FigureS1_RFS_by_group_validation.png){width=6.2in}
 
 **Figure S2.** Forest plot of the selected stratified Cox model (M2a) for overall survival. Points are hazard ratios and bars 95% confidence intervals (log scale). Hazard ratios are within strata defined by sex, synchronous presentation and M-stage. Dark ink: p < 0.05. Coefficients are in Table 2; the reference category for each term is shown in its label.
 
-![](figures/FigureS2_M2a_forest_plot.png)
+![](figures/FigureS2_M2a_forest_plot.png){width=6.5in}
 
-**Figure S3.** Discrimination. (A) Harrell's C-index in the validation cohort for the three candidate M-stage structures fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score approximations on identical validation patients (Fong subset, n = 3,642; Nordlinger-type subset, n = 6,137); point estimates only. **[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; CI_discrepancy_investigation.md). The manuscript reports the F02b value; the supervisor must confirm this choice.
+**Figure S3.** Discrimination. (A) Harrell's C-index in the validation cohort for the three candidate M-stage structures fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score approximations on identical validation patients (Fong subset, n = 3,642; Nordlinger-type subset, n = 6,137); point estimates only. **[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; investigation record in the verification materials). The manuscript reports the F02b value; the supervisor must confirm this choice.
 
-![](figures/FigureS3_discrimination_comparison.png)
+![](figures/FigureS3_discrimination_comparison.png){width=6.5in}
 
 ## Coefficient outputs
 

@@ -89,10 +89,10 @@ FIG1_CAPTION = (V10 / 'Figure1_caption.md').read_text(encoding='utf-8').strip()
 FIG2_CAPTION = (V10 / 'Figure2_caption.md').read_text(encoding='utf-8').strip()
 FIG3_CAPTION = (V10 / 'Figure3_caption.md').read_text(encoding='utf-8').strip()
 fill = {
- '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png)',
- '{{FIG2}}': '![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png)',
+ '{{FIG1}}': '![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png){width=6.2in}',
+ '{{FIG2}}': '![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png){width=6.5in}',
  '{{FIG2_CAPTION}}': FIG2_CAPTION,
- '{{FIG3}}': '![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png)',
+ '{{FIG3}}': '![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png){width=6.5in}',
  '{{FIG3_CAPTION}}': FIG3_CAPTION,
  '{{FIG1_CAPTION}}': FIG1_CAPTION,
   '{{TABLE1}}': T1, '{{TABLE2}}': T2, '{{TABLE3}}': T3, '{{TABLE4}}': T4,
