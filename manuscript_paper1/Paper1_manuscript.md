@@ -8,6 +8,10 @@ author:
 
 \*Corresponding author: Farrah Aftab, MSc — f.aftab@uel.ac.uk
 
+**Running title:** Survival prediction in colorectal liver metastases
+
+**Synopsis:** A stratified Cox model using routinely recorded TNM and clinical variables separated three prognostic groups that remained distinct in temporal validation. Discrimination was modest, and survival was under-predicted for recent patients.
+
 > **Draft for supervisor review.** Items marked **[TO CONFIRM]**, **[TO VERIFY]** or **[CITATION NEEDED]** are unresolved and are listed separately in the supervisor-confirmation note.
 
 # Abstract
@@ -90,7 +94,7 @@ Analyses used pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.
 
 Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and shorter follow-up (Table 1).
 
-![STROBE patient flow: selection, development and temporal validation](figures/Figure1_STROBE.png){width=6.2in}
+![](figures/Figure1_STROBE.png){width=6.2in}
 
 **Figure 1.** STROBE patient flow for the development and temporal validation of the prognostic model. Of 29,565 registry records, 28,979 were recorded as eligible and 17,262 patients met all criteria with complete TNM staging; 8,832 (33.8% of the 26,094 patients meeting criteria) were excluded for incomplete staging. Patients operated in 2009 or earlier formed the development cohort (n = 8,463; 4,675 events within 15 years) and those operated in 2010 or later the temporal validation cohort (n = 8,799; 1,916 events). The stratified Cox model (M2a; 11 terms; 8 strata) was fitted in development only and applied unchanged to validation. Prognostic groups were defined by training-era tertiles of predicted 5-year survival (cut-points 0.3793 and 0.4756). Median follow-up was 5.89 years in development and 1.47 years in validation.
 
@@ -171,7 +175,7 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 **Table 3.** Prognostic groups (M2a) with training-only cut-points and validation outcomes. Source: `F06_phenotypes_counts_survival_calibration.csv`.
 
-![Overall survival by prognostic group, development and validation cohorts](figures/Figure2_OS_by_group_development_validation.png){width=6.5in}
+![](figures/Figure2_OS_by_group_development_validation.png){width=6.5in}
 
 **Figure 2.** Overall survival by prognostic group in the development cohort (A, n = 8,463) and the temporal validation cohort (B, n = 8,799). Kaplan–Meier curves with 95% confidence bands; numbers at risk below each panel. Cut-points 0.3793 and 0.4756 were set in development. Log-rank p = 1.4 × 10⁻⁷⁷ (A) and 2.0 × 10⁻⁵² (B). Follow-up is short in validation (median 1.47 years, reverse Kaplan–Meier; development 5.89 years), so validation curves beyond about 5 years rest on few patients.
 
@@ -179,7 +183,7 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 Predicted 5-year survival was 40.8% against 46.6% observed (observed/expected 1.14, bootstrap interval 1.09–1.20; calibration slope 1.07). Under-prediction was small at 1 year (O/E 1.01) and grew at 3 years (1.09, interval 1.06–1.12) and 5 years (Table 4). Under-prediction was present in nine of ten validation deciles, most markedly in the most favourable decile (75.8% observed against 58.0% predicted; Figure 3A). By operation period, O/E was 0.96 for 1990–2004, 1.03 for 2005–2009 (training), 1.09 for 2010–2012 and 1.23 for 2013–2015 (Figure 3B). The 2013–2015 estimate rests on 109 patients with 5 years of follow-up; calibration cannot be assessed for patients operated in 2016 or later.
 
-![Calibration by validation decile and observed/expected by operation period](figures/Figure3_calibration_and_OE.png){width=6.5in}
+![](figures/Figure3_calibration_and_OE.png){width=6.5in}
 
 **Figure 3.** Calibration of the M2a model. (A) Validation cohort only (operated 2010 or later): mean predicted against observed 5-year survival by decile; open markers mark deciles with fewer than 50 patients followed up to 5 years. (B) Observed/predicted 5-year survival by operation period, comparing development (1990–2009) and validation (2010 onward) periods; values above 1.0 indicate under-prediction. All 4 plotted periods have at least 50 patients with 5-year follow-up; no grey bars. The 2016 onward period is omitted (no patient had 5-year follow-up).
 
@@ -256,18 +260,18 @@ In an international registry, a stratified Cox model using routinely recorded TN
 
 # References
 
-1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score for predicting recurrence after hepatic resection for metastatic colorectal cancer: analysis of 1001 consecutive cases. *Ann Surg*. 1999;230(3):309–318. [Confirmed by search: authors, title, year, volume and first page; page range given by PubMed as 309–318]
-2. Margonis GA, et al. Genetic And Morphological Evaluation (GAME) score for patients with colorectal liver metastases. *Br J Surg*. 2018;105(9):1210–1220. doi:10.1002/bjs.10838. [Journal, volume, pages and DOI confirmed by search; full author list to be checked against the article. Survival figures in the Introduction still to be checked.]
-3. Prognostic Scores for Liver Resection in Colorectal Metastases: Performance, Limitations, and Methodological Pitfalls—A Systematic Review and Meta-Analysis. *Cancers*. 2026;18(4):625. [Title, journal, volume and article number confirmed by search; author list and the 48-score count rest on a mirror abstract and are to be checked]
-4. Bolhuis et al. External validation of two established clinical risk scores predicting outcome after local treatment of colorectal liver metastases in a nationwide cohort. *Cancers*. 2022;14(10):2356. [Title, journal and article number confirmed by search; first author and C-indices (Fong 0.577, GAME 0.596) from the abstract; full author list to check]
-5. Collins GS, Moons KGM, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378. [Journal, volume and article number confirmed by search; author list to be checked against the article]
-6. Moons KGM, Damen JAA, Kaul T, et al. PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods. *BMJ*. 2025;388:e082505. [Journal, volume, article number and first author confirmed by search]
-7. von Elm E, Altman DG, Egger M, et al. The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement. *Lancet*. 2007;370(9596):1453–1457. [Standard citation; not re-verified in this revision]
-8. Edge SB, Byrd DR, Compton CC, et al., eds. *AJCC Cancer Staging Manual*. 7th ed. Springer; 2010. [Not re-verified; confirm which edition the registry's TNM codes follow]
-9. Amin MB, Edge SB, Greene FL, et al., eds. *AJCC Cancer Staging Manual*. 8th ed. Springer; 2017. [Not re-verified; confirm edition]
-10. Schoenfeld D. Partial residuals for the proportional hazards regression model. *Biometrika*. 1982;69(1):239–241. [Standard citation; not re-verified in this revision]
-11. Breslow NE. Covariance analysis of censored survival data. *Biometrics*. 1974;30(1):89–99. [Standard citation for the Breslow baseline-hazard estimator; not re-verified in this revision. Confirm the intended citation.]
-12. Harrell FE Jr, Califf RM, Pryor DB, Lee KL, Rosati RA. Evaluating the yield of medical tests. *JAMA*. 1982;247(18):2543–2546. [Confirmed by search. Harrell's estimator can be optimistic under heavy censoring; the manuscript therefore reports horizon-specific AUC and calibration alongside it.]
-13. Graf E, Schmoor C, Sauerbrei W, Schumacher M. Assessment and comparison of prognostic classification schemes for survival data. *Stat Med*. 1999;18(17–18):2529–2545. [Not verified by search in this revision; confirm volume and pages]
-14. Nordlinger B, et al. [Original 1996 citation for the Nordlinger-type score NOT confirmed. Searches located only validation studies. Do not submit until the original is identified and its score definition checked against the approximation used here.]
+1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score for predicting recurrence after hepatic resection for metastatic colorectal cancer: analysis of 1001 consecutive cases. *Ann Surg*. 1999;230(3):309–318. [Authors, title, year, volume and first page verified by search; page range per PubMed. Confirm against the article.]
+2. Margonis GA, Sasaki K, Gholami S, et al. Genetic And Morphological Evaluation (GAME) score for patients with colorectal liver metastases. *Br J Surg*. 2018;105(9):1210–1220. doi:10.1002/bjs.10838. [Journal, volume, pages, DOI and first three authors verified by search. **Survival figures in the Introduction NOT verified** (search gave only a secondary summary); TO VERIFY from the full text.]
+3. Prognostic scores for liver resection in colorectal metastases: performance, limitations, and methodological pitfalls—a systematic review and meta-analysis. *Cancers*. 2026;18(4):625. [Title, journal, volume and article number verified by search from a mirror abstract. **Author list NOT verified.** The 48-score count is from that abstract; TO VERIFY from the article.]
+4. Bolhuis K, Wensink GE, Elferink MAG, et al. External validation of two established clinical risk scores predicting outcome after local treatment of colorectal liver metastases in a nationwide cohort. *Cancers*. 2022;14(10):2356. doi:10.3390/cancers14102356. [Authors, journal, volume, article number and DOI verified by search. C-indices (Fong 0.577; GAME 0.596) from the abstract; full text not checked.]
+5. Collins GS, Moons KGM, Dhiman P, Riley RD, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378. [First four authors, journal, volume and article number verified by search; remaining authors not listed here. **Item-level checklist NOT verified** (see the checklist sheet).]
+6. Moons KGM, Damen JAA, Kaul T, et al. PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods. *BMJ*. 2025;388:e082505. [First three authors, journal, volume and article number verified by search.]
+7. von Elm E, Altman DG, Egger M, Pocock SJ, Gøtzsche PC, Vandenbroucke JP; STROBE Initiative. The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement: guidelines for reporting observational studies. *Lancet*. 2007;370(9596):1453–1457. doi:10.1016/S0140-6736(07)61602-X. [Authors, journal, volume, pages and DOI verified by search.]
+8. Edge SB, Byrd DR, Compton CC, et al., eds. *AJCC Cancer Staging Manual*. 7th ed. New York: Springer; 2010. [**NOT verified** (7th edition not found by search). Confirm the edition and details, and which edition the registry's TNM codes follow.]
+9. Amin MB, Edge SB, Greene FL, et al., eds. *AJCC Cancer Staging Manual*. 8th ed. Cham: Springer; 2017. [Editors, publisher and year verified by search (ISBN 978-3-319-40617-6); full editor list to be checked.]
+10. Schoenfeld D. Partial residuals for the proportional hazards regression model. *Biometrika*. 1982;69(1):239–241. doi:10.1093/biomet/69.1.239. [Verified by search.]
+11. Breslow NE. Covariance analysis of censored survival data. *Biometrics*. 1974;30(1):89–99. doi:10.2307/2529620. [Paper verified by search; one source gives pages 89–100. **Confirm that this is the intended citation** for the piecewise Breslow baseline-hazard estimator; the 1972 discussion paper may be the one intended.]
+12. Harrell FE Jr, Califf RM, Pryor DB, Lee KL, Rosati RA. Evaluating the yield of medical tests. *JAMA*. 1982;247(18):2543–2546. [Verified by search. Confirm whether Harrell's later (1996) C-index reference is also wanted.]
+13. Graf E, Schmoor C, Sauerbrei W, Schumacher M. Assessment and comparison of prognostic classification schemes for survival data. *Stat Med*. 1999;18(17–18):2529–2545. [Title, journal, volume and pages verified by search (source of the time-dependent Brier score).]
+14. Nordlinger B, Guiguet M, Vaillant JC, et al. Surgical resection of colorectal carcinoma metastases to the liver: a prognostic scoring system to improve case selection, based on 1568 patients. *Cancer*. 1996;77(7):1254–1262. [Authors, title, journal, volume and pages verified by search. A search summary lists six factors (age, size or CEA, primary tumour stage, disease-free interval, number of nodules, resection margin); **the registry approximation uses four different items and is not the published score**. Confirm the item definitions from the article.]
 

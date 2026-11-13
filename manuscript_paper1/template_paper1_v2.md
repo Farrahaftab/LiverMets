@@ -8,6 +8,10 @@ author:
 
 \*Corresponding author: Farrah Aftab, MSc — f.aftab@uel.ac.uk
 
+**Running title:** Survival prediction in colorectal liver metastases
+
+**Synopsis:** A stratified Cox model using routinely recorded TNM and clinical variables separated three prognostic groups that remained distinct in temporal validation. Discrimination was modest, and survival was under-predicted for recent patients.
+
 > **Draft for supervisor review.** Items marked **[TO CONFIRM]**, **[TO VERIFY]** or **[CITATION NEEDED]** are unresolved and are listed separately in the supervisor-confirmation note.
 
 # Abstract

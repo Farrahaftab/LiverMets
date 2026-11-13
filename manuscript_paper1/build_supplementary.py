@@ -144,9 +144,9 @@ S.append("## Table S10. Benchmark comparison on identical validation patients\n\
 S1_CAP = (V10 / 'FigureS1_caption.md').read_text(encoding='utf-8').strip()
 S2_CAP = (V10 / 'FigureS2_caption.md').read_text(encoding='utf-8').strip()
 S3_CAP = (V10 / 'FigureS3_caption.md').read_text(encoding='utf-8').strip()
-S.append("## Supplementary figures\n\n" + S1_CAP + "\n\n![](figures/FigureS1_RFS_by_group_validation.png){width=6.2in}\n\n" +
-         S2_CAP + "\n\n![](figures/FigureS2_M2a_forest_plot.png){width=6.5in}\n\n" +
-         S3_CAP + "\n\n![](figures/FigureS3_discrimination_comparison.png){width=6.5in}")
+S.append("## Supplementary figures\n\n![](figures/FigureS1_RFS_by_group_validation.png){width=6.2in}\n\n" + S1_CAP +
+         "\n\n![](figures/FigureS2_M2a_forest_plot.png){width=6.5in}\n\n" + S2_CAP +
+         "\n\n![](figures/FigureS3_discrimination_comparison.png){width=6.5in}\n\n" + S3_CAP)
 
 S.append("## Coefficient outputs\n\nBaseline survival by stratum and the group summary are the Paper 1 coefficient outputs.\n\n" +
          select(P1/'P1_baseline_survival_by_stratum.csv', list(rows(P1/'P1_baseline_survival_by_stratum.csv')[0]),
