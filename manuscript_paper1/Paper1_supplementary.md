@@ -1,6 +1,6 @@
 # Supplementary Material — Paper 1
 
-All tables are generated from the locked v8 outputs (`results/final_v7`) and the Paper 1 coefficient outputs (`results/final_v9/paper1`). No model was re-estimated.
+All tables are generated from the locked v8 analysis outputs and the Paper 1 coefficient outputs. No model was re-estimated.
 
 ## Table S1. Included versus excluded patients
 
@@ -79,6 +79,17 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 | excluded (TNM incomplete) | development | 5664 | 0.406 | 0.391 | 0.963 |
 | excluded (TNM incomplete) | validation | 3168 | 0.399 | 0.505 | 1.266 |
 
+**S2f. Agreement between pre-operative and resected metastasis counts** (`F34`). Percentages are of the patients with both counts recorded. Categories are mutually exclusive and sum to the total.
+
+| Comparison | n | % of patients with both counts |
+|----------------------------------------------|------|--------|
+| Analytic cohort with both pre-operative and resected counts | 14,189 | 100.0 |
+| Resected count equals pre-operative count | 8,847 | 62.4 |
+| Resected count greater than pre-operative count | 2,244 | 15.8 |
+| Resected count less than pre-operative count | 3,098 | 21.8 |
+
+The 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts).
+
 ## Table S3. Duplicate-record screen and sensitivity analyses
 
 **S3a. Screen** (`F60`).
@@ -114,7 +125,7 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 
 ## Table S4. Candidate models and proportional-hazards tests
 
-**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Each row's bootstrap CI comes from its own 300 resamples drawn at a different point in the random stream, so the M2a upper bound here (0.637) can differ by 0.001 from the selected-model value (0.636, `F02b`, used in the text and Figure 1). See `results/final_v9/figure1/CI_discrepancy_investigation.md`.
+**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Bootstrap intervals were estimated by the percentile method from 300 resamples for each row. Each row used its own resamples, so the M2a upper bound in this table (0.637) differs by 0.001 from the selected-model value reported in the text and Figure 3 (0.636). This difference lies within the Monte Carlo variation of the percentile method with 300 resamples, and the same fitted model gives both values. The selected-model value is used throughout the manuscript; the discrepancy is recorded in the verification report.
 
 | Model | Training C | Validation C | 95% CI | 5-y AUC | 5-y Brier | Mean predicted 5-y | O/E 5 y | Calibration slope |
 |-------------------------|----|-----|-----|---|---|-----|---|-----|
@@ -150,13 +161,13 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 | M2a | T3 | 1.7976 | 0.18 |
 | M2a | T4 | 0.5688 | 0.4508 |
 
-**S4c. Time-varying M-stage (M2b)** (`F04`).
+**S4c. Time-varying M-stage (M2b)** (`F04`). p-values rounded to three decimals. 'Not applicable' marks a quantity that is not defined for that row (for example, a hazard ratio for a change in coefficient).
 
 | Term | Coefficient | HR early | p (time variation) | HR late |
-|--------------------|----------|------|-----------------|------|
-| M1 early coef | 0.1148 | 1.122 |  |  |
-| M1 change after 2 years | -0.1508 |  | 0.20668107504738975 |  |
-| M1 late HR | -0.036 |  |  | 0.965 |
+|-----------------|---------|-----------|-----------|-----------|
+| M1 early coef | 0.1148 | 1.122 | Not applicable | Not applicable |
+| M1 change after 2 years | -0.1508 | Not applicable | 0.207 | Not applicable |
+| M1 late HR | -0.036 | Not applicable | Not applicable | 0.965 |
 
 **S4d. Selection rule** (`F05`): choose the simplest candidate whose constant-term tests all have p > 0.05 in training data. Selected: M2a.
 
@@ -339,10 +350,10 @@ Source: `F16_identical_subset_comparison_calibration.csv`. Point estimates only;
 
 ## Coefficient outputs
 
-Baseline survival by stratum (`P1_baseline_survival_by_stratum.csv`) and group summary (`P1_group_summary.csv`) are in `results/final_v9/paper1/`.
+Baseline survival by stratum and the group summary are the Paper 1 coefficient outputs.
 
-| stratum_sex_synchrony_Mstage | baseline_survival_1y_at_reference_covariates | baseline_survival_3y_at_reference_covariates | baseline_survival_5y_at_reference_covariates |
-|-----------|----------------|----------------|----------------|
+| Stratum (sex, synchrony, M-stage code) | Baseline survival, 1 y | Baseline survival, 3 y | Baseline survival, 5 y |
+|----------------|---------------|---------------|---------------|
 | 0 | 0.9762 | 0.8781 | 0.809 |
 | 1 | 0.965 | 0.854 | 0.7572 |
 | 2 | 0.9747 | 0.8698 | 0.802 |
@@ -352,8 +363,8 @@ Baseline survival by stratum (`P1_baseline_survival_by_stratum.csv`) and group s
 | 6 | 0.9771 | 0.8878 | 0.8008 |
 | 7 | 0.9776 | 0.8919 | 0.8134 |
 
-| group | development_n | validation_n | predicted_5y_survival_range_validation | mean_predicted_5y_validation |
-|-------|--------|-------|---------------------|----------------|
+| Group | Development n | Validation n | Predicted 5-y survival range (validation) | Mean predicted 5-y (validation) |
+|-------------|------------|-----------|-------------|-------------|
 | Favourable | 2821 | 2662 | 0.476-0.711 | 0.532 |
 | Intermediate | 2821 | 2824 | 0.379-0.476 | 0.428 |
 | Adverse | 2821 | 3313 | 0.000-0.379 | 0.291 |
