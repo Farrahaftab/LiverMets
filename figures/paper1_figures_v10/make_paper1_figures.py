@@ -861,9 +861,9 @@ def write_captions():
         "**Figure S3.** Discrimination. (A) Harrell's C-index in the validation cohort for the three candidate M-stage structures "
         "fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score "
         "approximations on identical validation patients (Fong subset, n = {}; Nordlinger-type subset, n = {}); point estimates only. "
-        "**[TO CONFIRM — DISCREPANCY]** The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected "
-        "model (F02b). Both come from the same model with different bootstrap draws (Supplementary Table S4; "
-        "investigation record in the verification materials). The manuscript reports the F02b value; the supervisor must confirm this choice."
+        "The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected "
+        "model (F02b). Both come from the same model with different bootstrap draws; the selected-model interval is used in the "
+        "manuscript (Supplementary Table S4a)."
         ).format(fmt_n(BENCH_FONG_N), fmt_n(BENCH_NORD_N))
     for k, v in cap.items():
         (OUT / f"{k}_caption.md").write_text(v + "\n", encoding="utf-8")

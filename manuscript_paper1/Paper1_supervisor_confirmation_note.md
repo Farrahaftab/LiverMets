@@ -1,100 +1,124 @@
-# Paper 1: supervisor confirmation note
+# Paper 1: Supervisor Confirmation Note
 
-**Purpose.** This note lists facts that the manuscript cannot settle from the locked analysis, and the references and journal requirements that could not be verified in this session. Nothing here is treated as fact until it has been confirmed. Items marked **[TO CONFIRM]** appear in the manuscript.
+**Status:** draft for supervisor review. Not for journal submission. The manuscript itself contains no open-question markers. Every item below is unresolved unless marked as verified, and none has been assumed to be correct.
 
-## 1. Ethics and governance (must be resolved before submission)
+## 1. Changes made to the manuscript in this version
 
-| # | Question | Current statement in manuscript | Action needed |
+| Change | Reason |
+|---|---|
+| Removed all bracketed markers (TO CONFIRM, TO VERIFY, CITATION NEEDED) from the text and references | Clean presentation; the open items are listed here instead |
+| Removed the statement "GAME: 5-year survival 11% vs 73%" from the Introduction | Not verified from the full article |
+| Removed the incidence sentence with a missing citation | No verified source |
+| Ethics statement reworded: approval, reference number and consent basis are described as not confirmed | Must not imply approval |
+| Author contributions reworded: "as recorded in the original draft; to be confirmed by all authors"; R. Adam's contribution not recorded; approval by all authors not confirmed | Must not imply approval or assign contributions without confirmation |
+| C-index confidence interval: the manuscript states 0.608–0.636 and explains that the candidate-model table gives 0.608–0.637 because its bootstrap resamples were drawn separately (Supplementary Table S4a) | Discrepancy kept visible in the supplement and the verification record |
+| Limitations: "only 26% of validation patients evaluable at 5 years" added to item 3; closing paragraph states the findings do not establish external validity, strong discrimination, good calibration or readiness for clinical use | Scientific caution |
+| AJCC: the 7th edition reference removed; the 8th edition is cited | The 7th edition could not be verified |
+| References: unverified details removed from the list; verification status recorded in section 9 below | Do not present unverified details as verified |
+| Figure S3 caption: internal references to the supervisor and the investigation file removed; wording otherwise unchanged | Figure content and numbers unchanged |
+| Title page: discreet "Draft for Supervisor Review" label | Requested label |
+
+Figures, tables, numerical results, supplementary tables and the locked analysis are unchanged.
+
+## 2. Ethics and governance (must be resolved before any submission)
+
+| # | Question | Current position | Needed |
 |---|---|---|---|
-| E1 | Is there an ethics approval reference, or an exemption? | None recorded. The manuscript says institutional review followed UEL governance (Declarations, p. 13) | Supply the approval reference, or the exemption wording and the body that issued it |
-| E2 | On what basis was consent waived? | "Where permitted by applicable regulation" (p. 13) | Confirm the regulatory basis under UEL and the source-centre rules |
-| E3 | Do the source centres each have approval? | Not stated | Confirm centre-level approvals or data-sharing agreements |
+| E1 | Ethics approval reference, or exemption | Not confirmed; no reference recorded | Approval reference, or exemption wording and the body that issued it |
+| E2 | Basis for waiving individual consent | Not confirmed | Regulatory basis under UEL and the source-centre rules |
+| E3 | Centre-level approvals or data-sharing agreements | Not stated | Confirm, per centre |
+| E4 | Data-governance arrangements for the LiverMetSurvey registry | Described only as "governed by the LiverMetSurvey collaboration" | Written description and the access route |
 
-## 2. Authorship and declarations
+The manuscript does not state that ethics approval was obtained. It must not be described as approved until E1–E4 are confirmed.
 
-| # | Question | Current statement | Action needed |
+## 3. Authorship and declarations
+
+| # | Question | Current position | Needed |
 |---|---|---|---|
-| A1 | R. Adam's contribution | None recorded; flagged in the Author Contributions statement | R. Adam to confirm his contribution, or be removed from authorship |
-| A2 | Individual contributions of F.A., M.A.G. and M.B. | Taken from the original statement; not re-confirmed | All authors to confirm |
-| A3 | Funding and competing interests | "No specific funding"; "no competing interests" | Confirm with all authors |
+| A1 | R. Adam's contribution | Not recorded | He confirms his contribution, or is removed from authorship |
+| A2 | Individual contributions of F.A., M.A.G. and M.B. | Taken from the original draft; not re-confirmed | Each author confirms |
+| A3 | Approval of the final manuscript by all authors | Not confirmed | Each author confirms |
+| A4 | Funding and competing interests | "No specific funding"; "no competing interests" | All authors confirm |
 
-## 3. Registry definitions and counts
+## 4. Registry definitions and counts
 
-| # | Question | Current statement | Action needed |
+| # | Question | Current position | Needed |
 |---|---|---|---|
-| R1 | Number of countries and centres | Original text: 63 countries, 242 centres. Extract: 54 country codes, 288 site codes; 259 sites with eligible patients | Registry coordinators to reconcile; define "centre" and "site" |
-| R2 | Data dictionary and case-report form | Not available in the workbook, repository or uploads | Obtain from the registry |
-| R3 | Access route for others to request the data | Stated as via the collaboration (Data Availability) | Confirm the route and any conditions |
-| R4 | Registry data-quality checks | Duplicate screen only | Confirm the duplicate pairs (16 probable pairs; 6 second copies in the cohort) |
+| R1 | Number of countries and centres | Original text: 63 countries, 242 centres. Extract: 54 country codes, 288 site codes (259 sites with eligible patients) | Registry coordinators reconcile; define "centre" and "site" |
+| R2 | Data dictionary or case-report form | Not available in the workbook, repository or uploads | Obtain from the registry |
+| R3 | Data-access route for other researchers | Via the collaboration | Confirm the route and any conditions |
+| R4 | Duplicate records | 16 probable duplicate pairs; 6 second copies in the cohort | Registry confirmation (sensitivity analyses show no change to conclusions) |
 
-## 4. Predictor timing (scientific gating question)
+## 5. Predictor timing (gating question)
 
 - **Question:** were metastasis count and size recorded before or after any preoperative treatment?
-- **Current statement:** the model assumes both are known at operation. The timing is unconfirmed (Methods p. 3; Limitation 4, p. 12). Pre-operative and resected counts agreed for 62% of 14,189 patients with both recorded (Supplementary Table S2f). This shows agreement, not timing.
-- **Action needed:** registry confirmation. If the counts were recorded after preoperative treatment, the model's inputs would not be available at the time it is meant to be used, and the interpretation would change.
+- **Current position:** unconfirmed. The manuscript assumes both are known at operation and states this as a limitation (Methods; Limitation 4). Pre-operative and resected counts agreed for 62% of 14,189 patients with both recorded (Supplementary Table S2f). This shows agreement, not timing.
+- **Needed:** registry confirmation. If the counts were recorded after preoperative treatment, the model's inputs would not be available at its intended time of use, and the interpretation would change.
 
-## 5. Exclusion of 33.8% for incomplete TNM staging
+## 6. Exclusion of 33.8% for incomplete TNM staging
 
-- 8,832 of 26,094 eligible patients (33.8%) were excluded. Excluded patients differed (synchrony, metastasis size, operation year), and missingness at random cannot be verified.
-- Their outcomes departed from a no-TNM model in opposite directions in the two eras (Supplementary Table S2e). Directions of bias cannot be determined from the registry.
-- **Decision needed:** whether to present this as a principal limitation in the abstract, or only in the Results and Limitations as now.
+- 8,832 of 26,094 eligible patients (33.8%) were excluded. They differed in synchrony, metastasis size and operation year. Missing-at-random cannot be verified.
+- Their outcomes differed from a no-TNM model in opposite directions across the two eras (Supplementary Table S2e). The direction of selection bias cannot be determined from the registry.
+- **Decision:** whether to move this to the abstract as a principal limitation. It is currently in the Results, Limitations and Discussion.
 
-## 6. Follow-up and validation limitations (stated, not resolved)
+## 7. Follow-up and validation limits (stated in the manuscript)
 
-- Median follow-up is 1.47 years in validation (5.89 years in development). Only 26% of validation patients can be evaluated at 5 years.
-- No external validation. Temporal validation within one registry only.
-- Calibration in patients operated in 2016 or later cannot be assessed (no 5-year follow-up).
-- The model under-predicts 5-year survival in validation (predicted 40.8%; observed 46.6%). It has not been recalibrated; recalibration on contemporary data is needed before absolute estimates are used.
-- These limitations are stated in the Results, Discussion and Limitations. The manuscript does not claim external validation, strong discrimination, good calibration or clinical readiness.
+- Validation median follow-up 1.47 years (development 5.89). Only 26% of validation patients are evaluable at 5 years.
+- No external validation. Temporal validation within one registry.
+- Calibration for operations in 2016 or later cannot be assessed (no 5-year follow-up).
+- The model under-predicts 5-year survival in validation (predicted 40.8%, observed 46.6%) and has not been recalibrated.
 
-## 7. Data quality
+## 8. Other data-quality items
 
-- 16 probable duplicate pairs and near-duplicate groups await registry confirmation. Sensitivity analyses show no change to the conclusions.
-- 3,074 patients recorded as deceased in the full extract lack an explicit death flag. Their survival times rest on the last-news date.
-- 1,676 recurrences lack a usable date; RFS is therefore secondary.
-- Thirteen same-day deaths in the cohort: seven lack an explicit death flag (sensitivity analysis: group assignment changed for about 0.4%).
+- 3,074 patients recorded as deceased in the full extract lack an explicit death flag; survival for them rests on the last-news date.
+- 1,676 recurrences lack a usable date; RFS is secondary.
+- Thirteen same-day deaths in the cohort; seven lack an explicit death flag (group assignment changed for about 0.4% in the sensitivity analysis).
 
-## 8. Analysis decisions for the supervisor
+## 9. Reference verification status
 
-| # | Question | Status |
+| Ref | Reference | Status | Action |
+|---|---|---|---|
+| 1 | Fong et al., *Ann Surg* 1999 | Verified by search (authors, title, year, volume, first page); pages 309–318 per PubMed | Confirm against the article |
+| 2 | Margonis et al., *Br J Surg* 2018 (GAME) | Journal, volume, pages, DOI and first three authors verified. Survival figures not verified and removed from the text | Confirm the cited claim before reinstating any figure |
+| 3 | 2026 systematic review, *Cancers* 18(4):625 | Title, journal and article number verified from a mirror abstract. **No authors listed; author list not verified** | Add the authors from the article |
+| 4 | Bolhuis et al., *Cancers* 2022 | Authors, journal, volume, article number and DOI verified; C-indices from the abstract | Confirm against the article |
+| 5 | Collins et al., TRIPOD+AI, *BMJ* 2024 | First four authors and citation verified; remaining authors shown as "et al." | Complete the author list |
+| 6 | Moons et al., PROBAST+AI, *BMJ* 2025 | First three authors and citation verified | Complete the author list |
+| 7 | von Elm et al., STROBE, *Lancet* 2007 | Six authors, pages and DOI verified | None |
+| 8 | Amin et al., AJCC Cancer Staging Manual, 8th ed., 2017 | Publisher, year and ISBN verified. **The registry's TNM edition is not confirmed** | Confirm which edition the registry's TNM codes follow |
+| 9 | Schoenfeld, *Biometrika* 1982 | Verified | None |
+| 10 | Breslow, *Biometrics* 1974 | Paper verified. **Confirm this is the intended citation** for the piecewise Breslow baseline-hazard estimator (a 1972 discussion paper may be intended) | Supervisor decision |
+| 11 | Harrell et al., *JAMA* 1982 | Verified. Confirm whether a later Harrell reference is also wanted | Supervisor decision |
+| 12 | Graf et al., *Stat Med* 1999 | Verified | None |
+| 13 | Nordlinger et al., *Cancer* 1996 | Verified (authors, title, journal, volume, pages). **The published score has six items; the registry approximation uses four different items and is not the published score**; item definitions to be checked | Check the item definitions against the article |
+
+**Removed earlier:** the 7th-edition AJCC reference (not verified).
+
+## 10. Analysis and presentation decisions for the supervisor
+
+| # | Question | Position |
 |---|---|---|
-| D1 | Headline horizon: 5 years (current) or 3 years | Pre-specification decision; not changed after validation results were seen |
-| D2 | Add clinician-defined decision thresholds | Not added. Requires a named clinical decision |
-| D3 | M2a validation CI upper bound: 0.637 (candidate table, F02) or 0.636 (selected-model output, F02b) | Discrepancy documented; the manuscript uses 0.636 (selected-model output); the supervisor must confirm this choice. Documented in Supplementary Table S4a and Figure S3 caption |
-| D4 | Was a protocol or statistical analysis plan dated before validation results were seen? | Not stated. **[TO CONFIRM]** |
+| D1 | M2a validation CI upper bound: 0.637 (candidate table, F02) or 0.636 (selected-model output, F02b) | The manuscript uses 0.636. The difference arises from separate bootstrap resamples (verified by rerunning the locked notebook). The candidate-table value is shown in Supplementary Table S4a. **Supervisor to confirm the choice** |
+| D2 | Headline horizon: 5 years (current) or 3 years | Pre-specification decision. Not changed after validation results were seen |
+| D3 | Add clinician-defined decision thresholds | Not added; requires a named clinical decision |
+| D4 | Was a protocol or statistical analysis plan dated before validation results were seen? | Not stated. **To confirm** |
+| D5 | Is the M2b time-variation p-value (0.207) presented correctly? | Rounded to three decimals in Table S4c; the text says 0.21 (two decimals) |
 
-## 9. Journal requirements (Annals of Surgical Oncology)
+## 11. Reporting checklists
 
-| Requirement | Verification status |
+- **TRIPOD+AI (primary):** the structure of the checklist (items 1–27 by domain) was confirmed by search. Individual sub-item numbers and wording were **not** verified because the checklist text could not be accessed. The checklist file gives domain ranges and manuscript page locations only. Item 19 (patient and public involvement) is not reported in the source documents and must be stated by the authors.
+- **STROBE:** all 22 items are mapped to manuscript locations; items 2, 5 and 8 are partly complete pending E1–E4 and R1–R2.
+- **PROBAST+AI:** the risk-of-bias judgements have not been completed. This must be done by the authors.
+
+## 12. Journal requirements (Annals of Surgical Oncology)
+
+| Requirement | Status |
 |---|---|
-| Original article text limit: 3,500 words, excluding title page, abstract and references | Taken from a search summary of the Society of Surgical Oncology instructions. **Not verified against the live page** (surgonc.org could not be reached from this session) |
-| Figures and tables combined: maximum 7 | Same source; **not verified** |
-| Abstract limit | Not verified. One source mentions 250 words for an article type, unclear which. Current abstract: 220 words |
-| Reference limit and reference style (AMA stated by one source) | **Not verified** |
-| Word count method used here | Introduction to Conclusions, including figure and table captions, excluding tables, declarations and references: 3,472 words. Conservative: the count includes captions |
-| Current display items | Three figures (Figure 1: STROBE flow; Figure 2: overall survival by group, two panels; Figure 3: calibration and observed/expected, two panels) and four tables (Tables 1–4). Total seven display items |
+| Original article text limit: 3,500 words, excluding title page, abstract and references | Taken from a search summary of the Society of Surgical Oncology instructions. **Not verified against the live page** (surgonc.org could not be reached) |
+| Figures and tables combined: maximum 7 | Same source; **not verified**. Manuscript has 3 figures and 4 tables |
+| Abstract limit | Not verified. Current abstract: 220 words |
+| Reference limit and reference style | **Not verified** |
+| Word count used here | 3,472 words, from the Introduction to the Conclusions, including figure and table captions and excluding tables, declarations and references. Conservative, because captions are included |
+| Synopsis | 31 words (limit 40, as requested) |
 
-**Action:** check the live instructions page and the reference style before submission.
-
-## 10. Reference verification
-
-| Ref | Reference | Status |
-|---|---|---|
-| 1 | Fong et al., *Ann Surg* 1999 | Verified by search (authors, title, year, volume, first page). Page range 309–318 per PubMed |
-| 2 | Margonis et al., *Br J Surg* 2018;105:1210–1220 | Journal, volume, pages, DOI and first authors verified. **GAME survival figures (11% vs 73%) NOT verified** |
-| 3 | 2026 systematic review, *Cancers* 18(4):625 | Title and article number verified from a mirror abstract. **Author list not verified** |
-| 4 | Bolhuis et al., *Cancers* 2022;14(10):2356 | Authors, journal, volume, article number and DOI verified. C-indices from the abstract |
-| 5 | Collins et al., TRIPOD+AI, *BMJ* 2024;385:e078378 | First four authors and citation verified. **Item-level checklist not verified** |
-| 6 | Moons et al., PROBAST+AI, *BMJ* 2025;388:e082505 | First three authors and citation verified |
-| 7 | von Elm et al., STROBE, *Lancet* 2007;370:1453–1457 | Authors (six plus group), pages and DOI verified |
-| 8 | AJCC Cancer Staging Manual, 7th edition (Edge 2010) | **NOT verified.** Not found by search. Confirm the edition, and which edition the registry's TNM codes follow |
-| 9 | AJCC Cancer Staging Manual, 8th edition (Amin 2017) | Publisher, year and ISBN verified; editor list to check |
-| 10 | Schoenfeld, *Biometrika* 1982;69:239–241 | Verified |
-| 11 | Breslow, *Biometrics* 1974;30:89–99 | Verified as a paper. **Confirm it is the intended citation** for the piecewise Breslow baseline-hazard estimator; the 1972 discussion may be intended |
-| 12 | Harrell et al., *JAMA* 1982;247:2543–2546 | Verified. Confirm whether a later Harrell reference is also wanted |
-| 13 | Graf et al., *Stat Med* 1999;18:2529–2545 | Verified |
-| 14 | Nordlinger et al., *Cancer* 1996;77:1254–1262 | Verified (authors, title, journal, volume, pages). **The published score has six items; the registry approximation uses four different items and is not the published score.** Item definitions to be checked against the article |
-
-## 11. Scientific limitations retained
-
-The Limitations section (pp. 12–13) states: modest discrimination (C-index 0.622); under-prediction of 5-year survival; temporal validation within one registry with short follow-up and no external validation; uncertain predictor timing; one-third exclusion for incomplete staging; missing death flags and undated recurrences; duplicates awaiting confirmation; approximate benchmarks; missing covariates; registry description to reconcile; and over-representation of recent and synchronous operations.
+**Action:** check the live instructions and the reference style before submission.
