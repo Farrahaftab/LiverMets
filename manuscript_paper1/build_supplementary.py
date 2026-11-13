@@ -24,6 +24,10 @@ def md(header, body):
     out += ['| ' + ' | '.join(str(c) for c in r) + ' |' for r in body]
     return '\n'.join(out)
 
+def as_int_s(x):
+    return int(str(x).replace(",", "").strip())
+
+
 def select(p, cols, names=None):
     r = rows(p); h = r[0]; idx = [h.index(c) for c in cols]
     return md(names or cols, [[row[i] for i in idx] for row in r[1:]])
@@ -33,7 +37,7 @@ def transpose_table(title_cols, data):
     return md(title_cols, [[m] + v for m, v in data])
 
 S = []
-S.append("# Supplementary Material — Paper 1\n\nAll tables are generated from the locked v8 outputs (`results/final_v7`) and the Paper 1 coefficient outputs (`results/final_v9/paper1`). No model was re-estimated.")
+S.append("# Supplementary Material — Paper 1\n\nAll tables are generated from the locked v8 analysis outputs and the Paper 1 coefficient outputs. No model was re-estimated.")
 
 S.append("## Table S1. Included versus excluded patients\n\nSources: `F32` (characteristics) and `F65` (standardised mean differences).\n\n" +
          select(F7/'F32_supp_S1_included_vs_excluded.csv', ['characteristic','Analytic cohort (TNM complete, n=17,262)','Excluded, incomplete TNM (n=8,832)'],
@@ -48,6 +52,22 @@ S.append("## Table S2. Missing TNM components and exclusion patterns\n\n**S2a. M
          "\n\n**S2c. Exclusion clustering by site and country** (`F64`; a site is a registry site code).\n\n" + select(F7/'F64_incomplete_TNM_clustering_centre_country.csv', ['level','units','units_no_exclusions','units_only_exclusions','units_50pct_or_more_excluded','median_patients_per_unit','pct_of_exclusions_in_10_largest_units'], ['Level','Units','No exclusions','Only exclusions','≥50% excluded','Median patients per unit','% of exclusions in 10 largest']) +
          "\n\n**S2d. Outcomes of included and excluded patients by era** (`F66`).\n\n" + select(F7/'F66_incomplete_TNM_outcomes_by_era.csv', ['group','included_n','excluded_n','included_KM_5y','excluded_KM_5y','included_KM_median_y','excluded_KM_median_y'], ['Era','Included n','Excluded n','Included 5-y KM','Excluded 5-y KM','Included median OS (y)','Excluded median OS (y)']) +
          "\n\n**S2e. Observed/expected survival relative to a no-TNM model** (`F67`). Interpret with caution: this is a selection check, not a validation.\n\n" + select(F7/'F67_informative_selection_check_no_TNM_model.csv', ['group','period','n','predicted_5y_no_TNM','observed_5y_KM','O_over_E'], ['Group','Period','n','Predicted 5-y (no TNM)','Observed 5-y KM','O/E']))
+
+_f34 = rows(F7 / 'F34_operative_vs_preoperative_metastasis_count.csv')
+_f34d = {r[0]: as_int_s(r[1]) for r in _f34[1:]}
+_both = _f34d['Analytic cohort with both pre-operative and resected metastasis counts']
+_eq = _f34d['Resected count equals pre-operative count']
+_gt = _f34d['Resected count greater than pre-operative count']
+_lt = _f34d['Resected count less than pre-operative count']
+assert _eq + _gt + _lt == _both, 'F34 categories do not sum to the total'
+S[-1] = S[-1] + ("\n\n**S2f. Agreement between pre-operative and resected metastasis counts** (`F34`). "
+    "Percentages are of the patients with both counts recorded. Categories are mutually exclusive and sum to the total.\n\n" +
+    md(['Comparison', 'n', '% of patients with both counts'],
+       [['Analytic cohort with both pre-operative and resected counts', f"{_both:,}", '100.0'],
+        ['Resected count equals pre-operative count', f"{_eq:,}", f"{100*_eq/_both:.1f}"],
+        ['Resected count greater than pre-operative count', f"{_gt:,}", f"{100*_gt/_both:.1f}"],
+        ['Resected count less than pre-operative count', f"{_lt:,}", f"{100*_lt/_both:.1f}"]]) +
+    "\n\nThe 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts).")
 
 S.append("## Table S3. Duplicate-record screen and sensitivity analyses\n\n**S3a. Screen** (`F60`).\n\n" + select(F7/'F60_duplicate_records_screen.csv', ['item','n'], ['Item','n']) +
          "\n\n**S3b. Effect on validation results** (`F61`). Columns are the primary analysis and two sensitivity analyses. C-index and survival are for the validation cohort.\n\n")
@@ -70,12 +90,29 @@ metrics = [
 ]
 S[-1] = S[-1] + transpose_table(['Metric', 'Primary (locked)', 'Identical-pair second copies removed (6 in cohort)', 'Broad rule: later copies removed (37)'], metrics)
 
-S.append("## Table S4. Candidate models and proportional-hazards tests\n\n**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Each row's bootstrap CI comes from its own 300 resamples drawn at a different point in the random stream, so the M2a upper bound here (0.637) can differ by 0.001 from the selected-model value (0.636, `F02b`, used in the text and Figure 1). See `results/final_v9/figure1/CI_discrepancy_investigation.md`.\n\n" +
+def _s4c_table():
+    r = rows(F7 / 'F04_M2b_time_varying_M_stage.csv')
+    h = r[0]
+    body = []
+    for row in r[1:]:
+        d = dict(zip(h, row))
+        hr_early = d['HR_early'] if d['HR_early'] else 'Not applicable'
+        hr_late = d['HR_late'] if d['HR_late'] else 'Not applicable'
+        if d['p_time_variation']:
+            p = f"{float(d['p_time_variation']):.3f}"
+        else:
+            p = 'Not applicable'
+        body.append([d['term'], d['coef'], hr_early, p, hr_late])
+    return md(['Term', 'Coefficient', 'HR early', 'p (time variation)', 'HR late'], body)
+
+
+S.append("## Table S4. Candidate models and proportional-hazards tests\n\n**S4a. Candidate models on identical patients** (`F02`). Validation n = 8,799; 5-y observed survival 46.6%. Bootstrap intervals were estimated by the percentile method from 300 resamples for each row. Each row used its own resamples, so the M2a upper bound in this table (0.637) differs by 0.001 from the selected-model value reported in the text and Figure 3 (0.636). This difference lies within the Monte Carlo variation of the percentile method with 300 resamples, and the same fitted model gives both values. The selected-model value is used throughout the manuscript; the discrepancy is recorded in the verification report.\n\n" +
          select(F7/'F02_M_stage_candidates_identical_patients.csv', ['model','train_C','valid_C','valid_C_95CI','tAUC_5y','Brier_5y','valid_mean_predicted_S5','valid_OE_5y','valid_calib_slope_5y'],
                 ['Model','Training C','Validation C','95% CI','5-y AUC','5-y Brier','Mean predicted 5-y','O/E 5 y','Calibration slope']) +
          "\n\n**S4b. Schoenfeld tests, training cohort, constant terms** (`F03`); M-stage is the term of interest.\n\n" +
          select(F7/'F03_PH_tests_training_constant_terms.csv', ['model','term','test_statistic','p'], ['Model','Term','Test statistic','p']) +
-         "\n\n**S4c. Time-varying M-stage (M2b)** (`F04`).\n\n" + select(F7/'F04_M2b_time_varying_M_stage.csv', ['term','coef','HR_early','p_time_variation','HR_late'], ['Term','Coefficient','HR early','p (time variation)','HR late']) +
+         "\n\n**S4c. Time-varying M-stage (M2b)** (`F04`). p-values rounded to three decimals. 'Not applicable' marks a quantity that is not defined for that row (for example, a hazard ratio for a change in coefficient).\n\n" +
+         _s4c_table() +
          "\n\n**S4d. Selection rule** (`F05`): choose the simplest candidate whose constant-term tests all have p > 0.05 in training data. Selected: M2a.")
 
 S.append("## Table S5. Sensitivity analyses\n\n**S5a. Date conventions and same-day deaths** (`F10`, validation cohort; primary = 15th of month, half-day rule).\n\n" +
@@ -111,9 +148,11 @@ S.append("## Supplementary figures\n\n" + S1_CAP + "\n\n![](figures/FigureS1_RFS
          S2_CAP + "\n\n![](figures/FigureS2_M2a_forest_plot.png){width=6.5in}\n\n" +
          S3_CAP + "\n\n![](figures/FigureS3_discrimination_comparison.png){width=6.5in}")
 
-S.append("## Coefficient outputs\n\nBaseline survival by stratum (`P1_baseline_survival_by_stratum.csv`) and group summary (`P1_group_summary.csv`) are in `results/final_v9/paper1/`.\n\n" +
-         select(P1/'P1_baseline_survival_by_stratum.csv', list(rows(P1/'P1_baseline_survival_by_stratum.csv')[0]), None) +
-         "\n\n" + select(P1/'P1_group_summary.csv', list(rows(P1/'P1_group_summary.csv')[0]), None))
+S.append("## Coefficient outputs\n\nBaseline survival by stratum and the group summary are the Paper 1 coefficient outputs.\n\n" +
+         select(P1/'P1_baseline_survival_by_stratum.csv', list(rows(P1/'P1_baseline_survival_by_stratum.csv')[0]),
+                ['Stratum (sex, synchrony, M-stage code)', 'Baseline survival, 1 y', 'Baseline survival, 3 y', 'Baseline survival, 5 y']) +
+         "\n\n" + select(P1/'P1_group_summary.csv', list(rows(P1/'P1_group_summary.csv')[0]),
+                ['Group', 'Development n', 'Validation n', 'Predicted 5-y survival range (validation)', 'Mean predicted 5-y (validation)']))
 
 out = '\n\n'.join(S) + '\n'
 (HERE/'Paper1_supplementary.md').write_text(out, encoding='utf-8')
