@@ -1,0 +1,13 @@
+item,n,pct
+Pre-operative liver chemotherapy: yes,7485,43.4
+Pre-operative liver chemotherapy: no,8886,51.5
+Pre-operative liver chemotherapy: ND or NA,759,4.4
+Pre-operative liver chemotherapy: blank,132,0.8
+"Pre-operative yes, start date recorded",4320,57.7 (of yes)
+"Pre-operative yes, start date missing",3165,42.3 (of yes)
+"Timing pattern: no recorded chemotherapy, with ND",1533,8.9
+Timing pattern: no recorded liver-metastasis chemotherapy,3417,19.8
+Timing pattern: post-operative only,4096,23.7
+Timing pattern: pre-operative and post-operative (liver metastases),3659,21.2
+Timing pattern: pre-operative only,3826,22.2
+Timing pattern: unknown (ND or blank in at least one field),731,4.2

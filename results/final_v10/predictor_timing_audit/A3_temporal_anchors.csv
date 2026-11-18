@@ -1,0 +1,9 @@
+relationship,fields,can_be_established,evidence,source
+Operation date (time zero),LE1OPERDT_F1,Establishable,Used as time zero in the notebook (T0),94.8% usable (inventory)
+Primary diagnosis to liver metastasis interval,"DGKCOLDT, LE1DGMETADT",Establishable where both dates exist,Interval missing for metachronous patients without a primary diagnosis date (n = 3618),DGKCOLDT 50.7%; LE1DGMETADT 68.3% (F41)
+Liver metastasis diagnosed after operation,LE1DGMETADT vs LE1OPERDT_F1,Establishable,Set to missing in the interval (not used as a predictor value); 12 analytic-cohort patients,F33
+Pre-operative chemotherapy start vs operation,LE1PREOPMSTDT_F1 vs LE1OPERDT_F1,Establishable for dated starts,4259 of 4320 dated pre-operative starts (98.6%) before operation,H04
+Post-operative liver chemotherapy start vs operation,LE1POSTOPMSTDT_F1 vs LE1OPERDT_F1,Establishable for dated starts,4337 of 4425 dated post-operative starts (98.0%) after operation,H04
+Metastasis count or size vs any chemotherapy date,"LE1NBMETAHEPNUM, LE1HEPMETASIZENUM",NOT establishable,No date or timing field for count or size exists in the inventory,A2
+Metastasis count or size vs operation,"LE1NBMETAHEPNUM, LE1HEPMETASIZENUM",NOT establishable,"No timestamp; the form date is the operation, not the measurement",A2
+TNM stage (STADET/STADEN/STADEM) pathological or clinical,"STADET, STADEN, STADEM",NOT establishable,No field name or code states the source (clinical or pathological),A2; notebook line 216

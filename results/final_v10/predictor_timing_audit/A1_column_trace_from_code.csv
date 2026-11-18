@@ -1,0 +1,11 @@
+item,file,line,code_as_written
+METS (count used in model),notebooks/LiverMets_final_reproducible.py,221,METS = num(X.LE1NBMETAHEPNUM).where(lambda x: (x >= 1) & (x <= 50))
+SIZE (size used in model),notebooks/LiverMets_final_reproducible.py,222,SIZE = num(X.LE1HEPMETASIZENUM).where(lambda x: (x > 0) & (x <= 300))
+"CEA (pre-operative CEA, not in M2a)",notebooks/LiverMets_final_reproducible.py,223,CEA = num(X.LE1PREHEPCEA_F1).where(lambda x: (x >= 0) & (x <= 40000))
+DIRECT field list,notebooks/LiverMets_final_reproducible.py,92,"DIRECT = ['CINCLUSION', 'LE1HEPATECTYN_F1', 'PATSTATC', 'STADET', 'STADEN', 'STADEM', 'GENDER', 'LE1METASYNCYN',"
+DATES field list,notebooks/LiverMets_final_reproducible.py,94,"DATES = (['LE1OPERDT_F1', 'LASTNDTC', 'BIRTHDT', 'DGKCOLDT', 'LE1DGMETADT']"
+Interval DFI definition,notebooks/LiverMets_final_reproducible.py,260,d['DFI'] = (DG[s7] - DGK[s7]).dt.days / 30.4375
+Interval set to missing when metastasis after operation,notebooks/LiverMets_final_reproducible.py,262,"d.loc[(d.DFI < 0) | (DG[s7] > d['T0']), 'DFI'] = np.nan   # interval only if known at time zero"
+Time zero (operation date),notebooks/LiverMets_final_reproducible.py,249,d['T0'] = op[s7]
+M2a covariate list,notebooks/LiverMets_final_reproducible.py,326,CORE_M2A = [c for c in CORE_M1 if c != 'M1']
+Pre-operative-only sensitivity covariates,notebooks/LiverMets_final_reproducible.py,328,"PREOP_M2A = ['T3', 'T4', 'N1', 'N2', 'AGE10_F', 'DFI12_F', 'DFI_NR']"

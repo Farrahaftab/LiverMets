@@ -1,0 +1,12 @@
+item,value,source
+Metastasis count known (analytic cohort),"16,011 (92.8)",F32 row 'Number of liver metastases known'
+Metastasis count unknown (analytic cohort),"1,251 (7.2)","F31 row 'Number of liver metastases', Unknown"
+Largest metastasis size missing (analytic cohort),"3,306 (19.2)",F31 row 'Size missing'
+"LE1NBMETAHEPNUM (all 29,565 rows): valid",25295,F41 valid_value
+"LE1NBMETAHEPNUM (all 29,565 rows): ND",2256,F41 ND
+"LE1NBMETAHEPNUM (all 29,565 rows): NA",0,F41 NA
+"LE1NBMETAHEPNUM (all 29,565 rows): blank",2014,F41 blank
+"LE1HEPMETASIZENUM (all 29,565 rows): valid",22160,F41 valid_value
+"LE1HEPMETASIZENUM (all 29,565 rows): ND",4535,F41 ND
+"LE1HEPMETASIZENUM (all 29,565 rows): NA",0,F41 NA
+"LE1HEPMETASIZENUM (all 29,565 rows): blank",2870,F41 blank

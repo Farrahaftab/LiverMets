@@ -1,0 +1,19 @@
+comparison,value,pct_of_both_counts
+Both counts recorded (LE1NBMETAHEPNUM and LE1NBMRESECNUM_F1),14189,100.0
+Resected count equals LE1NBMETAHEPNUM,8847,62.4
+Resected count greater than LE1NBMETAHEPNUM,2244,15.8
+Resected count less than LE1NBMETAHEPNUM,3098,21.8
+"Among patients with chemotherapy flag known: pre-operative chemotherapy yes, n",6213,
+  mean LE1NBMETAHEPNUM / mean LE1NBMRESECNUM_F1,2.51 / 2.31,
+  resected lower than pre-operative count (%),22.5,
+"Among patients with chemotherapy flag known: pre-operative chemotherapy no, n",7625,
+  mean LE1NBMETAHEPNUM / mean LE1NBMRESECNUM_F1,1.79 / 1.8,
+  resected lower than pre-operative count (%),12.3,
+"Within count stratum 1: resected lower (%), chemotherapy No (n=4286)",0.4,
+"Within count stratum 1: resected lower (%), chemotherapy Yes (n=1936)",0.7,
+"Within count stratum 2: resected lower (%), chemotherapy No (n=1611)",20.3,
+"Within count stratum 2: resected lower (%), chemotherapy Yes (n=1272)",22.9,
+"Within count stratum 3: resected lower (%), chemotherapy No (n=784)",30.2,
+"Within count stratum 3: resected lower (%), chemotherapy Yes (n=911)",36.9,
+"Within count stratum 4 or more: resected lower (%), chemotherapy No (n=938)",38.1,
+"Within count stratum 4 or more: resected lower (%), chemotherapy Yes (n=2091)",36.3,

@@ -1,0 +1,9 @@
+variable,timing_status,leakage_concern,risk_at_operation_time
+Age at operation,Known before time zero,None,Low
+Sex,Known before time zero,None,Low
+Synchrony (LE1METASYNCYN),Recorded by time zero,Cannot confirm recording date,Low
+Interval (DFI),Metastasis dates after operation set to missing in the notebook,None found in code,Low
+"TNM T, N, M (STADET/STADEN/STADEM)",Source (clinical vs pathological) not documented,May include post-operative pathology,Unresolved
+Metastasis count (LE1NBMETAHEPNUM),Timing not documented; may follow pre-operative chemotherapy in 7485 patients,May reflect post-treatment disease; resected count (not used) is post-operative,Unresolved
+Largest metastasis size (LE1HEPMETASIZENUM),Timing not documented; could be pathological size,Possible post-operative information,Unresolved
+Resected count LE1NBMRESECNUM_F1,Not a model predictor,Would be leakage if used,Not used (none)

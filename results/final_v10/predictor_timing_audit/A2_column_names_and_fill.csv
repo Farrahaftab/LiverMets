@@ -1,0 +1,23 @@
+column,nonempty_part1,nonempty_part2,nonempty_total,fill_pct_total,timing_evidence_in_name
+LE1NBMETAHEPNUM,13592,13959,27551,93.19,no timing word in name
+LE1NBMETAHEPNUM_V,12321,12974,25295,85.56,no timing word in name
+LE1NBMETAHEPCAR,13829,14263,28092,95.02,no timing word in name
+LE1HEPMETASIZENUM,13931,12764,26695,90.29,no timing word in name
+LE1HEPMETASIZENUM_V,11237,10923,22160,74.95,no timing word in name
+LE1HEPMETASIZECAR,14198,14136,28334,95.84,no timing word in name
+LE1NBMRESECNUM_F1,11759,11362,23121,78.2,name contains a timing word
+LE1NBMRESECCAR_F1,11836,11445,23281,78.75,name contains a timing word
+LE1METASYNCYN,14283,14230,28513,96.44,no timing word in name
+LE1OPERDT_F1,14356,13673,28029,94.8,name contains a timing word
+LE1DGMETADT,9520,10673,20193,68.3,name contains a timing word
+DGKCOLDT,6441,8541,14982,50.67,name contains a timing word
+LE1PREOPMCTYN_F1,14579,14218,28797,97.4,name contains a timing word
+LE1PREOPMSTDT_F1,2741,3564,6305,21.33,name contains a timing word
+LE1POSTOPMCTYN_F1,14485,13858,28343,95.87,name contains a timing word
+LE1POSTOPMSTDT_F1,2180,3879,6059,20.49,name contains a timing word
+POSTCOLCTYN_F1,14656,14388,29044,98.24,no timing word in name
+PRECOLCHIYN,13313,14180,27493,92.99,no timing word in name
+STADET,12636,13045,25681,86.86,no timing word in name
+STADEN,13943,14183,28126,95.13,no timing word in name
+STADEM,13486,14209,27695,93.67,no timing word in name
+LE1PREHEPCEA_F1,14060,12844,26904,91.0,name contains a timing word
