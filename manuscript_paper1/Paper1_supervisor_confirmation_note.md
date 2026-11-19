@@ -56,7 +56,11 @@ The manuscript does not state that ethics approval was obtained. It must not be 
 - *Not verifiable:* the raw LiverMetSurvey workbooks were not available in this session, and no computer folder was attached. Headers, metadata and patient-level dates were therefore not checked directly. Any statement about the workbooks is an assumption until they are checked.
 - *Inference (not proven):* the count is probably recorded on the hepatectomy form, since its sibling `LE1NBMRESECNUM_F1` is a resection count.
 
-**Position in the manuscript.** The intended prediction time is hepatectomy. The model assumes count and size were known at that time. Their measurement timing (before or after preoperative chemotherapy, and whether size is pathological) is undocumented. Count and size may reflect post-chemotherapy disease, and pathological measurements may be unavailable before surgery. The model is not suitable for pre-treatment decisions. Whether the intended prediction time is preoperative, at hepatectomy or postoperative is unresolved.
+**Three distinct questions (as stated in the manuscript).**
+
+1. **Survival time origin: hepatectomy (operation date).** Confirmed as the origin of survival time. This does not show that any predictor was measured at hepatectomy.
+2. **Predictor measurement time: not confirmed.** For metastasis count and size, no documentation states when they were measured relative to preoperative chemotherapy or pathology. The source of TNM stage (clinical or pathological) is also unconfirmed. The dataset does not show that count and size were available at hepatectomy.
+3. **Intended clinical prediction time: not yet fully established.** Preoperative, hepatectomy and postoperative timing are unresolved. The model should not be used for pre-treatment decisions.
 
 **Needed from the registry coordinators (cannot be obtained from the dataset):**
 1. What `LE1NBMETAHEPNUM`, `LE1HEPMETASIZENUM` and their `_V` variants measure, and the date on which each was recorded.
@@ -65,7 +69,7 @@ The manuscript does not state that ethics approval was obtained. It must not be 
 4. Whether TNM stage (`STADET`, `STADEN`, `STADEM`) is clinical or pathological, and when it was assigned.
 5. The meaning of ND compared with blank for these fields.
 
-**Decision for the supervisor:** whether the paper should be restricted to a model usable at hepatectomy, with the timing caveat, or whether the prediction time must wait for the registry's answers.
+**Decision for the supervisor:** whether the intended clinical prediction time can be stated before the registry answers questions 1–5 below, or whether the manuscript should describe the prediction time as unresolved (as it does now).
 
 ## 6. Exclusion of 33.8% for incomplete TNM staging
 
