@@ -45,7 +45,7 @@ This was a retrospective cohort study of the LiverMetSurvey registry, a prospect
 
 Eligibility required a recorded hepatectomy, an operation year and month, a vital status with a last-news date on or after operation, and either positive follow-up or death. Of 29,565 registry records, 26,094 met these criteria. Of these, 8,832 (33.8%) had incomplete TNM staging and were excluded, leaving 17,262 patients (Figure 1). Missing components were recorded as "not determined" (ND) or blank; their patterns and the characteristics of excluded patients are in Supplementary Tables S1–S2.
 
-Operation dates recorded to year and month only were set to the 15th of the month; the first and last day of the month were used as sensitivity analyses.
+Partial operation dates were set to the 15th of the month (first and last day as sensitivity analyses).
 
 **Registry description.** The original manuscript described the registry as spanning 63 countries and 242 contributing centres. The analysis extract contains 54 country codes and 288 site codes, of which 259 sites contain eligible patients. The reconciliation with the registry coordinators is outstanding; the figures reported here are the extract's.
 
@@ -55,13 +55,13 @@ The primary outcome was overall survival from hepatectomy to death from any caus
 
 Candidate predictors were TNM stage (T1–2, T3, T4; N0, N1, N2; M0, M1; AJCC categories [8] with subcategories collapsed), age at operation (per 10 years), sex, synchronous presentation, interval from primary diagnosis to liver metastasis (per 12 months; 0 for synchronous; missing when the date was unknown, negative or after operation), number of liver metastases (per additional lesion) and largest recorded metastasis (per 10 mm). Missing interval, count and size were handled with indicator variables and training-era medians; no multiple imputation was used for the primary model.
 
-**Predictor timing.** The model assumes that count and size are known at operation. The registry data dictionary was not available, and the time at which count and size were recorded relative to any preoperative treatment cannot be confirmed from the data. Pre-operative and resected counts agreed for 62% of the 14,189 patients with both recorded (Supplementary Table S2f). The clinical implications are discussed in the Limitations.
+**Predictor timing.** The intended prediction time is hepatectomy (time zero), and the model assumes that metastasis count and size were known then. Both fields are in the registry's LE1 liver-metastasis block, but no documentation states when they were measured relative to preoperative chemotherapy or pathological examination. Pre-operative and resected counts agreed for 62% of the 14,189 patients with both recorded (Supplementary Table S2f); this agreement does not establish timing. The model is not suitable for pre-treatment decisions (Limitation 4).
 
 ## Data quality, duplicate records and sensitivity analyses
 
 The registry has no patient-level identifier. Records were screened for duplicates on all analysis columns together with country, site and patient number. Twenty-three identical-content pairs (46 records) were found, of which 16 met a probable-duplicate rule (shared birth and operation dates, at least 20 non-blank fields). All records were retained in the primary analysis. Probable duplicates and a broader rule (later records sharing birth date, operation date and sex) were removed only in sensitivity analyses (Supplementary Table S3). Nothing was permanently removed, pending registry confirmation.
 
-Other sensitivity analyses (Supplementary Table S5) covered date conventions, same-day deaths, pre-operative-only and no-TNM models, CEA, RFS handling rules and recalibration from 2005–2009 patients.
+Other sensitivity analyses (Supplementary Table S5) covered date conventions, same-day deaths, a model without metastasis count and size, a model without TNM stage, CEA, RFS handling rules and recalibration from 2005–2009 patients.
 
 ## Model development
 
@@ -79,7 +79,7 @@ Groups were defined by predicted 5-year survival, with cut-points at the trainin
 
 Harrell's C-index [11] was computed in each cohort, with 300-resample bootstrap intervals in validation. Time-dependent AUC and Brier scores were computed at 1, 3 and 5 years, and the integrated Brier score over 1–7 years [12]. Calibration was assessed by comparing mean predicted survival with Kaplan–Meier survival at each horizon (observed/expected ratio with bootstrap intervals), by a calibration slope, by validation decile and by operation period. Estimates with fewer than 50 patients followed up to 5 years were flagged as sparse.
 
-Survival was estimated by Kaplan–Meier and Cox methods, which account for patients alive at last contact. Median follow-up by reverse Kaplan–Meier was 5.89 years (development) and 1.47 years (validation). Because validation follow-up is short, the number of patients evaluable at each horizon falls, and this is reported (Table 4).
+Survival was estimated by Kaplan–Meier and Cox methods, which account for patients alive at last contact. Median follow-up by reverse Kaplan–Meier was 5.89 years (development) and 1.47 years (validation). Because validation follow-up is short, the number of patients evaluable at each horizon falls (Table 4).
 
 ## Comparison with established scores
 
@@ -157,7 +157,7 @@ Across all sensitivity analyses (Supplementary Table S5), the validation C-index
 
 On identical validation patients, the selected model had a C-index of 0.639 in the Fong subset (n = 3,642; 914 deaths), against 0.591 for the Fong score, and 0.630 in the Nordlinger-type subset (n = 6,137; 1,396 deaths), against 0.583 for the Nordlinger-type approximation (Supplementary Table S10; Supplementary Figure S3). These approximations indicate relative performance on this registry; they do not establish the published models' performance.
 
-Without metastasis count and size (pre-operative-only model), the C-index fell to 0.591 (95% CI 0.573–0.606) in the M1 structure and 0.591 (0.575–0.604) in M2a (Supplementary Table S5). A model without TNM stage, using age, sex, synchrony, interval, count and size, gave 0.599 on the same 8,799 validation patients, a difference of 0.022 (95% CI 0.009–0.034) from the TNM model.
+Without metastasis count and size (model without these variables), the C-index fell to 0.591 (95% CI 0.573–0.606) in the M1 structure and 0.591 (0.575–0.604) in M2a (Supplementary Table S5). A model without TNM stage, using age, sex, synchrony, interval, count and size, gave 0.599 on the same 8,799 validation patients, a difference of 0.022 (95% CI 0.009–0.034) from the TNM model.
 
 ## Carcinoembryonic antigen
 
@@ -180,7 +180,7 @@ An earlier analysis of this registry used binary classification and classificati
 1. **Discrimination.** The C-index of 0.622 is modest; the groups rank patients but do not identify individual outcomes precisely.
 2. **Calibration.** The model under-predicts survival in validation, most clearly at 5 years. The primary model was not recalibrated.
 3. **Validation and follow-up.** Validation is temporal within one registry, with median follow-up of 1.47 years; only 26% of validation patients can be evaluated at 5 years. No external validation was performed, and long-term calibration in recent patients cannot be assessed.
-4. **Predictor timing.** Count and size are assumed to be known at operation. Whether they were recorded before or after any preoperative treatment cannot be confirmed without the data dictionary. The timing question could change the interpretation of the model if these variables were recorded after treatment.
+4. **Predictor timing.** Count and size may reflect disease after preoperative chemotherapy: treated patients had more lesions at the first count, and 43.4% of the cohort received pre-operative liver chemotherapy. Pathological measurements may be unavailable before surgery. The intended prediction time (preoperative, at hepatectomy or postoperative) is unresolved, and the model should not be used for pre-treatment decisions.
 5. **Selection and missing data.** One third of the eligible population was excluded for incomplete staging, and excluded patients differ systematically. Missing-at-random cannot be verified. Interval, count and size are missing for many patients and handled by indicators, not imputation.
 6. **Death and recurrence data.** In the full registry extract, 11,594 patients are recorded as deceased, of whom 3,074 lack an explicit death flag, so their survival times rest on the last-news date. The analytic cohort contains 6,601 recorded deaths. Recurrence dates are missing for 1,676 recurrences, so RFS is secondary.
 7. **Duplicates.** Sixteen probable duplicate pairs and near-duplicate groups in the cohort await registry confirmation. Sensitivity analyses show no change to conclusions.

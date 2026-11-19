@@ -6,7 +6,7 @@ Full detail: *Paper1_supervisor_confirmation_note.docx*. The locked v8 analysis,
 
 **Scientific issues**
 
-1. **Predictor timing (gating).** Were metastasis count and size recorded before any preoperative treatment? Unconfirmed; no data dictionary. Registry confirmation needed.
+1. **Predictor timing (gating).** Measurement timing of count and size is undocumented; they may reflect post-chemotherapy disease; pathological measurements may be unavailable before surgery. Raw workbooks not checked in this session. Intended prediction time (preoperative, hepatectomy or postoperative) unresolved. Registry coordinators must confirm.
 2. **33.8% excluded for incomplete TNM staging** (8,832 of 26,094). Excluded patients differ; missing-at-random cannot be verified.
 3. **Follow-up.** Validation median 1.47 years; 26% evaluable at 5 years; no 5-year calibration for 2016+ operations.
 4. **Calibration and discrimination.** Under-predicts 5-year survival (40.8% vs 46.6%); not recalibrated. C-index 0.622 (modest). No external validation.

@@ -51,9 +51,21 @@ The manuscript does not state that ethics approval was obtained. It must not be 
 
 ## 5. Predictor timing (gating question)
 
-- **Question:** were metastasis count and size recorded before or after any preoperative treatment?
-- **Current position:** unconfirmed. The manuscript assumes both are known at operation and states this as a limitation (Methods; Limitation 4). Pre-operative and resected counts agreed for 62% of 14,189 patients with both recorded (Supplementary Table S2f). This shows agreement, not timing.
-- **Needed:** registry confirmation. If the counts were recorded after preoperative treatment, the model's inputs would not be available at its intended time of use, and the interpretation would change.
+**Evidence check (this session).**
+- *Verified from the repository (locked notebook, column inventory, treatment outputs and the predictor-timing audit):* the model's count is `LE1NBMETAHEPNUM` and its size is `LE1HEPMETASIZENUM`; no timing filter is applied; no data dictionary is present; column names contain no timing word for either field; pre-operative liver chemotherapy is recorded for 7,485 patients (43.4%); 4,259 of 4,320 dated pre-operative starts (98.6%) precede operation; both counts are recorded for 14,189 patients, with equal counts in 62.4% (Supplementary Tables S2f, S5d; audit report in `results/final_v10/predictor_timing_audit/`).
+- *Not verifiable:* the raw LiverMetSurvey workbooks were not available in this session, and no computer folder was attached. Headers, metadata and patient-level dates were therefore not checked directly. Any statement about the workbooks is an assumption until they are checked.
+- *Inference (not proven):* the count is probably recorded on the hepatectomy form, since its sibling `LE1NBMRESECNUM_F1` is a resection count.
+
+**Position in the manuscript.** The intended prediction time is hepatectomy. The model assumes count and size were known at that time. Their measurement timing (before or after preoperative chemotherapy, and whether size is pathological) is undocumented. Count and size may reflect post-chemotherapy disease, and pathological measurements may be unavailable before surgery. The model is not suitable for pre-treatment decisions. Whether the intended prediction time is preoperative, at hepatectomy or postoperative is unresolved.
+
+**Needed from the registry coordinators (cannot be obtained from the dataset):**
+1. What `LE1NBMETAHEPNUM`, `LE1HEPMETASIZENUM` and their `_V` variants measure, and the date on which each was recorded.
+2. Whether the count and size were recorded before or after preoperative liver chemotherapy.
+3. Whether size is radiological, clinical or pathological.
+4. Whether TNM stage (`STADET`, `STADEN`, `STADEM`) is clinical or pathological, and when it was assigned.
+5. The meaning of ND compared with blank for these fields.
+
+**Decision for the supervisor:** whether the paper should be restricted to a model usable at hepatectomy, with the timing caveat, or whether the prediction time must wait for the registry's answers.
 
 ## 6. Exclusion of 33.8% for incomplete TNM staging
 

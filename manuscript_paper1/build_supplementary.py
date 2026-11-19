@@ -67,7 +67,7 @@ S[-1] = S[-1] + ("\n\n**S2f. Agreement between pre-operative and resected metast
         ['Resected count equals pre-operative count', f"{_eq:,}", f"{100*_eq/_both:.1f}"],
         ['Resected count greater than pre-operative count', f"{_gt:,}", f"{100*_gt/_both:.1f}"],
         ['Resected count less than pre-operative count', f"{_lt:,}", f"{100*_lt/_both:.1f}"]]) +
-    "\n\nThe 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts).")
+    "\n\nThe 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts). Agreement between the two counts does not establish when either count was measured.")
 
 S.append("## Table S3. Duplicate-record screen and sensitivity analyses\n\n**S3a. Screen** (`F60`).\n\n" + select(F7/'F60_duplicate_records_screen.csv', ['item','n'], ['Item','n']) +
          "\n\n**S3b. Effect on validation results** (`F61`). Columns are the primary analysis and two sensitivity analyses. C-index and survival are for the validation cohort.\n\n")
@@ -120,7 +120,7 @@ S.append("## Table S5. Sensitivity analyses\n\n**S5a. Date conventions and same-
                 ['Date convention','Same-day rule','Analytic n','Validation C','Cut-point 1','Cut-point 2','Same groups (%)','κ']) +
          "\n\n**S5b. Same-day deaths without death flag** (`F19`).\n\n" + select(F7/'F19_unflagged_same_day_deaths_sensitivity.csv', ['analysis','modelling_cohort_TNM','valid_C','phenotype_identical_pct_vs_primary','kappa_vs_primary'], ['Analysis','Analytic n','Validation C','Same groups (%)','κ']) +
          "\n\n**S5c. Carcinoembryonic antigen** (`F13`).\n\n" + select(F7/'F13_CEA_sensitivity_final.csv', ['analysis','valid_n','CEA_HR_per_log_unit','CEA_HR_95CI','valid_C_without_CEA','valid_C_with_CEA'], ['Analysis','Validation n','CEA HR per log unit','95% CI','C without CEA','C with CEA']) +
-         "\n\n**S5d. Pre-operative-only models (no count or size)** (`F14`, `F23`).\n\n" + select(F7/'F14_preoperative_only_sensitivity.csv', ['model','valid_C','valid_C_95CI','valid_OE_5y','valid_calib_slope_5y'], ['Model','Validation C','95% CI','O/E 5 y','Calibration slope']) + "\n\n" + select(F7/'F23_preoperative_only_selected_structure.csv', ['model','valid_C','valid_C_95CI','valid_OE_5y','valid_calib_slope_5y'], ['Model','Validation C','95% CI','O/E 5 y','Calibration slope']) +
+         "\n\n**S5d. Models without metastasis count and size** (`F14`, `F23`). The variables were removed from the model; the table does not indicate when they were measured.\n\n" + select(F7/'F14_preoperative_only_sensitivity.csv', ['model','valid_C','valid_C_95CI','valid_OE_5y','valid_calib_slope_5y'], ['Model','Validation C','95% CI','O/E 5 y','Calibration slope']) + "\n\n" + select(F7/'F23_preoperative_only_selected_structure.csv', ['model','valid_C','valid_C_95CI','valid_OE_5y','valid_calib_slope_5y'], ['Model','Validation C','95% CI','O/E 5 y','Calibration slope']) +
          "\n\n**S5e. Recalibration from 2005–2009 baseline** (`F22`; coefficients fixed).\n\n" + select(F7/'F22_recalibration_sensitivity.csv', ['analysis','valid_mean_predicted_5y','valid_O_over_E','valid_C','agreement_validation_kappa','agreement_pct_validation'], ['Analysis','Mean predicted 5-y','O/E 5 y','Validation C','κ vs primary','% same group']) +
          "\n\n**S5f. No-TNM model on the same patients** (`F62`). The TNM model is 0.6216 on the same 8,799 patients.\n\n" + select(F7/'F62_no_TNM_model_supplementary.csv', ['analysis','development_n','validation_n','validation_C','note'], ['Analysis','Development n','Validation n','Validation C','Note']))
 
@@ -155,6 +155,10 @@ S.append("## Coefficient outputs\n\nBaseline survival by stratum and the group s
                 ['Group', 'Development n', 'Validation n', 'Predicted 5-y survival range (validation)', 'Mean predicted 5-y (validation)']))
 
 out = '\n\n'.join(S) + '\n'
+# display labels only (values unchanged): the source model names say "pre-operative-only"; the table now describes what was removed
+out = out.replace('pre-operative-only, M1 structure (no count or size)', 'model without metastasis count and size, M1 structure')
+out = out.replace('pre-operative-only, selected M2a structure (no count or size)', 'model without metastasis count and size, selected M2a structure')
+assert 'pre-operative-only' not in out
 (HERE/'Paper1_supplementary.md').write_text(out, encoding='utf-8')
 subprocess.run(['pandoc', 'Paper1_supplementary.md', '-f', 'markdown', '-t', 'docx', '-o', 'Paper1_supplementary.docx',
                 '--resource-path', str(HERE)], cwd=HERE, check=True)

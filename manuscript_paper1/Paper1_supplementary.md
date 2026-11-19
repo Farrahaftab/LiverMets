@@ -88,7 +88,7 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 | Resected count greater than pre-operative count | 2,244 | 15.8 |
 | Resected count less than pre-operative count | 3,098 | 21.8 |
 
-The 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts).
+The 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts). Agreement between the two counts does not establish when either count was measured.
 
 ## Table S3. Duplicate-record screen and sensitivity analyses
 
@@ -205,15 +205,15 @@ The 62% agreement statement in the Methods and Limitations refers to the first c
 | complete case | 5847 | 1.159 | 1.132-1.186 | 0.6276 | 0.648 |
 | multiple imputation, 10 draws (development outcome-compatible; validation predictors only) | 8799 | 1.153 | 1.127-1.180 | 0.6224 | 0.6366 |
 
-**S5d. Pre-operative-only models (no count or size)** (`F14`, `F23`).
+**S5d. Models without metastasis count and size** (`F14`, `F23`). The variables were removed from the model; the table does not indicate when they were measured.
 
 | Model | Validation C | 95% CI | O/E 5 y | Calibration slope |
 |--------------------------------|-------|--------|-----|--------|
-| pre-operative-only, M1 structure (no count or size) | 0.5913 | 0.573-0.606 | 1.126 | 1.358 |
+| model without metastasis count and size, M1 structure | 0.5913 | 0.573-0.606 | 1.126 | 1.358 |
 
 | Model | Validation C | 95% CI | O/E 5 y | Calibration slope |
 |----------------------------------|-------|-------|-----|-------|
-| pre-operative-only, selected M2a structure (no count or size) | 0.5905 | 0.575-0.604 | 1.128 | 1.307 |
+| model without metastasis count and size, selected M2a structure | 0.5905 | 0.575-0.604 | 1.128 | 1.307 |
 
 **S5e. Recalibration from 2005–2009 baseline** (`F22`; coefficients fixed).
 
