@@ -12,6 +12,15 @@ def rows(p):
     with open(p, newline='', encoding='utf-8') as f:
         return list(csv.reader(f))
 
+import re as _re
+def _typeset(cell):
+    """Presentation only: thousands separators for counts and en dashes in numeric ranges. Values unchanged."""
+    c = str(cell)
+    c = _re.sub(r"^(\d{4,})(?=$|\s)", lambda m: f"{int(m.group(1)):,}", c)
+    c = _re.sub(r"(?<=\d)-(?=\d)", "–", c)
+    c = _re.sub(r"(?<=\d)-NE", "–NE", c)
+    return c
+
 def md(header, body):
     """Pipe table whose separator dashes are proportional to content width, so Word (via pandoc) gives
     wide text columns room and keeps narrow numeric columns narrow. Cell text is unchanged."""
@@ -24,7 +33,7 @@ def md(header, body):
     total = sum(weights)
     dashes = ['-' * max(3, round(60 * w / total)) for w in weights]
     out = ['| ' + ' | '.join(header) + ' |', '|' + '|'.join(dashes) + '|']
-    out += ['| ' + ' | '.join(str(c) for c in r) + ' |' for r in body]
+    out += ['| ' + ' | '.join(_typeset(c) for c in r) + ' |' for r in body]
     return '\n'.join(out)
 
 def pct(x):

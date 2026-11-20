@@ -8,7 +8,7 @@ author:
 
 \*Corresponding author: Farrah Aftab, MSc — f.aftab@uel.ac.uk
 
-*Draft for Supervisor Review*
+*Final Draft for Supervisor Approval*
 
 
 **Running title:** Survival prediction in colorectal liver metastases
@@ -102,10 +102,10 @@ Of 29,565 registry records, 17,262 patients had eligible operations and complete
 | Characteristic | Total (n = 17,262) | Development (≤2009; n = 8,463) | Validation (≥2010; n = 8,799) |
 |--------------------------------|---------|---------|---------|
 | Patients | 17,262 | 8,463 | 8,799 |
-| Age at operation, years, median (IQR) | 63.4 (55.7-70.6) | 62.9 (55.2-69.9) | 64.0 (56.2-71.4) |
+| Age at operation, years, median (IQR) | 63.4 (55.7–70.6) | 62.9 (55.2–69.9) | 64.0 (56.2–71.4) |
 | Male sex, n (%) | 10,676 (61.8) | 5,204 (61.5) | 5,472 (62.2) |
 | T stage, n (%) |  |  |  |
-| &emsp;T1-2 | 491 (2.8) | 186 (2.2) | 305 (3.5) |
+| &emsp;T1–2 | 491 (2.8) | 186 (2.2) | 305 (3.5) |
 | &emsp;T3 | 13,023 (75.4) | 6,592 (77.9) | 6,431 (73.1) |
 | &emsp;T4 | 3,748 (21.7) | 1,685 (19.9) | 2,063 (23.4) |
 | N stage, n (%) |  |  |  |
@@ -118,14 +118,14 @@ Of 29,565 registry records, 17,262 patients had eligible operations and complete
 | Synchronous presentation, n (%) | 10,015 (58.0) | 4,776 (56.4) | 5,239 (59.5) |
 | Synchrony not recorded, n (%) | 198 (1.1) | 138 (1.6) | 60 (0.7) |
 | Metachronous presentation, n (%) | 7,049 (40.8) | 3,549 (41.9) | 3,500 (39.8) |
-| Interval primary to liver metastasis, months, median (IQR; metachronous only) | 16.0 (9.8-26.9) | 16.3 (10.1-27.5) | 15.8 (9.4-26.3) |
+| Interval primary to liver metastasis, months, median (IQR; metachronous only) | 16.0 (9.8–26.9) | 16.3 (10.1–27.5) | 15.8 (9.4–26.3) |
 | Metachronous, interval unavailable (metastasis date unknown or after operation), n (%) | 3,941 (55.9) | 2,154 (60.7) | 1,787 (51.1) |
 | Number of liver metastases, n (%) |  |  |  |
 | &emsp;1 | 7,144 (41.4) | 3,626 (42.8) | 3,518 (40.0) |
-| &emsp;2-3 | 5,332 (30.9) | 2,625 (31.0) | 2,707 (30.8) |
+| &emsp;2–3 | 5,332 (30.9) | 2,625 (31.0) | 2,707 (30.8) |
 | &emsp;>=4 | 3,535 (20.5) | 1,600 (18.9) | 1,935 (22.0) |
 | &emsp;Unknown | 1,251 (7.2) | 612 (7.2) | 639 (7.3) |
-| Largest recorded metastasis, mm, median (IQR) | 30.0 (20.0-45.0) | 30.0 (20.0-48.0) | 29.0 (19.0-45.0) |
+| Largest recorded metastasis, mm, median (IQR) | 30.0 (20.0–45.0) | 30.0 (20.0–48.0) | 29.0 (19.0–45.0) |
 | Size missing, n (%) | 3,306 (19.2) | 1,344 (15.9) | 1,962 (22.3) |
 | Pre-operative CEA recorded, n (%) | 11,364 (65.8) | 5,517 (65.2) | 5,847 (66.5) |
 | Deaths recorded (PATSTATC = Deceased), n (%) | 6,601 (38.2) | 4,685 (55.4) | 1,916 (21.8) |
@@ -146,8 +146,8 @@ The selected model's coefficients are in Table 2 and as a forest plot in Supplem
 
 | Term | β | HR | 95% CI | p |
 |-------------------------------------|------|-----|--------|-----|
-| T3 vs T1-2 | 0.1173 | 1.124 | 0.908–1.393 | 0.283 |
-| T4 vs T1-2 | 0.3101 | 1.364 | 1.093–1.701 | 0.006 |
+| T3 vs T1–2 | 0.1173 | 1.124 | 0.908–1.393 | 0.283 |
+| T4 vs T1–2 | 0.3101 | 1.364 | 1.093–1.701 | 0.006 |
 | N1 vs N0 | 0.2486 | 1.282 | 1.195–1.376 | <0.001 |
 | N2 vs N0 | 0.4858 | 1.625 | 1.505–1.755 | <0.001 |
 | Age, per 10 years | 0.1234 | 1.131 | 1.098–1.166 | <0.001 |
@@ -170,9 +170,9 @@ The groups separated overall survival clearly in both cohorts (Table 3; Figure 2
 
 | Group | Development n | Validation n | Validation deaths | Validation median OS, years (95% CI) | Validation 5-y KM survival | Development 5-y KM survival | Validation mean predicted 5-y survival |
 |--------|-------|-------|-------|----------|-------|-------|-------|
-| Favourable | 2821 | 2662 | 383 | 7.38 (6.14-NE) | 62.9% | 54.1% | 53.2% |
-| Intermediate | 2821 | 2824 | 598 | 4.44 (4.14-4.88) | 45.4% | 41.9% | 42.8% |
-| Adverse | 2821 | 3313 | 935 | 3.18 (2.97-3.38) | 34.3% | 30.7% | 29.1% |
+| Favourable | 2,821 | 2,662 | 383 | 7.38 (6.14–NE) | 62.9% | 54.1% | 53.2% |
+| Intermediate | 2,821 | 2,824 | 598 | 4.44 (4.14–4.88) | 45.4% | 41.9% | 42.8% |
+| Adverse | 2,821 | 3,313 | 935 | 3.18 (2.97–3.38) | 34.3% | 30.7% | 29.1% |
 
 **Table 3.** Prognostic groups (M2a) with training-only cut-points and validation outcomes. Source: `F06_phenotypes_counts_survival_calibration.csv`.
 
@@ -192,9 +192,9 @@ Re-estimating the baseline hazard from 2005–2009 patients, with coefficients f
 
 | Horizon (years) | Evaluable n (%) | Deaths before horizon | Mean predicted survival | Observed KM survival (95% CI) | O/E (95% CI) | Time-dependent AUC | Brier score |
 |-----|--------|-----|------|-----------|----------|---------|-----|
-| 1 | 5335 (60.6%) | 581 | 89.7% | 91.0% (90.3–91.7) | 1.01 (1.01–1.02) | 0.639 | 0.060 |
-| 3 | 3118 (35.4%) | 1544 | 59.2% | 64.5% (63.0–66.1) | 1.09 (1.06–1.12) | 0.653 | 0.101 |
-| 5 | 2289 (26.0%) | 1848 | 40.8% | 46.6% (44.4–48.7) | 1.14 (1.09–1.20) | 0.675 | 0.065 |
+| 1 | 5,335 (60.6%) | 581 | 89.7% | 91.0% (90.3–91.7) | 1.01 (1.01–1.02) | 0.639 | 0.060 |
+| 3 | 3,118 (35.4%) | 1,544 | 59.2% | 64.5% (63.0–66.1) | 1.09 (1.06–1.12) | 0.653 | 0.101 |
+| 5 | 2,289 (26.0%) | 1,848 | 40.8% | 46.6% (44.4–48.7) | 1.14 (1.09–1.20) | 0.675 | 0.065 |
 
 **Table 4.** Performance and calibration by horizon in the validation cohort (n = 8,799). Evaluable patients are those with follow-up to the horizon or an event before it. Sources: `G01_horizon_feasibility_validation.csv`, `G03_calibration_precision_by_horizon.csv`, `F02b_selected_model_performance.csv`.
 

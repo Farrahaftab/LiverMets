@@ -1,0 +1,76 @@
+claim,source,source_value,displayed_in_manuscript,status
+C-index validation,F02b valid_C,0.6216,0.622,PASS
+C-index 95% CI (selected model),F02b valid_C_95CI,0.608-0.636,0.608–0.636,PASS
+O/E at 5 years,F02b valid_OE_5y,1.142,1.14,PASS
+Observed 5-y survival,F02b valid_observed_S5,0.466,46.6%,PASS
+Predicted 5-y survival,F02b valid_mean_predicted_S5,0.408,40.8%,PASS
+Calibration slope,F02b valid_calib_slope_5y,1.074,1.07,PASS
+Integrated Brier 1-7 y (Figure 1 only),F02b IBS_1_7y,0.0752,0.075,PASS
+Cut-point lower tertile,F00 phenotype_cut_S5_q33,0.3793,0.3793,PASS
+Cut-point upper tertile,F00 phenotype_cut_S5_q67,0.4756,0.4756,PASS
+Ordinal C-index,F08 valid_C_ordinal,0.6032,0.603,PASS
+Log-rank p validation (1.96e-52 -> 2.0 x 10^-52),F08 valid_logrank_p,1.960688139201623e-52,2.0 × 10⁻⁵²,PASS
+Log-rank p development (1.35e-77),F08 train_logrank_p,1.3516744662754814e-77,1.4 × 10⁻⁷⁷,PASS
+Favourable validation n,F06 valid_n,2662,"2,662",PASS
+Favourable median OS,F06 valid_median_OS,7.38,7.38,PASS
+Favourable median OS 95% CI,F06 valid_median_95CI,6.14-NE,6.14–NE,PASS
+Favourable 5-y KM validation,F06 valid_S5_KM,0.629,62.9%,PASS
+Favourable 5-y KM development,F06 train_S5_KM,0.541,54.1%,PASS
+Favourable development n,F06 train_n,2821,"2,821",PASS
+Favourable validation deaths,F06 valid_deaths,383,383,PASS
+Intermediate validation n,F06 valid_n,2824,"2,824",PASS
+Intermediate median OS,F06 valid_median_OS,4.44,4.44,PASS
+Intermediate median OS 95% CI,F06 valid_median_95CI,4.14-4.88,4.14–4.88,PASS
+Intermediate 5-y KM validation,F06 valid_S5_KM,0.454,45.4%,PASS
+Intermediate 5-y KM development,F06 train_S5_KM,0.419,41.9%,PASS
+Intermediate development n,F06 train_n,2821,"2,821",PASS
+Intermediate validation deaths,F06 valid_deaths,598,598,PASS
+Adverse validation n,F06 valid_n,3313,"3,313",PASS
+Adverse median OS,F06 valid_median_OS,3.18,3.18,PASS
+Adverse median OS 95% CI,F06 valid_median_95CI,2.97-3.38,2.97–3.38,PASS
+Adverse 5-y KM validation,F06 valid_S5_KM,0.343,34.3%,PASS
+Adverse 5-y KM development,F06 train_S5_KM,0.307,30.7%,PASS
+Adverse development n,F06 train_n,2821,"2,821",PASS
+Adverse validation deaths,F06 valid_deaths,935,935,PASS
+Analytic cohort,F31 Patients total,"17,262","17,262",PASS
+Development n,F31 Patients dev,"8,463","8,463",PASS
+Validation n,F31 Patients val,"8,799","8,799",PASS
+Development window events,F31 window dev,"4,675 (55.2)","4,675",PASS
+Validation window events,F31 window val,"1,916 (21.8)","1,916",PASS
+Excluded for incomplete TNM,F30 analytic vs followup,8832,"8,832",PASS
+Eligible patients,F30 step 7,26094,"26,094",PASS
+Evaluable at 5 years (26%),G01 pct_evaluable horizon 5,26.0,26%,PASS
+RFS median primary,F17 median_RFS,2.03,2.03,PASS
+RFS median 95% CI,F17 median_95CI,1.98-2.09,1.98–2.09,PASS
+RFS 3-y,F17 RFS_3y,0.393,39.3%,PASS
+RFS 5-y,F17 RFS_5y,0.276,27.6%,PASS
+RFS-eligible whole cohort,F17 n,16677,"16,677",PASS
+Fong subset C,F16 selected_model_C (Fong),0.6394,0.639,PASS
+Fong score C,F16 Fong_CRS_C,0.5912,0.591,PASS
+Nordlinger subset C,F16 selected_model_C (Nordlinger),0.6303,0.630,PASS
+Nordlinger score C,F16 Nordlinger_C,0.583,0.583,PASS
+No-TNM C-index,F62 validation_C same-patient no-TNM,0.5994,0.599,PASS
+TNM minus no-TNM difference,F62 note,reference,0.022,PASS
+CEA HR (complete case),F13 CEA_HR_per_log_unit,1.159,1.16,PASS
+CEA complete-case C without/with,F13 valid_C_without/with,1.132-1.186/0.6276,0.628,PASS
+Broad-rule reassigned patients,F61 reassigned_vs_primary,0.988,138,PASS
+Identical-pair reassigned,F61 reassigned_vs_primary,0.9971,33,PASS
+Recalibrated O/E 5-y,F22 valid_O_over_E recent baseline,1.115,1.12,PASS
+Recalibrated group agreement,F22 agreement_pct_validation,92.2,92%,PASS
+O/E 1990-2004,F21 O_over_E,0.955,0.96,PASS
+O/E 2013-2015,F21 O_over_E,1.234,1.23,PASS
+Patients with 5-y follow-up 2013-2015,F21 patients_with_5y,109,109,PASS
+HR T4,P1 HR T4,1.364,1.364,PASS
+HR N2,P1 HR N2,1.625,1.625,PASS
+HR count per lesion,P1 HR METS_F,1.064,1.064,PASS
+HR size per 10 mm,P1 HR SIZE10_F,1.032,1.032,PASS
+CI count HR,P1 HR CI METS_F,1.054–1.075,1.054–1.075,PASS
+M1 M-stage Schoenfeld p,F03 M1,0.0306,0.031,PASS
+M2a smallest p (T3),F03 M2a T3,0.18,0.18,PASS
+M2b time-variation p,F04 p_time_variation,0.20668107504738975,0.207,PASS
+First-day convention identical groups,F10 phenotype_identical_pct,99.71,99.71,PASS
+Same-day deaths without flag identical groups,F19 phenotype_identical_pct,0.476,99.63,PASS
+Deceased without death flag (full extract),F12 deceased without any DEATHKYN_F = Yes,3074,"3,074",PASS
+Deceased in full extract,F12 deceased (PATSTATC),11594,"11,594",PASS
+Count agreement equal 62.4%,A4 pct equal,62.4,62.4,PASS
+Pre-operative chemotherapy 43.4%,A5 / H01 yes,7485/17262,43.4%,PASS

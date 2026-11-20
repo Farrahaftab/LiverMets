@@ -8,7 +8,7 @@ author:
 
 \*Corresponding author: Farrah Aftab, MSc — f.aftab@uel.ac.uk
 
-*Draft for Supervisor Review*
+*Final Draft for Supervisor Approval*
 
 
 **Running title:** Survival prediction in colorectal liver metastases
