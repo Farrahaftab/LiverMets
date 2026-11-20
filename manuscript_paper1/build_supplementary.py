@@ -168,6 +168,19 @@ out = '\n\n'.join(S) + '\n'
 out = out.replace('pre-operative-only, M1 structure (no count or size)', 'model without metastasis count and size, M1 structure')
 out = out.replace('pre-operative-only, selected M2a structure (no count or size)', 'model without metastasis count and size, selected M2a structure')
 assert 'pre-operative-only' not in out
+# display labels only (round 4): registry-faithful wording for the first recorded and resected counts; values unchanged
+_labels = [
+ ('Agreement between pre-operative and resected metastasis counts** (`F34`).',
+  'Agreement between first recorded and resected metastasis counts** (`F34`; registry variables LE1NBMETAHEPNUM and LE1NBMRESECNUM_F1).'),
+ ('Analytic cohort with both pre-operative and resected counts', 'Analytic cohort with both first recorded and resected counts'),
+ ('Resected count equals pre-operative count', 'Resected count equals first recorded count'),
+ ('Resected count greater than pre-operative count', 'Resected count greater than first recorded count'),
+ ('Resected count less than pre-operative count', 'Resected count less than first recorded count'),
+ ('pre-operative (M1 structure) validation C', 'model without metastasis count and size (M1 structure), validation C'),
+]
+for _old, _new in _labels:
+    assert out.count(_old) == 1, ('label not found once', _old, out.count(_old))
+    out = out.replace(_old, _new)
 (HERE/'Paper1_supplementary.md').write_text(out, encoding='utf-8')
 subprocess.run(['pandoc', 'Paper1_supplementary.md', '-f', 'markdown', '-t', 'docx', '-o', 'Paper1_supplementary.docx',
                 '--resource-path', str(HERE)], cwd=HERE, check=True)

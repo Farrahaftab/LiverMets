@@ -79,14 +79,14 @@ Sources: `F32` (characteristics) and `F65` (standardised mean differences).
 | excluded (TNM incomplete) | development | 5,664 | 0.406 | 0.391 | 0.963 |
 | excluded (TNM incomplete) | validation | 3,168 | 0.399 | 0.505 | 1.266 |
 
-**S2f. Agreement between pre-operative and resected metastasis counts** (`F34`). Percentages are of the patients with both counts recorded. Categories are mutually exclusive and sum to the total.
+**S2f. Agreement between first recorded and resected metastasis counts** (`F34`; registry variables LE1NBMETAHEPNUM and LE1NBMRESECNUM_F1). Percentages are of the patients with both counts recorded. Categories are mutually exclusive and sum to the total.
 
 | Comparison | n | % of patients with both counts |
 |----------------------------------------------|------|--------|
-| Analytic cohort with both pre-operative and resected counts | 14,189 | 100.0 |
-| Resected count equals pre-operative count | 8,847 | 62.4 |
-| Resected count greater than pre-operative count | 2,244 | 15.8 |
-| Resected count less than pre-operative count | 3,098 | 21.8 |
+| Analytic cohort with both first recorded and resected counts | 14,189 | 100.0 |
+| Resected count equals first recorded count | 8,847 | 62.4 |
+| Resected count greater than first recorded count | 2,244 | 15.8 |
+| Resected count less than first recorded count | 3,098 | 21.8 |
 
 The 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts). Agreement between the two counts does not establish when either count was measured.
 
@@ -274,7 +274,7 @@ Source: `F25`. Each quantity was reproduced from the notebook against the previo
 | primary cohort | 17,262 | 17,262 | PASS |
 | M2a validation C | 0.6216 | 0.6216 | PASS |
 | RFS primary median | 2.03 | 2.03 | PASS |
-| pre-operative (M1 structure) validation C | 0.5913 | 0.5913 | PASS |
+| model without metastasis count and size (M1 structure), validation C | 0.5913 | 0.5913 | PASS |
 | Fong subset C | 0.6394 | 0.6394 | PASS |
 | Nordlinger subset C | 0.6303 | 0.6303 | PASS |
 | CEA complete-case HR | 1.159 | 1.159 | PASS |
