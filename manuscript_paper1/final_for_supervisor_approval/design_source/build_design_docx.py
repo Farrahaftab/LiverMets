@@ -60,8 +60,10 @@ while i < len(snapshot):
         groups.append((first, last))
     i += 1
 for first, last in groups:
-    first.addprevious(sect_para(1))
-    last.addnext(sect_para(2))
+    # a sectPr ends the section above it: text before a full-width item is two-column,
+    # the full-width item itself is one-column
+    first.addprevious(sect_para(2))
+    last.addnext(sect_para(1))
 # 2b. full-width tables: set table width to 100% of the text block with a wider first column
 TEXT_TW = 10454  # 7.26 in in twips
 for tbl in body.iter(qn("w:tbl")):

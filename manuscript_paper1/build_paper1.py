@@ -88,7 +88,7 @@ T5 = md(['Validation subset', 'n', 'Deaths', 'Selected model C-index', 'Observed
 
 REFS = """1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score for predicting recurrence after hepatic resection for metastatic colorectal cancer: analysis of 1001 consecutive cases. *Ann Surg*. 1999;230(3):309–318.
 2. Margonis GA, et al. Genetic and Morphological Evaluation (GAME) score for patients with colorectal liver metastases. *Br J Surg*. 2018;105(9):1210–1220. doi:10.1002/bjs.10838.
-3. [Authors to be confirmed against the publisher record.] Prognostic scores for liver resection in colorectal metastases: performance, limitations, and methodological pitfalls—a systematic review and meta-analysis. *Cancers*. 2026;18(4):625. [DOI to be confirmed.]
+3. Viganò L, Risi L, Ragaini E, Ieva F, Desiato E. Prognostic scores for liver resection in colorectal metastases: performance, limitations, and methodological pitfalls—a systematic review and meta-analysis. *Cancers*. 2026;18(4):625. doi:10.3390/cancers18040625.
 4. Bolhuis K, et al. External validation of two established clinical risk scores predicting outcome after local treatment of colorectal liver metastases in a nationwide cohort. *Cancers*. 2022;14(10):2356. doi:10.3390/cancers14102356.
 5. Collins GS, Moons KGM, Dhiman P, Riley RD, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378.
 6. Moons KGM, Damen JAA, Kaul T, et al. PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods. *BMJ*. 2025;388:e082505.

@@ -33,7 +33,7 @@ Hepatic resection offers the main chance of long-term survival in colorectal liv
 
 The Fong Clinical Risk Score, derived from 1,001 consecutive resections at a single centre, is the most widely used benchmark [1]. It counts five preoperative criteria and predates contemporary systemic therapy. The GAME score adds KRAS status to clinicopathological variables [2]. A 2026 systematic review and meta-analysis of liver-resection prognostic scores reported limited performance and heterogeneous reporting [3]. In a nationwide Dutch cohort, the Fong score had a C-index of 0.577 and GAME 0.596 [4].
 
-Many models report discrimination without calibration, so absolute predictions cannot be checked. Few have been validated in a later cohort using a model fixed before validation. We therefore aimed to (1) develop a stratified Cox survival model from routinely recorded variables; (2) derive three prognostic groups from training-era predicted 5-year survival and apply them unchanged to later patients; (3) assess discrimination, calibration and separation in temporal validation; and (4) test the findings against date conventions, duplicate records, the omission of metastasis count and size, and a model without TNM stage. We follow the TRIPOD+AI statement [5] and assess risk of bias with PROBAST+AI [6].
+Many models report discrimination without calibration, and few have been validated in a later cohort using a model fixed beforehand. We aimed to develop a stratified Cox survival model from routinely recorded variables, define three prognostic groups from training-era predictions, and assess discrimination, calibration and separation in temporal validation, with sensitivity analyses for date conventions, duplicate records, metastasis count and size, and TNM stage. We follow TRIPOD+AI [5] and assess risk of bias with PROBAST+AI [6].
 
 # Methods
 
@@ -53,7 +53,7 @@ Partial operation dates were set to the 15th of the month (first and last day as
 
 The primary outcome was overall survival from hepatectomy to death from any cause or to the last-news date, with follow-up capped at 15 years. No deaths in the analytic cohort occurred after 4 July 2020. Recurrence-free survival (RFS) was a secondary outcome: time to the earliest dated recurrence after operation, or to death. Undated recurrences were censored in the primary analysis and handled by three alternative rules.
 
-Candidate predictors were TNM stage (T1–2, T3, T4; N0, N1, N2; M0, M1; AJCC categories [8] with subcategories collapsed), age at operation (per 10 years), sex, synchronous presentation, interval from primary diagnosis to liver metastasis (per 12 months; 0 for synchronous; missing when the date was unknown, negative or after operation), number of liver metastases (per additional lesion) and largest recorded metastasis (per 10 mm). For interval, count and size, a missingness indicator was added for each variable, and missing values were replaced by the development-cohort median (single median imputation). This is the only imputation in the primary model. Age, sex and synchrony, when missing, were replaced by the same development-cohort median without an indicator. Multiple imputation was used only in the CEA sensitivity analysis.
+Candidate predictors were TNM stage (T1–2, T3, T4; N0, N1, N2; M0, M1; AJCC categories [8] with subcategories collapsed), age at operation (per 10 years), sex, synchronous presentation, interval from primary diagnosis to liver metastasis (per 12 months; 0 for synchronous; missing when the date was unknown, negative or after operation), number of liver metastases (per additional lesion) and largest recorded metastasis (per 10 mm). For interval, count and size, each variable had a missingness indicator and missing values were replaced by the development-cohort median (single median imputation, the only imputation in the primary model); age, sex and synchrony, when missing, received the same median without an indicator. Multiple imputation was used only in the CEA sensitivity analysis.
 
 **Time origin, predictor timing and prediction time.** (1) *Survival time origin:* hepatectomy (operation date). (2) *Predictor measurement time:* not confirmed. Metastasis count and size are in the registry's LE1 liver-metastasis block, and no documentation states when they were measured relative to preoperative chemotherapy or pathological examination; the source of TNM stage (clinical or pathological) is also unconfirmed. Pre-operative and resected counts agreed for 62% of the 14,189 patients with both recorded (Supplementary Table S2f), which does not establish measurement time. (3) *Intended clinical prediction time:* not yet fully established (Limitation 4).
 
@@ -87,13 +87,13 @@ The Fong score [1] and a Nordlinger-type score [13] were computed on identical p
 
 ## Software
 
-Analyses used pandas 2.3.3, NumPy 2.5.3, lifelines 0.30.3, scikit-survival 0.28.0, scikit-learn 1.9.1, pyarrow 26.0.0 and python-calamine 0.8.3 on Python 3.13.16, with random seed 42. All 15 code cells ran without errors. The primary outputs reproduce the previously validated analysis on all ten checked quantities (Supplementary S7). Analysis code is available at https://github.com/FarrahAftab/LiverMets.
+Analyses used Python 3.13.16 with pandas 2.3.3, lifelines 0.30.3, scikit-survival 0.28.0 and scikit-learn 1.9.1 (random seed 42); all 15 code cells ran without errors. The primary outputs reproduce the previously validated analysis on all ten checked quantities (Supplementary S7). Analysis code is available at https://github.com/FarrahAftab/LiverMets.
 
 # Results
 
 ## Study population
 
-Of 29,565 registry records, 17,262 patients had eligible operations and complete TNM staging (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and shorter follow-up (Table 1).
+The analytic cohort comprised 17,262 patients (Figure 1). The development cohort contained 8,463 patients (4,675 deaths) and the validation cohort 8,799 (1,916 deaths). Median age was 63.4 years (IQR 55.7–70.6), 61.8% were male and 57.8% had M1 disease. The validation cohort had more M1 disease and shorter follow-up (Table 1).
 
 ![](figures/Figure1_STROBE.png){width=6.2in}
 
@@ -138,7 +138,7 @@ Of 29,565 registry records, 17,262 patients had eligible operations and complete
 
 ## Excluded patients
 
-Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to 24.4% in 2015–2020. Excluded patients were less often synchronous, had larger recorded metastases (median 35 vs 30 mm) and were operated earlier (median year 2007 vs 2010) (Supplementary Tables S1 and S2). Their 5-year survival was lower in the development era and higher in validation (Supplementary Table S2). The excluded group's pattern is hard to reconcile with missingness that depends only on recorded covariates; the direction of any selection bias cannot be determined from the registry.
+Exclusion for incomplete staging fell from 69.7% of operations in 1990–1999 to 24.4% in 2015–2020. Excluded patients were less often synchronous, had larger recorded metastases (median 35 vs 30 mm) and were operated earlier (median year 2007 vs 2010) (Supplementary Tables S1 and S2). Their 5-year survival was lower in the development era and higher in validation (Supplementary Table S2). Missingness that depends only on recorded covariates cannot explain this pattern, and the direction of any selection bias cannot be determined from the registry.
 
 ## Model and discrimination
 
@@ -218,15 +218,15 @@ Among the 5,847 validation patients with CEA recorded, CEA was associated with m
 
 # Discussion
 
-In this international registry, a stratified Cox model using TNM stage, age, interval to liver metastasis, and metastasis number and size separated three prognostic groups that remained distinct in temporal validation. Five-year survival was 62.9%, 45.4% and 34.3% in the Favourable, Intermediate and Adverse groups. Groups were fixed in training and assignment was stable on bootstrap refitting (κ 0.83).
+Groups fixed in training separated five-year survival in temporal validation (62.9%, 45.4% and 34.3% in the Favourable, Intermediate and Adverse groups), and assignment was stable on bootstrap refitting (κ 0.83).
 
-Discrimination was modest (C-index 0.622). This should be read against the literature: a 2026 systematic review reported limited performance and heterogeneous reporting for liver-resection scores [3], and the nationwide Dutch validation found limited preoperative discrimination for the Fong score and GAME [4]. Our benchmark comparisons suggest better discrimination than registry approximations of the Fong and Nordlinger-type scores, but these are approximations and we do not claim superiority over published scores. GAME adds KRAS status and extrahepatic disease, which this registry does not record for most patients, so the two cannot be compared directly here. The model's contribution is therefore stratification with predicted survival at 1, 3 and 5 years, from routinely recorded variables, fixed before validation, with its calibration limits reported.
+Discrimination was modest (C-index 0.622), consistent with a 2026 systematic review reporting limited performance and heterogeneous reporting for liver-resection scores [3] and with the nationwide Dutch validation of the Fong score and GAME [4]. Our benchmark comparisons suggest better discrimination than registry approximations of the Fong and Nordlinger-type scores, but these are approximations and we do not claim superiority over published scores. GAME adds KRAS status and extrahepatic disease, which this registry does not record for most patients, so the two cannot be compared directly here. The model's contribution is therefore stratification with predicted survival at 1, 3 and 5 years, from routinely recorded variables, fixed before validation, with its calibration limits reported.
 
-The model under-predicted survival in validation, most clearly at 5 years. This suggests the baseline hazard does not fully capture the longer-term outcomes of recent patients. Recalibration on contemporary data is needed before absolute estimates are quoted. Only 26% of validation patients could be evaluated at 5 years, so 1- and 3-year results are reported alongside.
+The model under-predicted survival in validation, most clearly at 5 years, suggesting that the baseline hazard does not fully capture longer-term outcomes in recent patients; recalibration on contemporary data is needed before absolute estimates are quoted. Only 26% of validation patients could be evaluated at 5 years, so 1- and 3-year results are reported alongside.
 
 Patients with incomplete staging (33.8% of eligible patients) differed in period, centre, synchrony and metastasis size, and their outcomes departed from a no-TNM model in opposite directions in the two eras. The analytic cohort is therefore the population in which TNM-based prediction is valid, not a representative sample of all resected patients.
 
-An earlier analysis of this registry used binary classification and classification trees; the present survival model replaces it because it retains the timing and censoring of outcomes. A treatment-associated survival analysis is planned separately, because pre-operative chemotherapy must be defined by timing, the timing of metastasis count and size must be confirmed, and performance status, liver function and KRAS status must be available before any treatment comparison can be interpreted.
+An earlier binary-classification analysis of this registry is superseded, because survival modelling retains outcome timing and censoring. A treatment-associated analysis is planned separately, once pre-operative chemotherapy timing, the timing of metastasis count and size, performance status, liver function and KRAS status are established.
 
 # Limitations
 
@@ -265,7 +265,7 @@ In an international registry, a stratified Cox model using routinely recorded TN
 
 1. Fong Y, Fortner J, Sun RL, Brennan MF, Blumgart LH. Clinical score for predicting recurrence after hepatic resection for metastatic colorectal cancer: analysis of 1001 consecutive cases. *Ann Surg*. 1999;230(3):309–318.
 2. Margonis GA, et al. Genetic and Morphological Evaluation (GAME) score for patients with colorectal liver metastases. *Br J Surg*. 2018;105(9):1210–1220. doi:10.1002/bjs.10838.
-3. [Authors to be confirmed against the publisher record.] Prognostic scores for liver resection in colorectal metastases: performance, limitations, and methodological pitfalls—a systematic review and meta-analysis. *Cancers*. 2026;18(4):625. [DOI to be confirmed.]
+3. Viganò L, Risi L, Ragaini E, Ieva F, Desiato E. Prognostic scores for liver resection in colorectal metastases: performance, limitations, and methodological pitfalls—a systematic review and meta-analysis. *Cancers*. 2026;18(4):625. doi:10.3390/cancers18040625.
 4. Bolhuis K, et al. External validation of two established clinical risk scores predicting outcome after local treatment of colorectal liver metastases in a nationwide cohort. *Cancers*. 2022;14(10):2356. doi:10.3390/cancers14102356.
 5. Collins GS, Moons KGM, Dhiman P, Riley RD, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378.
 6. Moons KGM, Damen JAA, Kaul T, et al. PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods. *BMJ*. 2025;388:e082505.

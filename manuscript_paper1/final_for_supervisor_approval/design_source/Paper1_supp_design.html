@@ -1,0 +1,1824 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Supplementary material: Paper 1</title><style>
+@font-face { font-family: "SS4"; src: url("fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "SS4"; src: url("fonts/source-serif-4-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "SS4"; src: url("fonts/source-serif-4-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "SS4"; src: url("fonts/source-serif-4-latin-700-italic.woff2") format("woff2"); font-weight: 700; font-style: italic; }
+@font-face { font-family: "LF"; src: url("fonts/libre-franklin-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "LF"; src: url("fonts/libre-franklin-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "LF"; src: url("fonts/libre-franklin-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "SS4"; src: url("fonts/source-serif-4-greek-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+0370-03FF; }
+:root { --navy: #1F3A5F; --rule: #c9c2b0; --tint: #f4f1ea; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: "SS4", Georgia, serif; font-size: 9.75pt; line-height: 1.47; color: #1a1a1a; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.title { font-family: "SS4", serif; font-weight: 700; font-size: 19.5pt; line-height: 1.2; text-align: center; color: #111; margin: 2px 18px 10px; }
+.authors { text-align: center; font-size: 9.8pt; margin: 0 0 5px; }
+.aff { font-family: "LF", sans-serif; font-size: 6.9pt; line-height: 1.35; text-align: left; margin: 0 0 6px; color: #333; }
+.meta { font-family: "LF", sans-serif; font-size: 7.6pt; line-height: 1.35; margin: 0 0 3px; text-align: left; }
+.meta b { color: var(--navy); }
+.abstract { background: var(--tint); border-top: 1.2px solid var(--navy); border-bottom: 1.2px solid var(--navy); padding: 8px 13px 7px; margin: 9px 0 11px; }
+.abstract h1, .abstract h2 { font-family: "LF", sans-serif; font-weight: 700; font-size: 9.6pt; letter-spacing: .14em; color: var(--navy); margin: 0 0 4px; text-transform: uppercase; }
+.abstract p { margin: 0 0 4px; font-size: 8.9pt; line-height: 1.4; text-align: justify; }
+.abstract p.kw { font-size: 8pt; margin-top: 4px; }
+
+h2.sec { font-family: "LF", sans-serif; font-weight: 700; font-size: 10.6pt; letter-spacing: .1em; text-transform: uppercase; color: var(--navy); margin: 12px 0 5px; padding-bottom: 2px; border-bottom: 0.8px solid var(--rule); break-after: avoid; }
+h3.sub { font-family: "LF", sans-serif; font-weight: 700; font-size: 9.2pt; color: #111; margin: 7px 0 2px; break-after: avoid; }
+p { margin: 0 0 5px; orphans: 2; widows: 2; }
+.cols > p:first-child, .cols > h2:first-child { margin-top: 0; }
+table { width: 100%; border-collapse: collapse; font-family: "LF", sans-serif; font-size: 7.6pt; line-height: 1.32; margin: 2px 0 6px; break-inside: avoid; }
+th, td { padding: 3px 5px; vertical-align: top; text-align: right; border-bottom: 0.4px solid #d8d2c4; }
+th { font-weight: 700; color: #111; border-top: 1.1px solid var(--navy); border-bottom: 0.8px solid var(--navy); }
+td:first-child, th:first-child { text-align: left; }
+tbody tr:last-child td { border-bottom: 1.1px solid var(--navy); }
+.tbl { break-inside: avoid; }
+.cap { font-family: "LF", sans-serif; font-size: 7.9pt; line-height: 1.35; text-align: left; margin: 6px 0 3px; }
+.cap strong { color: var(--navy); }
+.tcap { break-after: avoid; }
+.fig { break-inside: avoid; text-align: center; margin: 6px 0 2px; }
+.fig img { width: 100%; height: auto; }
+.fig.fig1 img { width: 4.4in; }
+.fcap { margin-top: 2px; font-family: "SS4", serif; font-size: 8.4pt; line-height: 1.38; text-align: justify; }
+.fcap strong { font-family: "LF", sans-serif; color: var(--navy); }
+ol.refs { font-size: 7.9pt; line-height: 1.36; padding-left: 15px; margin: 0 0 4px; text-align: left; }
+ol.refs li { margin-bottom: 2px; }
+a { color: var(--navy); }
+
+body { font-size: 9.2pt; text-align: left; hyphens: manual; }
+table { font-size: 7.4pt; }
+.fig img { width: 92%; }
+.fig { break-inside: avoid; }
+.keep { break-inside: avoid; }
+</style></head><body><div class="supp"><h2 class="sec" style="break-before:auto">Supplementary Material — Paper 1</h2>
+<p>All tables are generated from the locked v8 analysis outputs and the Paper 1 coefficient outputs. No model was re-estimated.</p>
+<h3 class="sub">Table S1. Included versus excluded patients</h3>
+<div class="keep"><p>Sources: <code>F32</code> (characteristics) and <code>F65</code> (standardised mean differences).</p><table>
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Characteristic</th>
+<th>Included (n = 17,262)</th>
+<th>Excluded (n = 8,832)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Patients</td>
+<td>17,262</td>
+<td>8,832</td>
+</tr>
+<tr class="even">
+<td>Age at operation, years, median (IQR)</td>
+<td>63.4 (55.7–70.6)</td>
+<td>63.0 (55.3–69.9)</td>
+</tr>
+<tr class="odd">
+<td>Male sex, n (%)</td>
+<td>10,676 (61.8)</td>
+<td>5,333 (60.4)</td>
+</tr>
+<tr class="even">
+<td>Synchronous presentation, n (%)</td>
+<td>10,015 (58.0)</td>
+<td>3,674 (41.6)</td>
+</tr>
+<tr class="odd">
+<td>Number of liver metastases known, n (%)</td>
+<td>16,011 (92.8)</td>
+<td>7,068 (80.0)</td>
+</tr>
+<tr class="even">
+<td>Largest recorded metastasis known, n (%)</td>
+<td>13,956 (80.8)</td>
+<td>6,425 (72.7)</td>
+</tr>
+<tr class="odd">
+<td>Pre-operative CEA recorded, n (%)</td>
+<td>11,364 (65.8)</td>
+<td>4,898 (55.5)</td>
+</tr>
+<tr class="even">
+<td>Deaths recorded, n (%)</td>
+<td>6,601 (38.2)</td>
+<td>3,705 (41.9)</td>
+</tr>
+<tr class="odd">
+<td>Deaths inside the 15-year window (events), n (%)</td>
+<td>6,591 (38.2)</td>
+<td>3,696 (41.8)</td>
+</tr>
+<tr class="even">
+<td>Median overall survival, years (KM)</td>
+<td>4.15</td>
+<td>3.84</td>
+</tr>
+</tbody>
+</table></div>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Characteristic</th>
+<th>Included</th>
+<th>Excluded</th>
+<th>Standardised mean difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Age at operation, years</td>
+<td>63.4 (IQR 55.7–70.6; n=15,271)</td>
+<td>63.0 (IQR 55.3–69.9; n=7,416)</td>
+<td>0.051</td>
+</tr>
+<tr class="even">
+<td>Male sex</td>
+<td>61.9% (n=17,246)</td>
+<td>60.4% (n=8,827)</td>
+<td>0.031</td>
+</tr>
+<tr class="odd">
+<td>Synchronous presentation</td>
+<td>58.7% (n=17,064)</td>
+<td>44.8% (n=8,210)</td>
+<td>0.282</td>
+</tr>
+<tr class="even">
+<td>Number of liver metastases (known)</td>
+<td>2.0 (IQR 1.0–3.0; n=16,011)</td>
+<td>2.0 (IQR 1.0–3.0; n=7,068)</td>
+<td>0.017</td>
+</tr>
+<tr class="odd">
+<td>Largest metastasis, mm (known)</td>
+<td>30.0 (IQR 20.0–45.0; n=13,956)</td>
+<td>35.0 (IQR 20.0–50.0; n=6,425)</td>
+<td>-0.186</td>
+</tr>
+<tr class="even">
+<td>Pre-operative CEA, ng/mL (known)</td>
+<td>7.2 (IQR 2.8–25.0; n=11,364)</td>
+<td>9.7 (IQR 3.2–41.0; n=4,898)</td>
+<td>-0.029</td>
+</tr>
+<tr class="odd">
+<td>Operation year</td>
+<td>2010.0 (IQR 2007.0–2013.0; n=17,262)</td>
+<td>2007.0 (IQR 2001.0–2011.0; n=8,832)</td>
+<td>0.584</td>
+</tr>
+<tr class="even">
+<td>Metachronous: interval unavailable</td>
+<td>55.9% (n=7,049)</td>
+<td>66.2% (n=4,536)</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S2. Missing TNM components and exclusion patterns</h3>
+<div class="keep"><p><strong>S2a. Missing components among the 26,094 patients meeting criteria</strong> (<code>investigation/F45</code>).</p><table>
+<thead>
+<tr class="header">
+<th>Missing components</th>
+<th>n</th>
+<th>% of 26,094</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>none (complete)</td>
+<td>17,262</td>
+<td>66.2</td>
+</tr>
+<tr class="even">
+<td>T + N + M</td>
+<td>3,041</td>
+<td>11.7</td>
+</tr>
+<tr class="odd">
+<td>T</td>
+<td>2,324</td>
+<td>8.9</td>
+</tr>
+<tr class="even">
+<td>M</td>
+<td>1,358</td>
+<td>5.2</td>
+</tr>
+<tr class="odd">
+<td>T + N</td>
+<td>1,220</td>
+<td>4.7</td>
+</tr>
+<tr class="even">
+<td>T + M</td>
+<td>418</td>
+<td>1.6</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>402</td>
+<td>1.5</td>
+</tr>
+<tr class="even">
+<td>N + M</td>
+<td>69</td>
+<td>0.3</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S2b. Exclusion by operation period</strong> (<code>F63</code>).</p><table>
+<thead>
+<tr class="header">
+<th>Operation years</th>
+<th>Included</th>
+<th>Excluded</th>
+<th>% excluded</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1990–1999</td>
+<td>637</td>
+<td>1,466</td>
+<td>69.7</td>
+</tr>
+<tr class="even">
+<td>2000–2004</td>
+<td>1,825</td>
+<td>1,514</td>
+<td>45.3</td>
+</tr>
+<tr class="odd">
+<td>2005–2009</td>
+<td>5,967</td>
+<td>2,353</td>
+<td>28.3</td>
+</tr>
+<tr class="even">
+<td>2010–2014</td>
+<td>6,637</td>
+<td>2,472</td>
+<td>27.1</td>
+</tr>
+<tr class="odd">
+<td>2015–2020</td>
+<td>2,162</td>
+<td>696</td>
+<td>24.4</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S2c. Exclusion clustering by site and country</strong> (<code>F64</code>; a site is a registry site code).</p><table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 9%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>Units</th>
+<th>No exclusions</th>
+<th>Only exclusions</th>
+<th>≥50% excluded</th>
+<th>Median patients per unit</th>
+<th>% of exclusions in 10 largest</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sites</td>
+<td>259</td>
+<td>57</td>
+<td>11</td>
+<td>34</td>
+<td>22</td>
+<td>54.0</td>
+</tr>
+<tr class="even">
+<td>countries</td>
+<td>52</td>
+<td>3</td>
+<td>1</td>
+<td>7</td>
+<td>89</td>
+<td>81.6</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S2d. Outcomes of included and excluded patients by era</strong> (<code>F66</code>).</p><table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Era</th>
+<th>Included n</th>
+<th>Excluded n</th>
+<th>Included 5-y KM</th>
+<th>Excluded 5-y KM</th>
+<th>Included median OS (y)</th>
+<th>Excluded median OS (y)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>all</td>
+<td>17,262</td>
+<td>8,832</td>
+<td>0.436</td>
+<td>0.407</td>
+<td>4.15</td>
+<td>3.84</td>
+</tr>
+<tr class="even">
+<td>development (&lt;=2009)</td>
+<td>8,463</td>
+<td>5,664</td>
+<td>0.423</td>
+<td>0.391</td>
+<td>3.97</td>
+<td>3.67</td>
+</tr>
+<tr class="odd">
+<td>validation (&gt;=2010)</td>
+<td>8,799</td>
+<td>3,168</td>
+<td>0.466</td>
+<td>0.505</td>
+<td>4.5</td>
+<td>5.25</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>S2e. Observed/expected survival relative to a no-TNM model</strong> (<code>F67</code>). Interpret with caution: this is a selection check, not a validation.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 16%" />
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Period</th>
+<th>n</th>
+<th>Predicted 5-y (no TNM)</th>
+<th>Observed 5-y KM</th>
+<th>O/E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>included (TNM complete)</td>
+<td>development</td>
+<td>8,463</td>
+<td>0.411</td>
+<td>0.423</td>
+<td>1.028</td>
+</tr>
+<tr class="even">
+<td>included (TNM complete)</td>
+<td>validation</td>
+<td>8,799</td>
+<td>0.401</td>
+<td>0.466</td>
+<td>1.161</td>
+</tr>
+<tr class="odd">
+<td>excluded (TNM incomplete)</td>
+<td>development</td>
+<td>5,664</td>
+<td>0.406</td>
+<td>0.391</td>
+<td>0.963</td>
+</tr>
+<tr class="even">
+<td>excluded (TNM incomplete)</td>
+<td>validation</td>
+<td>3,168</td>
+<td>0.399</td>
+<td>0.505</td>
+<td>1.266</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S2f. Agreement between pre-operative and resected metastasis counts</strong> (<code>F34</code>). Percentages are of the patients with both counts recorded. Categories are mutually exclusive and sum to the total.</p><table>
+<colgroup>
+<col style="width: 76%" />
+<col style="width: 10%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comparison</th>
+<th>n</th>
+<th>% of patients with both counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Analytic cohort with both pre-operative and resected counts</td>
+<td>14,189</td>
+<td>100.0</td>
+</tr>
+<tr class="even">
+<td>Resected count equals pre-operative count</td>
+<td>8,847</td>
+<td>62.4</td>
+</tr>
+<tr class="odd">
+<td>Resected count greater than pre-operative count</td>
+<td>2,244</td>
+<td>15.8</td>
+</tr>
+<tr class="even">
+<td>Resected count less than pre-operative count</td>
+<td>3,098</td>
+<td>21.8</td>
+</tr>
+</tbody>
+</table></div>
+<p>The 62% agreement statement in the Methods and Limitations refers to the first comparison row (equal counts). Agreement between the two counts does not establish when either count was measured.</p>
+<h3 class="sub">Table S3. Duplicate-record screen and sensitivity analyses</h3>
+<div class="keep"><p><strong>S3a. Screen</strong> (<code>F60</code>).</p><table>
+<colgroup>
+<col style="width: 88%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>records in identical-content pairs</td>
+<td>46</td>
+</tr>
+<tr class="even">
+<td>identical-content pairs</td>
+<td>23</td>
+</tr>
+<tr class="odd">
+<td>pairs meeting the probable-duplicate rule</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>pairs with copies at different countries</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td>second copies of identical pairs inside the analytic cohort</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>near-duplicate groups (birth date, operation date, sex match; different content)</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>near-duplicate groups with both copies in the analytic cohort</td>
+<td>31</td>
+</tr>
+<tr class="even">
+<td>near-duplicate groups with one copy in the analytic cohort</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>later records dropped in the broad sensitivity (birth date, operation date and sex match within the cohort)</td>
+<td>37</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S3b. Effect on validation results</strong> (<code>F61</code>). Columns are the primary analysis and two sensitivity analyses. C-index and survival are for the validation cohort.</p><table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Primary (locked)</th>
+<th>Identical-pair second copies removed (6 in cohort)</th>
+<th>Broad rule: later copies removed (37)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Analytic cohort (n)</td>
+<td>17,262</td>
+<td>17,256</td>
+<td>17,225</td>
+</tr>
+<tr class="even">
+<td>Development (n)</td>
+<td>8,463</td>
+<td>8,461</td>
+<td>8,444</td>
+</tr>
+<tr class="odd">
+<td>Validation (n)</td>
+<td>8,799</td>
+<td>8,795</td>
+<td>8,781</td>
+</tr>
+<tr class="even">
+<td>Validation C-index</td>
+<td>0.6216</td>
+<td>0.6216</td>
+<td>0.6216</td>
+</tr>
+<tr class="odd">
+<td>Validation 5-y Kaplan–Meier survival</td>
+<td>46.6%</td>
+<td>46.6%</td>
+<td>46.7%</td>
+</tr>
+<tr class="even">
+<td>Validation O/E at 5 years</td>
+<td>1.143</td>
+<td>1.142</td>
+<td>1.145</td>
+</tr>
+<tr class="odd">
+<td>Cut-point, lower tertile (predicted 5-y survival)</td>
+<td>0.3793</td>
+<td>0.3794</td>
+<td>0.3785</td>
+</tr>
+<tr class="even">
+<td>Cut-point, upper tertile (predicted 5-y survival)</td>
+<td>0.4756</td>
+<td>0.4756</td>
+<td>0.4753</td>
+</tr>
+<tr class="odd">
+<td>Validation Favourable / Intermediate / Adverse (n)</td>
+<td>2,662 / 2824 / 3313</td>
+<td>2,660 / 2825 / 3310</td>
+<td>2,656 / 2833 / 3292</td>
+</tr>
+<tr class="even">
+<td>Patients in the same group as primary (%)</td>
+<td>—</td>
+<td>99.81</td>
+<td>99.2</td>
+</tr>
+<tr class="odd">
+<td>Agreement with primary grouping (κ)</td>
+<td>—</td>
+<td>0.997</td>
+<td>0.988</td>
+</tr>
+<tr class="even">
+<td>Patients reassigned to a different group</td>
+<td>—</td>
+<td>33</td>
+<td>138</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S4. Candidate models and proportional-hazards tests</h3>
+<p><strong>S4a. Candidate models on identical patients</strong> (<code>F02</code>). Validation n = 8,799; 5-y observed survival 46.6%. Bootstrap intervals were estimated by the percentile method from 300 resamples for each row. Each row used its own resamples, so the M2a upper bound in this table (0.637) differs by 0.001 from the selected-model value reported in the text and Figure 3 (0.636). This difference lies within the Monte Carlo variation of the percentile method with 300 resamples, and the same fitted model gives both values. The selected-model value is used throughout the manuscript; the discrepancy is recorded in the verification report.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 6%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Training C</th>
+<th>Validation C</th>
+<th>95% CI</th>
+<th>5-y AUC</th>
+<th>5-y Brier</th>
+<th>Mean predicted 5-y</th>
+<th>O/E 5 y</th>
+<th>Calibration slope</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M1 stratified sex x synchronous (M-stage covariate)</td>
+<td>0.5947</td>
+<td>0.6218</td>
+<td>0.606–0.636</td>
+<td>0.674</td>
+<td>0.0651</td>
+<td>0.409</td>
+<td>1.141</td>
+<td>1.091</td>
+</tr>
+<tr class="even">
+<td>M2a stratified sex x synchronous x M-stage</td>
+<td>0.5952</td>
+<td>0.6216</td>
+<td>0.608–0.637</td>
+<td>0.675</td>
+<td>0.0651</td>
+<td>0.408</td>
+<td>1.142</td>
+<td>1.074</td>
+</tr>
+<tr class="odd">
+<td>M2b stratified sex x synchronous, time-varying M-stage (2-year split)</td>
+<td>0.5947</td>
+<td>0.6219</td>
+<td>0.609–0.637</td>
+<td>0.674</td>
+<td>0.0651</td>
+<td>0.409</td>
+<td>1.14</td>
+<td>1.091</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S4b. Schoenfeld tests, training cohort, constant terms</strong> (<code>F03</code>); M-stage is the term of interest.</p><table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Term</th>
+<th>Test statistic</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M1</td>
+<td>AGE10_F</td>
+<td>0.2358</td>
+<td>0.6273</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>DFI12_F</td>
+<td>0.0414</td>
+<td>0.8388</td>
+</tr>
+<tr class="odd">
+<td>M1</td>
+<td>DFI_NR</td>
+<td>0.0699</td>
+<td>0.7915</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>M1</td>
+<td>4.6772</td>
+<td>0.0306</td>
+</tr>
+<tr class="odd">
+<td>M1</td>
+<td>METS_F</td>
+<td>0.0212</td>
+<td>0.8842</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>METS_NR</td>
+<td>0.3786</td>
+<td>0.5384</td>
+</tr>
+<tr class="odd">
+<td>M1</td>
+<td>N1</td>
+<td>1.1821</td>
+<td>0.2769</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>N2</td>
+<td>1.5238</td>
+<td>0.217</td>
+</tr>
+<tr class="odd">
+<td>M1</td>
+<td>SIZE10_F</td>
+<td>1.8866</td>
+<td>0.1696</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>SIZE_NR</td>
+<td>0.0039</td>
+<td>0.9499</td>
+</tr>
+<tr class="odd">
+<td>M1</td>
+<td>T3</td>
+<td>1.9576</td>
+<td>0.1618</td>
+</tr>
+<tr class="even">
+<td>M1</td>
+<td>T4</td>
+<td>0.6059</td>
+<td>0.4363</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>AGE10_F</td>
+<td>0.173</td>
+<td>0.6775</td>
+</tr>
+<tr class="even">
+<td>M2a</td>
+<td>DFI12_F</td>
+<td>0.1371</td>
+<td>0.7112</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>DFI_NR</td>
+<td>0.0013</td>
+<td>0.9714</td>
+</tr>
+<tr class="even">
+<td>M2a</td>
+<td>METS_F</td>
+<td>0.0375</td>
+<td>0.8465</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>METS_NR</td>
+<td>0.8387</td>
+<td>0.3598</td>
+</tr>
+<tr class="even">
+<td>M2a</td>
+<td>N1</td>
+<td>1.5465</td>
+<td>0.2137</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>N2</td>
+<td>0.9072</td>
+<td>0.3409</td>
+</tr>
+<tr class="even">
+<td>M2a</td>
+<td>SIZE10_F</td>
+<td>1.5</td>
+<td>0.2207</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>SIZE_NR</td>
+<td>0.0122</td>
+<td>0.912</td>
+</tr>
+<tr class="even">
+<td>M2a</td>
+<td>T3</td>
+<td>1.7976</td>
+<td>0.18</td>
+</tr>
+<tr class="odd">
+<td>M2a</td>
+<td>T4</td>
+<td>0.5688</td>
+<td>0.4508</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S4c. Time-varying M-stage (M2b)</strong> (<code>F04</code>). p-values rounded to three decimals. ‘Not applicable’ marks a quantity that is not defined for that row (for example, a hazard ratio for a change in coefficient).</p><table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Coefficient</th>
+<th>HR early</th>
+<th>p (time variation)</th>
+<th>HR late</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M1 early coef</td>
+<td>0.1148</td>
+<td>1.122</td>
+<td>Not applicable</td>
+<td>Not applicable</td>
+</tr>
+<tr class="even">
+<td>M1 change after 2 years</td>
+<td>-0.1508</td>
+<td>Not applicable</td>
+<td>0.207</td>
+<td>Not applicable</td>
+</tr>
+<tr class="odd">
+<td>M1 late HR</td>
+<td>-0.036</td>
+<td>Not applicable</td>
+<td>Not applicable</td>
+<td>0.965</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>S4d. Selection rule</strong> (<code>F05</code>): choose the simplest candidate whose constant-term tests all have p &gt; 0.05 in training data. Selected: M2a.</p>
+<h3 class="sub">Table S5. Sensitivity analyses</h3>
+<div class="keep"><p><strong>S5a. Date conventions and same-day deaths</strong> (<code>F10</code>, validation cohort; primary = 15th of month, half-day rule).</p><table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 13%" />
+<col style="width: 9%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Date convention</th>
+<th>Same-day rule</th>
+<th>Analytic n</th>
+<th>Validation C</th>
+<th>Cut-point 1</th>
+<th>Cut-point 2</th>
+<th>Same groups (%)</th>
+<th>κ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>first day (1st)</td>
+<td>half</td>
+<td>17,265</td>
+<td>0.6214</td>
+<td>0.3793</td>
+<td>0.4755</td>
+<td>99.71</td>
+<td>0.996</td>
+</tr>
+<tr class="even">
+<td>first day (1st)</td>
+<td>one</td>
+<td>17,265</td>
+<td>0.6214</td>
+<td>0.3793</td>
+<td>0.4755</td>
+<td>99.71</td>
+<td>0.996</td>
+</tr>
+<tr class="odd">
+<td>first day (1st)</td>
+<td>quarter</td>
+<td>17,265</td>
+<td>0.6214</td>
+<td>0.3793</td>
+<td>0.4755</td>
+<td>99.71</td>
+<td>0.996</td>
+</tr>
+<tr class="even">
+<td>first day (1st)</td>
+<td>exclude_all</td>
+<td>17,249</td>
+<td>0.6221</td>
+<td>0.3799</td>
+<td>0.4761</td>
+<td>99.62</td>
+<td>0.994</td>
+</tr>
+<tr class="odd">
+<td>mid-month (15th, primary)</td>
+<td>half</td>
+<td>17,262</td>
+<td>0.6216</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>100.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>mid-month (15th, primary)</td>
+<td>one</td>
+<td>17,262</td>
+<td>0.6216</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>100.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td>mid-month (15th, primary)</td>
+<td>quarter</td>
+<td>17,262</td>
+<td>0.6216</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>100.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>mid-month (15th, primary)</td>
+<td>exclude_all</td>
+<td>17,249</td>
+<td>0.6221</td>
+<td>0.3799</td>
+<td>0.4762</td>
+<td>99.62</td>
+<td>0.994</td>
+</tr>
+<tr class="odd">
+<td>month-end</td>
+<td>half</td>
+<td>17,262</td>
+<td>0.6217</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>99.98</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>month-end</td>
+<td>one</td>
+<td>17,262</td>
+<td>0.6217</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>99.98</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td>month-end</td>
+<td>quarter</td>
+<td>17,262</td>
+<td>0.6217</td>
+<td>0.3793</td>
+<td>0.4756</td>
+<td>99.98</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>month-end</td>
+<td>exclude_all</td>
+<td>17,249</td>
+<td>0.6222</td>
+<td>0.3799</td>
+<td>0.4762</td>
+<td>99.64</td>
+<td>0.995</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S5b. Same-day deaths without death flag</strong> (<code>F19</code>).</p><table>
+<colgroup>
+<col style="width: 61%" />
+<col style="width: 10%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Analytic n</th>
+<th>Validation C</th>
+<th>Same groups (%)</th>
+<th>κ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>primary: half-day, all same-day deaths kept</td>
+<td>17,262</td>
+<td>0.6216</td>
+<td>100.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>exclude same-day deaths without death flag</td>
+<td>17,255</td>
+<td>0.6226</td>
+<td>99.63</td>
+<td>0.994</td>
+</tr>
+<tr class="odd">
+<td>same-day deaths without flag treated as censored at half-day</td>
+<td>17,262</td>
+<td>0.6226</td>
+<td>99.63</td>
+<td>0.994</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>S5c. Carcinoembryonic antigen</strong> (<code>F13</code>).</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 11%" />
+<col style="width: 6%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Validation n</th>
+<th>CEA HR per log unit</th>
+<th>95% CI</th>
+<th>C without CEA</th>
+<th>C with CEA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>complete case</td>
+<td>5,847</td>
+<td>1.159</td>
+<td>1.132–1.186</td>
+<td>0.6276</td>
+<td>0.648</td>
+</tr>
+<tr class="even">
+<td>multiple imputation, 10 draws (development outcome-compatible; validation predictors only)</td>
+<td>8,799</td>
+<td>1.153</td>
+<td>1.127–1.180</td>
+<td>0.6224</td>
+<td>0.6366</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S5d. Models without metastasis count and size</strong> (<code>F14</code>, <code>F23</code>). The variables were removed from the model; the table does not indicate when they were measured.</p><table>
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 11%" />
+<col style="width: 13%" />
+<col style="width: 8%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Validation C</th>
+<th>95% CI</th>
+<th>O/E 5 y</th>
+<th>Calibration slope</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>model without metastasis count and size, M1 structure</td>
+<td>0.5913</td>
+<td>0.573–0.606</td>
+<td>1.126</td>
+<td>1.358</td>
+</tr>
+</tbody>
+</table></div>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Validation C</th>
+<th>95% CI</th>
+<th>O/E 5 y</th>
+<th>Calibration slope</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>model without metastasis count and size, selected M2a structure</td>
+<td>0.5905</td>
+<td>0.575–0.604</td>
+<td>1.128</td>
+<td>1.307</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S5e. Recalibration from 2005–2009 baseline</strong> (<code>F22</code>; coefficients fixed).</p><table>
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 10%" />
+<col style="width: 6%" />
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Mean predicted 5-y</th>
+<th>O/E 5 y</th>
+<th>Validation C</th>
+<th>κ vs primary</th>
+<th>% same group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>primary (baseline from all training years)</td>
+<td>0.408</td>
+<td>1.142</td>
+<td>0.6216</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>recent-baseline sensitivity (2005–2009)</td>
+<td>0.418</td>
+<td>1.115</td>
+<td>0.6197</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>phenotype agreement of recent-baseline groups with primary</td>
+<td></td>
+<td></td>
+<td></td>
+<td>0.883</td>
+<td>92.2</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>S5f. No-TNM model on the same patients</strong> (<code>F62</code>). The TNM model is 0.6216 on the same 8,799 patients.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Development n</th>
+<th>Validation n</th>
+<th>Validation C</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>same patients: TNM M2a (primary)</td>
+<td>8,463</td>
+<td>8,799</td>
+<td>0.6216</td>
+<td>reference</td>
+</tr>
+<tr class="even">
+<td>same patients: no-TNM model (complete-case development)</td>
+<td>8,463</td>
+<td>8,799</td>
+<td>0.5994</td>
+<td>difference TNM minus no-TNM = 0.0222, 95% CI 0.0094 to 0.0335 (paired bootstrap, 300 resamples)</td>
+</tr>
+<tr class="odd">
+<td>broader: no-TNM model (all development patients), same 8,799 validation patients</td>
+<td>14,127</td>
+<td>8,799</td>
+<td>0.5982</td>
+<td>same patients as the primary validation set</td>
+</tr>
+<tr class="even">
+<td>broader: no-TNM model (all development patients), all validation patients</td>
+<td>14,127</td>
+<td>11,967</td>
+<td>0.5972</td>
+<td>includes patients with incomplete TNM; not comparable with the TNM model</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S6. Death flags and the 15-year window</h3>
+<div class="keep"><p><strong>S6a.</strong> Sources: <code>F12</code>. The first block covers the full extract; the last rows cover the analytic cohort.</p><table>
+<colgroup>
+<col style="width: 88%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>deceased (PATSTATC)</td>
+<td>11,594</td>
+</tr>
+<tr class="even">
+<td>deceased with any DEATHKYN_F = Yes</td>
+<td>8,520</td>
+</tr>
+<tr class="odd">
+<td>deceased without any DEATHKYN_F = Yes</td>
+<td>3,074</td>
+</tr>
+<tr class="even">
+<td>alive/lost but DEATHKYN_F = Yes</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>LASTNDTC earlier than latest follow-up date</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>LASTNDTC later than latest follow-up date</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>modelling cohort with last contact before time zero</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>modelling deaths after censoring date 2020–07–04</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>modelling cohort: deaths recorded (PATSTATC = Deceased)</td>
+<td>6,601</td>
+</tr>
+<tr class="even">
+<td>modelling cohort: deaths inside the 15-year window (events in the models)</td>
+<td>6,591</td>
+</tr>
+<tr class="odd">
+<td>modelling cohort: deaths beyond 15 years (censored at 15 years)</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>modelling cohort: PATIENTS with follow-up beyond 15 years (all statuses; not a death count)</td>
+<td>69</td>
+</tr>
+<tr class="odd">
+<td>modelling cohort: of those patients, number who died</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S6b. Death-flag rate by time from operation</strong> (<code>F18b</code>).</p><table>
+<thead>
+<tr class="header">
+<th>Time from operation</th>
+<th>Deaths</th>
+<th>Flag = yes</th>
+<th>% flagged</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>same day</td>
+<td>13</td>
+<td>6</td>
+<td>46.2</td>
+</tr>
+<tr class="even">
+<td>1–30 days</td>
+<td>197</td>
+<td>99</td>
+<td>50.3</td>
+</tr>
+<tr class="odd">
+<td>31–365 days</td>
+<td>1,163</td>
+<td>843</td>
+<td>72.5</td>
+</tr>
+<tr class="even">
+<td>1–5 years</td>
+<td>4,470</td>
+<td>3,648</td>
+<td>81.6</td>
+</tr>
+<tr class="odd">
+<td>&gt;5 years</td>
+<td>758</td>
+<td>533</td>
+<td>70.3</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S7. Reproduction check</h3>
+<div class="keep"><p>Source: <code>F25</code>. Each quantity was reproduced from the notebook against the previously validated values.</p><table>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>This run</th>
+<th>Previously validated</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>selected model</td>
+<td>M2a</td>
+<td>M2a</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>cut-point q33</td>
+<td>0.3793</td>
+<td>0.3793</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>cut-point q67</td>
+<td>0.4756</td>
+<td>0.4756</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>primary cohort</td>
+<td>17,262</td>
+<td>17,262</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>M2a validation C</td>
+<td>0.6216</td>
+<td>0.6216</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>RFS primary median</td>
+<td>2.03</td>
+<td>2.03</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>pre-operative (M1 structure) validation C</td>
+<td>0.5913</td>
+<td>0.5913</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>Fong subset C</td>
+<td>0.6394</td>
+<td>0.6394</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>Nordlinger subset C</td>
+<td>0.6303</td>
+<td>0.6303</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>CEA complete-case HR</td>
+<td>1.159</td>
+<td>1.159</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S8. Horizon feasibility, group events and recurrence-free survival</h3>
+<div class="keep"><p><strong>S8a. Group events by horizon</strong> (<code>G02</code>, validation).</p><table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Horizon (y)</th>
+<th>n</th>
+<th>Deaths before horizon</th>
+<th>At risk at horizon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Favourable</td>
+<td>1</td>
+<td>2,662</td>
+<td>98</td>
+<td>1,470</td>
+</tr>
+<tr class="even">
+<td>Favourable</td>
+<td>3</td>
+<td>2,662</td>
+<td>275</td>
+<td>568</td>
+</tr>
+<tr class="odd">
+<td>Favourable</td>
+<td>5</td>
+<td>2,662</td>
+<td>355</td>
+<td>194</td>
+</tr>
+<tr class="even">
+<td>Intermediate</td>
+<td>1</td>
+<td>2,824</td>
+<td>151</td>
+<td>1,583</td>
+</tr>
+<tr class="odd">
+<td>Intermediate</td>
+<td>3</td>
+<td>2,824</td>
+<td>469</td>
+<td>534</td>
+</tr>
+<tr class="even">
+<td>Intermediate</td>
+<td>5</td>
+<td>2,824</td>
+<td>581</td>
+<td>129</td>
+</tr>
+<tr class="odd">
+<td>Adverse</td>
+<td>1</td>
+<td>3,313</td>
+<td>332</td>
+<td>1,701</td>
+</tr>
+<tr class="even">
+<td>Adverse</td>
+<td>3</td>
+<td>3,313</td>
+<td>800</td>
+<td>472</td>
+</tr>
+<tr class="odd">
+<td>Adverse</td>
+<td>5</td>
+<td>3,313</td>
+<td>912</td>
+<td>118</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S8b. Centre-held-out feasibility</strong> (<code>G04</code>). Descriptive only; no centre-held-out model was fitted for this manuscript.</p><table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 19%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Minimum patients per site</th>
+<th>Sites meeting threshold</th>
+<th>Sites with ≥20 validation events</th>
+<th>% of patients in qualifying sites</th>
+<th>Countries meeting threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20</td>
+<td>122</td>
+<td>32</td>
+<td>95.5</td>
+<td>37</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>78</td>
+<td>32</td>
+<td>87.0</td>
+<td>27</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>51</td>
+<td>29</td>
+<td>76.0</td>
+<td>22</td>
+</tr>
+</tbody>
+</table></div>
+<div class="keep"><p><strong>S8c. Recurrence-free survival handling rules</strong> (<code>F17</code>).</p><table>
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 10%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rule</th>
+<th>n</th>
+<th>Events</th>
+<th>Median (y)</th>
+<th>95% CI</th>
+<th>3-y RFS</th>
+<th>5-y RFS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PRIMARY: dated recurrence and death events; undated censored</td>
+<td>16,677</td>
+<td>8,942</td>
+<td>2.03</td>
+<td>1.98–2.09</td>
+<td>0.393</td>
+<td>0.276</td>
+</tr>
+<tr class="even">
+<td>undated recurrences events at last contact</td>
+<td>16,677</td>
+<td>9,672</td>
+<td>1.93</td>
+<td>1.88–1.98</td>
+<td>0.369</td>
+<td>0.244</td>
+</tr>
+<tr class="odd">
+<td>undated recurrences events at mid-interval</td>
+<td>16,677</td>
+<td>9,672</td>
+<td>1.69</td>
+<td>1.65–1.74</td>
+<td>0.329</td>
+<td>0.228</td>
+</tr>
+<tr class="even">
+<td>undated recurrence patients excluded</td>
+<td>15,001</td>
+<td>7,996</td>
+<td>1.84</td>
+<td>1.78–1.90</td>
+<td>0.368</td>
+<td>0.268</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>S8d. Undated recurrence check</strong> (<code>F11</code>).</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>n</th>
+<th>Median age</th>
+<th>T4 %</th>
+<th>N2 %</th>
+<th>M1 %</th>
+<th>Median OS (y)</th>
+<th>Deaths %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>undated recurrence (count &gt; 0, no date)</td>
+<td>1,676</td>
+<td>62.6</td>
+<td>21.9</td>
+<td>28.0</td>
+<td>57.5</td>
+<td>3.51</td>
+<td>56.4</td>
+</tr>
+<tr class="even">
+<td>dated recurrence after operation</td>
+<td>5,324</td>
+<td>62.6</td>
+<td>21.7</td>
+<td>30.4</td>
+<td>62.9</td>
+<td>3.95</td>
+<td>50.6</td>
+</tr>
+<tr class="odd">
+<td>neither</td>
+<td>9,677</td>
+<td>64.3</td>
+<td>21.3</td>
+<td>25.6</td>
+<td>55.0</td>
+<td>5.41</td>
+<td>27.6</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Table S9. Reporting checklists</h3>
+<p>See <code>Paper1_reporting_checklists.docx</code> (TRIPOD+AI primary; STROBE; PROBAST+AI status).</p>
+<h3 class="sub">Table S10. Benchmark comparison on identical validation patients</h3>
+<p>Source: <code>F16_identical_subset_comparison_calibration.csv</code>. Point estimates only; the benchmark scores are registry approximations (see Methods). Subset sizes are identical for the selected model and the score.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 9%" />
+<col style="width: 18%" />
+<col style="width: 8%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Validation subset</th>
+<th>n</th>
+<th>Deaths</th>
+<th>Selected model C-index</th>
+<th>Observed/expected 5-y</th>
+<th>Fong score C-index</th>
+<th>Nordlinger-type C-index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>All TNM-complete validation</td>
+<td>8,799</td>
+<td>1,916</td>
+<td>0.6216</td>
+<td>1.142</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Fong CRS subset (CEA recorded)</td>
+<td>3,642</td>
+<td>914</td>
+<td>0.6394</td>
+<td>1.188</td>
+<td>0.5912</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Nordlinger-type subset</td>
+<td>6,137</td>
+<td>1,396</td>
+<td>0.6303</td>
+<td>1.155</td>
+<td>—</td>
+<td>0.583</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="sub">Supplementary figures</h3>
+<p><img src="figures/FigureS1_RFS_by_group_validation.png" style="width:6.2in" /></p>
+<p><strong>Figure S1.</strong> Recurrence-free survival by prognostic group in the temporal validation cohort (RFS-eligible n = 8,500 of 8,799; the remaining 299 had a dated recurrence before operation and are excluded from RFS; this difference is derived by subtraction). Primary definition: dated recurrence or death as events; undated recurrences censored. Kaplan–Meier curves with 95% confidence bands; numbers at risk beneath. The primary RFS median of 2.03 years (95% CI 1.98–2.09) is for the whole analytic cohort (n = 16,677); the locked outputs contain no validation-only RFS median. Median follow-up in validation was 1.47 years, so late RFS estimates rest on few patients.</p>
+<p><img src="figures/FigureS2_M2a_forest_plot.png" style="width:6.5in" /></p>
+<p><strong>Figure S2.</strong> Forest plot of the selected stratified Cox model (M2a) for overall survival. Points are hazard ratios and bars 95% confidence intervals (log scale). Hazard ratios are within strata defined by sex, synchronous presentation and M-stage. Dark ink: p &lt; 0.05. Coefficients are in Table 2; the reference category for each term is shown in its label.</p>
+<p><img src="figures/FigureS3_discrimination_comparison.png" style="width:6.5in" /></p>
+<p><strong>Figure S3.</strong> Discrimination. (A) Harrell’s C-index in the validation cohort for the three candidate M-stage structures fitted on identical patients, with bootstrap 95% CIs from 300 resamples. (B) Selected-model C-index against published-score approximations on identical validation patients (Fong subset, n = 3,642; Nordlinger-type subset, n = 6,137); point estimates only. The M2a upper confidence bound is 0.637 in the candidate table (F02) and 0.636 for the selected model (F02b). Both come from the same model with different bootstrap draws; the selected-model interval is used in the manuscript (Supplementary Table S4a).</p>
+<h3 class="sub">Coefficient outputs</h3>
+<div class="keep"><p>Baseline survival by stratum and the group summary are the Paper 1 coefficient outputs.</p><table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stratum (sex, synchrony, M-stage code)</th>
+<th>Baseline survival, 1 y</th>
+<th>Baseline survival, 3 y</th>
+<th>Baseline survival, 5 y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.9762</td>
+<td>0.8781</td>
+<td>0.809</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.965</td>
+<td>0.854</td>
+<td>0.7572</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.9747</td>
+<td>0.8698</td>
+<td>0.802</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.9742</td>
+<td>0.8852</td>
+<td>0.8147</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.9765</td>
+<td>0.8887</td>
+<td>0.8082</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>0.967</td>
+<td>0.8403</td>
+<td>0.751</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>0.9771</td>
+<td>0.8878</td>
+<td>0.8008</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>0.9776</td>
+<td>0.8919</td>
+<td>0.8134</td>
+</tr>
+</tbody>
+</table></div>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 17%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Development n</th>
+<th>Validation n</th>
+<th>Predicted 5-y survival range (validation)</th>
+<th>Mean predicted 5-y (validation)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Favourable</td>
+<td>2,821</td>
+<td>2,662</td>
+<td>0.476–0.711</td>
+<td>0.532</td>
+</tr>
+<tr class="even">
+<td>Intermediate</td>
+<td>2,821</td>
+<td>2,824</td>
+<td>0.379–0.476</td>
+<td>0.428</td>
+</tr>
+<tr class="odd">
+<td>Adverse</td>
+<td>2,821</td>
+<td>3,313</td>
+<td>0.000–0.379</td>
+<td>0.291</td>
+</tr>
+</tbody>
+</table></div>
+</div></body></html>
